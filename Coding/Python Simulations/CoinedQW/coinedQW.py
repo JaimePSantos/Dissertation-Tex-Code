@@ -50,16 +50,16 @@ def final_state(U,psi0,steps):
 def prob_vec(psiN,N):
     probs = zeros((N,1))
     for x in range(N):
-        probs[x]=psiN[x]*conjugate(psiN[x]) + psiN[N+x]*conjugate(psiN[N+x]) #duvida aqui
+        probs[x]=psiN[x]*conjugate(psiN[x]) + psiN[N+x]*conjugate(psiN[N+x])
     return probs
 
 
 def plotqw(N,prob):
     matplotlib.rcParams.update({'font.size': 14})
     fig = figure()
-    ax=fig.add_subplot(1,1,1) #add_subplot(nrows, ncols, index, **kwargs)
+    ax=fig.add_subplot(1,1,1) 
     x = np.linspace(-100,100,N)
-    plot(x,prob) #plot the lines
+    plot(x,prob)
     xlabel("Graph Node")
     ylabel("Probability")
     show()
@@ -86,9 +86,9 @@ def cqwalk(N,Steps,state0,state1):
 N = 200
 Steps = 100
 
-##circuit
+
 state0 = array([1,0])
 state1 = array([0,1])
-##circuit
+
 
 cqwalk(N,Steps,state0,state1)

@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from graphs import *
 from scipy import linalg
 
-def init_state(N): #generalizar isto ?
+def init_state(N):
     psi0 = np.zeros((N,1))
     psi0[int(N/2)] = 1
     return psi0
@@ -19,15 +19,15 @@ def ct_evo(H,t,gamma):
 def prob_vec(psiN,N):
     probs = zeros((N,1))
     for x in range(N):
-        probs[x]=psiN[x]*conjugate(psiN[x]) #duvida aqui
+        probs[x]=psiN[x]*conjugate(psiN[x]) 
     return probs
 
 def plotqw(N,prob):
     matplotlib.rcParams.update({'font.size': 14})
     fig = figure()
-    ax=fig.add_subplot(1,1,1) #add_subplot(nrows, ncols, index, **kwargs)
+    ax=fig.add_subplot(1,1,1) 
     x = np.linspace(-100,100,N)
-    plot(x,prob) #plot the lines
+    plot(x,prob) 
     xlabel("Graph Node")
     ylabel("Probability")
     show()

@@ -2,60 +2,66 @@ import numpy as np
 import matplotlib.pyplot as plt
 from qiskit import *
 
-def bipartiteWalk(N,qc,qreg,qcoin):
+def bipartiteWalk(N,n,qreg,qcoin):
+    qc = QuantumCircuit(qreg,qcoin,name='BipartiteGraph')
     qc.x(qreg[N-1])
-    qc.swap(qreg[:-1],qcoin)
+    qc.swap(qreg[0:N-1],qcoin[0:n])
     return qc
     
-def hadamardCoin(N,qc,qcoin):
-    qc.h(qcoin)
-    return qc
+def markedListBipartite(markedList,N,n,dif):
+    if(dif==False):    
+        oracleList = np.ones(2**N)
+        for element in markedList:
+            oracleList[element] = -1
+    if(dif==True):
+        oracleList = np.ones(2**n)
+        for element in markedList:
+            oracleList[element] = -1
 
-def grover3Coin(N,qc,qcoin):
-    qc.h(qcoin)
-    qc.x(qcoin)
-    qc.h(qcoin[2])
-    qc.toffoli(qcoin[0],qcoin[1],qcoin[2])
-    qc.h(qcoin[2])
-    qc.x(qcoin)
-    qc.h(qcoin)
-    qc.barrier()
-    return qc
+    return oracleList.tolist()
 
-def newWalk(N,qc,qreg,qcoin):
-    qc.swap(qreg[0],qcoin[0])
-    qc.swap(qreg[1],qcoin[1])    
-    qc.swap(qreg[2],qcoin[2])
-    qc.x(qreg[3])
-    return qc
-
-def oracle(marked,N):
+def diffusionBipartite(N,n):
     qreg = QuantumRegister(N)
-    qc = QuantumCircuit(qreg)
-    D= np.ones(2**N)
-    D[marked] = -1
-    #D[63] = -1
-    #D[62] = -1
-    D[1] = -1
-    D[15]=-1
-    #D[61] = -1
-    #D[60] = -1
-    D[14] = -1
+    qcoin = QuantumRegister(n)
+    difCirc = QuantumCircuit(qreg,qcoin,name='Diffusion')
+    difCirc.h(qcoin)
+    
+    aux = markedListBipartite([0],N,n,True)
+    qcAux = oracleBipartite(aux,N,n,True)
+    difCirc.append(qcAux,range(n+N))
+    difCirc.h(qcoin)
 
-    print(D)
-    qc.diagonal(D.tolist(),qreg)
-    qc = transpile(qc,basis_gates =['cx','u3'],optimization_level=3)
+    difCirc = transpile(difCirc,basis_gates=['cx','H','swap','u3','x'],optimization_level=3)
+    return difCirc
+
+def oracleBipartite(markedList,N,n,dif):
+    qreg = QuantumRegister(N)
+    qcoin = QuantumRegister(n)
+    qc = QuantumCircuit(qreg,qcoin,name='Oracle')
+    if(dif==True):
+        qc.diagonal(markedList,qcoin)
+    else:
+        qc.diagonal(markedList,qreg)
+    qc = transpile(qc,basis_gates=['cx','H','swap','u3','x'],optimization_level=3)
     return qc
 
-def runWalk(qc,qreg,qcoin,markedVertex,Ncoin,N,times):
-    qcaux = oracle(markedVertex,N)
+def runWalkBipartite2(qreg,qcoin,creg,markedVertex,N,n,times):
+    qc = QuantumCircuit(qreg,qcoin,creg)
+    markedVertex=markedListBipartite(markedVertex,N,n,False)
+    qcOracle = oracleBipartite(markedVertex,N,n,False)
+    qcDif = diffusionBipartite(N,n)
+    qcQWalk = bipartiteWalk(N,n,qreg,qcoin)
     qc.h(qreg)
-    
     for i in range(times):
-        qc.append(qcaux,range(N))
+        qc.append(qcOracle,range(n+N))
         qc.barrier()
-        qc= grover3Coin(Ncoin,qc,qcoin)
-        qc= newWalk(N,qc,qreg,qcoin)
+        qc.append(qcDif,range(n+N))
         qc.barrier()
+        qc.append(qcQWalk,range(n+N))
+        qc.barrier()
+
+        
+    qc = transpile(qc,basis_gates=['cx','H','swap','u3','x'],optimization_level=3)
+    qc.measure(range(N),range(N))
         
     return qc

@@ -5,7 +5,7 @@ from qiskit.visualization import plot_histogram
 from qiskit import IBMQ
 from qiskit.tools.monitor import job_monitor
 
-def markedList(markedList,N):
+def markedListGrover(markedList,N):
     oracleList = np.ones(2**N)
     for element in markedList:
         oracleList[element] = -1
@@ -24,7 +24,7 @@ def diffusionGrover(N):
     difCirc = QuantumCircuit(qreg,name='Diffusion')
     difCirc.h(qreg)
     
-    aux = markedList([0],N)
+    aux = markedListGrover([0],N)
     qcAux = oracleGrover(aux,N)
     difCirc.append(qcAux,range(N))
     
@@ -33,7 +33,7 @@ def diffusionGrover(N):
 
 def grover(marked,N,backend,steps):
     qc = QuantumCircuit(N,N)
-    qcOracle = oracleGrover(markedList(marked,N),N)
+    qcOracle = oracleGrover(markedListGrover(marked,N),N)
     qcDiffusion = diffusionGrover(N)
     qc.h(range(N))
     for i in range(steps):
@@ -48,7 +48,7 @@ def grover(marked,N,backend,steps):
 
 def grover2(marked,N,steps):
     qc = QuantumCircuit(N,N)
-    qcOracle = oracleGrover(markedList(marked,N),N)
+    qcOracle = oracleGrover(markedListGrover(marked,N),N)
     qcDiffusion = diffusionGrover(N)
     qc.h(range(N))
     for i in range(steps):

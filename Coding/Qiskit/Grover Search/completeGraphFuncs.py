@@ -22,7 +22,7 @@ def grover3Coin(N,qc,qcoin):
     qc.barrier()
     return qc
 
-def markedList(markedList,N):
+def markedListComplete(markedList,N):
     oracleList = np.ones(2**N)
     for element in markedList:
         oracleList[element] = -1
@@ -34,7 +34,7 @@ def diffusionComplete(N):
     difCirc = QuantumCircuit(qreg,qcoin,name='Diffusion')
     difCirc.h(qcoin)
     
-    aux = markedList([0],N)
+    aux = markedListComplete([0],N)
     qcAux = oracleComplete(aux,N,True)
     difCirc.append(qcAux,range(2*N))
     
@@ -54,7 +54,7 @@ def oracleComplete(markedList,N,dif):
 
 def runWalk(qc,qreg,qcoin,creg,markedVertex,backend,N,times):
     qc = QuantumCircuit(qreg,qcoin,creg)
-    markedVertex=markedList(markedVertex,N)
+    markedVertex=markedListComplete(markedVertex,N)
     qcOracle = oracleComplete(markedVertex,N,False)
     qcDif = diffusionComplete(N)
     qcQWalk = completeGraphWalk(N,qreg,qcoin)
@@ -75,7 +75,7 @@ def runWalk(qc,qreg,qcoin,creg,markedVertex,backend,N,times):
     
 def runWalk2(qc,qreg,qcoin,creg,markedVertex,N,times):
     qc = QuantumCircuit(qreg,qcoin,creg)
-    markedVertex=markedList(markedVertex,N)
+    markedVertex=markedListComplete(markedVertex,N)
     qcOracle = oracleComplete(markedVertex,N,False)
     qcDif = diffusionComplete(N)
     qcQWalk = completeGraphWalk(N,qreg,qcoin)

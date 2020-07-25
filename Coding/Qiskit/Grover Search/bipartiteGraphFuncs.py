@@ -1,3 +1,7 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from qiskit import *
+
 def bipartiteWalk(N,qc,qreg,qcoin):
     qc.x(qreg[N-1])
     qc.swap(qreg[:-1],qcoin)

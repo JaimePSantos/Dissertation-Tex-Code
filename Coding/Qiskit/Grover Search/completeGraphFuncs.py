@@ -1,3 +1,7 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from qiskit import *
+
 def completeGraphWalk(N,qreg,qcoin):
     qc = QuantumCircuit(qreg,qcoin,name='CompleteGraph')
     qc.swap(qreg[0:N],qcoin)

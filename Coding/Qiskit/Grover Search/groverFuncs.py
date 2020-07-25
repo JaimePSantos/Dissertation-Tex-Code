@@ -1,4 +1,10 @@
-#Grover
+import numpy as np
+import matplotlib.pyplot as plt
+from qiskit import *
+from qiskit.visualization import plot_histogram
+from qiskit import IBMQ
+from qiskit.tools.monitor import job_monitor
+
 def markedList(markedList,N):
     oracleList = np.ones(2**N)
     for element in markedList:

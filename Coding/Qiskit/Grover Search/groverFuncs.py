@@ -11,6 +11,11 @@ def markedListGrover(markedList,N):
         oracleList[element] = -1
     return oracleList.tolist()
 
+def getOracle(markedList,N):
+    oracleList = np.eye(2**N)
+    for element in markedList:
+        oracleList[element][element] = -1
+    return oracleList
 
 def oracleGrover(markedList,N):
     qreg = QuantumRegister(N)
@@ -23,7 +28,6 @@ def diffusionGrover(N):
     qreg = QuantumRegister(N)
     difCirc = QuantumCircuit(qreg,name='Diffusion')
     difCirc.h(qreg)
-    
     aux = markedListGrover([0],N)
     qcAux = oracleGrover(aux,N)
     difCirc.append(qcAux,range(N))
@@ -65,3 +69,9 @@ def simul(qc):
     backend = Aer.get_backend('qasm_simulator')
     result = execute(qc,backend,shots=3000).result().get_counts()
     return result
+
+def simulUnitary(qc):
+    backend = Aer.get_backend('unitary_simulator')
+    result = execute(qc,backend).result()
+    unitary = result.get_unitary(qc)
+    return unitary

@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 from qiskit import *
 
 def bipartiteWalk(N,n,qreg,qcoin):
+    qreg = QuantumRegister(N)
+    qcoin = QuantumRegister(n)
     qc = QuantumCircuit(qreg,qcoin,name='BipartiteGraph')
     qc.x(qreg[N-1])
     qc.swap(qreg[0:N-1],qcoin[0:n])
@@ -45,7 +47,10 @@ def oracleBipartite(markedList,N,n,dif):
     qc = transpile(qc,basis_gates=['cx','H','swap','u3','x'],optimization_level=3)
     return qc
 
-def runWalkBipartite2(qreg,qcoin,creg,markedVertex,N,n,times):
+def runWalkBipartite2(markedVertex,N,n,times):
+    qreg = QuantumRegister(N)
+    qcoin = QuantumRegister(n)
+    creg = ClassicalRegister(N)
     qc = QuantumCircuit(qreg,qcoin,creg)
     markedVertex=markedListBipartite(markedVertex,N,n,False)
     qcOracle = oracleBipartite(markedVertex,N,n,False)

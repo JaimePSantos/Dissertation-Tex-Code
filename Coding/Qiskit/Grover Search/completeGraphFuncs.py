@@ -2,10 +2,21 @@ import numpy as np
 import matplotlib.pyplot as plt
 from qiskit import *
 
-def completeGraphWalk(N,qreg,qcoin):
+def completeGraphWalk(N):
+    qreg = QuantumRegister(N,'vertices')
+    qcoin = QuantumRegister(N,'coin')
     qc = QuantumCircuit(qreg,qcoin,name='CompleteGraph')
     qc.swap(qreg[0:N],qcoin)
     return qc
+
+def completeGraphWalk2(N):
+    qreg = QuantumRegister(N,'vertices')
+    qcoin = QuantumRegister(N,'coin')
+    qc = QuantumCircuit(qreg,qcoin,name='CompleteGraph')
+    qc.h(qcoin)
+    qc.swap(qreg[0:N],qcoin)
+    return qc
+
 
 def hadamardCoin(N,qc,qcoin):
     qc.h(qcoin)
@@ -52,13 +63,17 @@ def oracleComplete(markedList,N,dif):
 
     return qc
 
-def runWalk(qc,qreg,qcoin,creg,markedVertex,backend,N,times):
+def runWalkComplete(markedVertex,backend,N,times):
+    qreg = QuantumRegister(N)
+    qcoin = QuantumRegister(N)
+    creg = ClassicalRegister(N)
     qc = QuantumCircuit(qreg,qcoin,creg)
     markedVertex=markedListComplete(markedVertex,N)
     qcOracle = oracleComplete(markedVertex,N,False)
     qcDif = diffusionComplete(N)
-    qcQWalk = completeGraphWalk(N,qreg,qcoin)
+    qcQWalk = completeGraphWalk(N)
     qc.h(qreg)
+
     for i in range(times):
         qc.append(qcOracle,range(2*N))
         qc.barrier()
@@ -73,12 +88,15 @@ def runWalk(qc,qreg,qcoin,creg,markedVertex,backend,N,times):
         
     return 
     
-def runWalk2(qc,qreg,qcoin,creg,markedVertex,N,times):
+def runWalkComplete2(markedVertex,N,times):
+    qreg = QuantumRegister(N,'vertices')
+    qcoin = QuantumRegister(N,'coin')
+    creg = ClassicalRegister(N)
     qc = QuantumCircuit(qreg,qcoin,creg)
     markedVertex=markedListComplete(markedVertex,N)
     qcOracle = oracleComplete(markedVertex,N,False)
     qcDif = diffusionComplete(N)
-    qcQWalk = completeGraphWalk(N,qreg,qcoin)
+    qcQWalk = completeGraphWalk(N)
     qc.h(qreg)
     for i in range(times):
         qc.append(qcOracle,range(2*N))

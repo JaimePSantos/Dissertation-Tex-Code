@@ -48,8 +48,8 @@ def oracleBipartite(markedList,N,n,dif):
     return qc
 
 def runWalkBipartite2(markedVertex,N,n,times):
-    qreg = QuantumRegister(N)
-    qcoin = QuantumRegister(n)
+    qreg = QuantumRegister(N,'vertices')
+    qcoin = QuantumRegister(n,'coin')
     creg = ClassicalRegister(N)
     qc = QuantumCircuit(qreg,qcoin,creg)
     markedVertex=markedListBipartite(markedVertex,N,n,False)

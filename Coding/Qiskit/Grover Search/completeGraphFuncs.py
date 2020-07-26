@@ -63,7 +63,7 @@ def oracleComplete(markedList,N,dif):
 
     return qc
 
-def runWalkComplete(markedVertex,backend,N,times):
+def runWalkComplete(markedVertex,N,backend,times):
     qreg = QuantumRegister(N)
     qcoin = QuantumRegister(N)
     creg = ClassicalRegister(N)
@@ -83,10 +83,10 @@ def runWalkComplete(markedVertex,backend,N,times):
         qc.barrier()
 
         
-    qc = transpile(qc,backend=backend,basis_gates=['cx','u3','swap'],optimization_level=3)
+    qc = transpile(qc,backend=backend,basis_gates=['cx','u3'],optimization_level=2)
     qc.measure(range(N),range(N))
         
-    return 
+    return qc
     
 def runWalkComplete2(markedVertex,N,times):
     qreg = QuantumRegister(N,'vertices')

@@ -45,7 +45,7 @@ def grover(marked,N,backend,steps):
         qc.barrier()
         qc.append(qcDiffusion,range(N))
         qc.barrier()
-    qc = transpile(qc,basis_gates=['cx','u3'],backend=backend,optimization_level=2)
+    qc = transpile(qc,basis_gates=['cx','u3'],backend=backend,optimization_level=3)
     qc.barrier()
     qc.measure(range(N),range(N))
     return qc

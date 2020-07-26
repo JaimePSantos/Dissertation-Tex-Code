@@ -46,6 +46,30 @@ def oracleBipartite(markedList,N,n,dif):
         qc.diagonal(markedList,qreg)
     qc = transpile(qc,basis_gates=['cx','H','swap','u3','x'],optimization_level=3)
     return qc
+    
+def runWalkBipartite(markedVertex,N,n,backend,times):
+    qreg = QuantumRegister(N,'vertices')
+    qcoin = QuantumRegister(n,'coin')
+    creg = ClassicalRegister(N)
+    qc = QuantumCircuit(qreg,qcoin,creg)
+    markedVertex=markedListBipartite(markedVertex,N,n,False)
+    qcOracle = oracleBipartite(markedVertex,N,n,False)
+    qcDif = diffusionBipartite(N,n)
+    qcQWalk = bipartiteWalk(N,n,qreg,qcoin)
+    qc.h(qreg)
+    for i in range(times):
+        qc.append(qcOracle,range(n+N))
+        qc.barrier()
+        qc.append(qcDif,range(n+N))
+        qc.barrier()
+        qc.append(qcQWalk,range(n+N))
+        qc.barrier()
+
+        
+    qc = transpile(qc,backend=backend,basis_gates=['cx','u3'],optimization_level=3)
+    qc.measure(range(N),range(N))
+        
+    return qc
 
 def runWalkBipartite2(markedVertex,N,n,times):
     qreg = QuantumRegister(N,'vertices')

@@ -36,3 +36,9 @@ def getJobCounts(result,backend):
 def listBackends(provider):
     for backend in provider.backends():
         print( backend.name())
+
+def getJob(jobID,provider,backend):
+    job = backend.retrieve_job(jobID)
+    resultCount = job.result().get_counts()
+
+    return resultCount

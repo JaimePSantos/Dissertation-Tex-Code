@@ -31,8 +31,9 @@ def diffusionGrover(N):
     aux = markedListGrover([0],N)
     qcAux = oracleGrover(aux,N)
     difCirc.append(qcAux,range(N))
-    
     difCirc.h(qreg)
+
+    
     return difCirc
 
 def grover(marked,N,backend,steps):
@@ -45,7 +46,7 @@ def grover(marked,N,backend,steps):
         qc.barrier()
         qc.append(qcDiffusion,range(N))
         qc.barrier()
-    qc = transpile(qc,basis_gates=['cx','u3'],backend=backend,optimization_level=3)
+    qc = transpile(qc,basis_gates=['cx','u3','u2','u1','id'],backend=backend,optimization_level=3)
     qc.barrier()
     qc.measure(range(N),range(N))
     return qc
@@ -60,7 +61,7 @@ def grover2(marked,N,steps):
         qc.barrier()
         qc.append(qcDiffusion,range(N))
         qc.barrier()
-    qc = transpile(qc,basis_gates=['cx','u3'],optimization_level=3)
+    #qc = transpile(qc,basis_gates=['cx','u3'],optimization_level=3)
     qc.barrier()
     qc.measure(range(N),range(N))
     return qc

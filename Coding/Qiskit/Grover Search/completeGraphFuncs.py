@@ -7,6 +7,7 @@ def completeGraphWalk(N):
     qcoin = QuantumRegister(N,'coin')
     qc = QuantumCircuit(qreg,qcoin,name='CompleteGraph')
     qc.swap(qreg[0:N],qcoin)
+    qc = transpile(qc,basis_gates=['cx','u3'],optimization_level=3)
     return qc
 
 def completeGraphWalk2(N):
@@ -37,6 +38,7 @@ def markedListComplete(markedList,N):
     oracleList = np.ones(2**N)
     for element in markedList:
         oracleList[element] = -1
+    oracleList = oracleList*np.exp(1j*2*np.pi)
     return oracleList.tolist()
 
 def diffusionComplete(N):
@@ -50,6 +52,8 @@ def diffusionComplete(N):
     difCirc.append(qcAux,range(2*N))
     
     difCirc.h(qcoin)
+
+    difCirc = transpile(difCirc,basis_gates=['cx','u3'],optimization_level=3)
     return difCirc
 
 def oracleComplete(markedList,N,dif):
@@ -61,6 +65,7 @@ def oracleComplete(markedList,N,dif):
     else:
         qc.diagonal(markedList,qreg)
 
+    qc = transpile(qc,basis_gates=['cx','u3'],optimization_level=3)
     return qc
 
 def runWalkComplete(markedVertex,N,backend,times):
@@ -100,14 +105,11 @@ def runWalkComplete2(markedVertex,N,times):
     qc.h(qreg)
     for i in range(times):
         qc.append(qcOracle,range(2*N))
-        qc.barrier()
         qc.append(qcDif,range(2*N))
-        qc.barrier()
         qc.append(qcQWalk,range(2*N))
-        qc.barrier()
 
         
-    qc = transpile(qc,basis_gates=['cx','u3','swap'],optimization_level=3)
+    qc = transpile(qc,basis_gates=['cx','u3'],optimization_level=3)
     qc.measure(range(N),range(N))
         
     return qc

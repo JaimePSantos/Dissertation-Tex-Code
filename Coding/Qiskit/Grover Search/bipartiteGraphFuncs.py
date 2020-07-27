@@ -90,7 +90,7 @@ def runWalkBipartite2(markedVertex,N,n,times):
         qc.barrier()
 
         
-    qc = transpile(qc,basis_gates=['cx','H','swap','u3','x'],optimization_level=3)
+    # qc = transpile(qc,basis_gates=['cx','H','swap','u3','x'],optimization_level=3)
     qc.measure(range(N),range(N))
         
     return qc

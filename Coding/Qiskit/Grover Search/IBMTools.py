@@ -42,3 +42,15 @@ def getJob(jobID,provider,backend):
     resultCount = job.result().get_counts()
 
     return resultCount
+
+def printBestSeed(qc,basisGatesD,deviceBackend,startSeed,endSeed):
+    dict = {}
+    dict2 = {}
+
+    for i in range(startSeed,endSeed):
+        qCirc = transpile(qc,basis_gates=basisGatesD,backend=deviceBackend,optimization_level=3,layout_method='noise_adaptive',seed_transpiler=i)
+        dict[i] = qCirc.count_ops()['cx']
+        dict2[i] = qCirc.depth()
+    
+    print(min(dict.items(), key=lambda x: x[1])) 
+    print(min(dict2.items(), key=lambda x: x[1]))

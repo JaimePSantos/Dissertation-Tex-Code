@@ -10,28 +10,12 @@ def completeGraphWalk(N):
     qc = transpile(qc,basis_gates=['cx','u3'],optimization_level=3)
     return qc
 
-def completeGraphWalk2(N):
+def completeGraphWalkHCoin(N):
     qreg = QuantumRegister(N,'vertices')
     qcoin = QuantumRegister(N,'coin')
     qc = QuantumCircuit(qreg,qcoin,name='CompleteGraph')
     qc.h(qcoin)
     qc.swap(qreg[0:N],qcoin)
-    return qc
-
-
-def hadamardCoin(N,qc,qcoin):
-    qc.h(qcoin)
-    return qc
-
-def grover3Coin(N,qc,qcoin):
-    qc.h(qcoin)
-    qc.x(qcoin)
-    qc.h(qcoin[2])
-    qc.toffoli(qcoin[0],qcoin[1],qcoin[2])
-    qc.h(qcoin[2])
-    qc.x(qcoin)
-    qc.h(qcoin)
-    qc.barrier()
     return qc
 
 def markedListComplete(markedList,N):
@@ -45,6 +29,7 @@ def diffusionComplete(N):
     qreg = QuantumRegister(N)
     qcoin = QuantumRegister(N)
     difCirc = QuantumCircuit(qreg,qcoin,name='Diffusion')
+
     difCirc.h(qcoin)
     
     aux = markedListComplete([0],N)
@@ -98,10 +83,12 @@ def runWalkComplete2(markedVertex,N,times):
     qcoin = QuantumRegister(N,'coin')
     creg = ClassicalRegister(N)
     qc = QuantumCircuit(qreg,qcoin,creg)
+
     markedVertex=markedListComplete(markedVertex,N)
     qcOracle = oracleComplete(markedVertex,N,False)
     qcDif = diffusionComplete(N)
     qcQWalk = completeGraphWalk(N)
+
     qc.h(qreg)
     for i in range(times):
         qc.append(qcOracle,range(2*N))

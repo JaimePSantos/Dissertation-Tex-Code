@@ -21,6 +21,8 @@ def oracleGrover(markedList,N):
     qreg = QuantumRegister(N)
     qc = QuantumCircuit(qreg,name='Oracle')
     qc.diagonal(markedList,qreg)
+
+    qc=transpile(qc,optimization_level=3)
     return qc
 
 
@@ -32,6 +34,7 @@ def diffusionGrover(N):
     qcAux = oracleGrover(aux,N)
     difCirc.append(qcAux,range(N))
     difCirc.h(qreg)
+    difCirc=transpile(difCirc,optimization_level=3)
 
     
     return difCirc

@@ -33,7 +33,7 @@ def diffusionBipartite(N,n):
     difCirc.append(qcAux,range(n+N))
     difCirc.h(qcoin)
 
-    difCirc = transpile(difCirc,basis_gates=['cx','H','swap','u3','x'],optimization_level=3)
+    difCirc = transpile(difCirc,optimization_level=3)
     return difCirc
 
 def oracleBipartite(markedList,N,n,dif):
@@ -44,7 +44,8 @@ def oracleBipartite(markedList,N,n,dif):
         qc.diagonal(markedList,qcoin)
     else:
         qc.diagonal(markedList,qreg)
-    qc = transpile(qc,basis_gates=['cx','H','swap','u3','x'],optimization_level=3)
+    qc = transpile(qc,optimization_level=3)
+    
     return qc
     
 def runWalkBipartite(markedVertex,N,n,backend,times):

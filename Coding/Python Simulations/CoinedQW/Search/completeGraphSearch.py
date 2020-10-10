@@ -103,7 +103,7 @@ def plotSearch(N,probT,tSpace,configVec):
     for steps,walk,config,n in zip(tSpace,probT,configVec,N):
         # print(walk)
         plot(walk,color=config[0],linestyle=config[1],label="N=%s"%n)
-        vlines(max(steps),0,1,color=config[0],linestyle=config[1])
+        vlines(max(steps),0,walk[-1],color=config[0],linestyle=config[2])
         legend()
         xlabel("Number of steps")
         ylabel("Probability of the marked element")
@@ -117,14 +117,19 @@ def coinedSearchList(N,tSpace,marked,shiftList,oracleList,coinList,configVec):
     for n,shift,oracle,steps,coin in zip(N,shiftList,oracleList,tSpace,coinList):
         evol = evo2(n,marked,shift,coin,oracle)
         psiN = init(n)
-        for step in range(1,steps+1):
+        prob +=  [ampToProb(n,psiN)[marked][0]]
+        # probs[0] = ampToProb(n,psiN)[marked]
+        for step in range(1,steps+3):
             psiN = evol.dot(psiN)
-            # probAux = ampToProb(n,psiN)
+            probAux = ampToProb(n,psiN)
             # print(probAux)
-            # prob = probAux[marked]
+            prob += [probAux[marked][0]]
             # print(prob)
-            prob += [(absolute(psiN[marked][0])**2)]
+            # prob += [(absolute(psiN[marked][0])**2)]
             stepsAux.append(step)
+            # print("prob dos marcados apos %s steps\n%s"%(step,prob))
+
+        # print(prob)
         probT.append(prob)
         stepsAuxT.append(stepsAux)
         prob = []
@@ -149,9 +154,8 @@ def fin(N,marked,steps):
     return psiN,probs
 
 
-N =[40,50]
+N =[16,32,64]
 marked = 0
-steps = 56
 
 shiftList = flipFlopList(N)
 # print(shiftList)
@@ -163,18 +167,9 @@ tVec = spaceGen(N)
 # print(tVec)
 
 colors = ['r','b','g','k']
-lines = ['-','--','-.',':']
-configVec = zip(colors,lines)
+lines = ['-','-','-','-']
+lines2 = ['--','--','--','--']
+configVec = zip(colors,lines,lines2)
 
 coinedSearchList(N,tVec,marked,shiftList,oracleList,coinList,configVec)
 
-# psiN,probs = fin(N,marked,steps)
-# amps = ampToProb(N,psiN)
-# print(floor(pi/2*sqrt(N)))
-
-# plot(probs)
-# xlabel("Steps")
-# ylabel("Probability")
-# show()
-
-# print(floor(pi/2*sqrt(N)))

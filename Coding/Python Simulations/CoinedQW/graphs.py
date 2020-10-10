@@ -68,6 +68,43 @@ class Graph(object):
             self.add_edge({z,y})
         return self
 
+    def line_tesselation(self,N,tipo):
+        y = str(0)
+        z = str(0)
+        for k in range(N):
+            self.add_vertex(str(k))
+        if(tipo=='alpha'):
+            for i in range(N-1):
+                if(not(i%2)):
+                    y = str(i)
+                    z = str((i)+1)
+                    self.add_edge({y,z})
+                else:
+                    continue
+        if(tipo=='beta'):
+            self.add_edge({0,N})
+            for i in range(N-1):
+                if(i%2):
+                    y = str(i)
+                    z = str((i)+1)
+                    self.add_edge({y,z})
+                else:
+                    continue
+            self.add_edge({N,0})
+                
+        return self
+    
+    def compBipartite(self,N):
+        y = int(N/2)
+        for m in range(N):
+            self.add_vertex(str(m))
+        for i in range(0,y):
+            k=str(i)
+            for j in range(y,N):
+                l=str(j)
+                self.add_edge({k,l})
+        return self
+
     def __str__(self):
         res = "vertices: "
         for k in self.__graph_dict:
@@ -167,14 +204,19 @@ class Graph(object):
 
 
 ##################################TESTS##########################################################
-N=4
+N=8
+print("Number of nodes:\n",N,"\n")
 g = Graph({})
-graph = g.bipartite_linegraph(N)
+graph = g.compBipartite(N)
+# print(graph.edges())
+# print(graph)
+# graph = g.line_tesselation(N,'beta')
+# graph = g.linegraph(N)
 # i=0
 # v= graph.vertex_degreeprob(str(i))
 # print(v)
 adjl = graph.adjacency_list()
+print("Graph structure:\n",adjl,"\n")
 adjm = graph.adjacency_matrix()
-print(adjm)
-print(adjl)
-#print(graph)
+print("Graph adjacency matrix:\n",adjm,"\n")
+# print(graph)

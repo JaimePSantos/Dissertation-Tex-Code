@@ -50,7 +50,7 @@ def plotSearch(N,probT,tSpace,configVec):
         # print(config)
         # print(steps)
         plot(walk,color=config[0],linestyle=config[1],label="N=%s"%n)
-        vlines(max(steps),0,1,color=config[0],linestyle=config[1])
+        vlines(max(steps),0,walk[-1],color=config[0],linestyle=config[2])
         legend()
         xlabel("Number of steps")
         ylabel("Probability of the marked element")
@@ -63,23 +63,24 @@ def spaceGen(N):
         stepVec.append(int(idealSteps))
     return stepVec
 
-def staggeredSearchList(N,tSpace,marked,oracleList,completeTessList,theta,configVec):
+def staggeredSearchList(N,tSpace,marked,oracleList,completeTessList,thetas,configVec):
     prob = []
     probT = []
     pairs = []
     stepsAux = []
     stepsAuxT = []
-    for n,oracle,tess,steps in zip(N,oracleList,completeTessList,tSpace):
+    for n,oracle,tess,steps,theta in zip(N,oracleList,completeTessList,tSpace,thetas):
         evol = evo(theta,tess,oracle)
         psiN = init(n)
+        prob += [absolute(psiN[marked][0])**2]
         for step in range(1,steps+1):
             psiN = evol.dot(psiN)
             prob += [(absolute(psiN[marked][0])**2)]
-            # pairs.append(((absolute(psiN[marked][0])**2),step))
+            pairs.append(((absolute(psiN[marked][0])**2),step))
             stepsAux.append(step)
         probT.append(prob)
         stepsAuxT.append(stepsAux)
-        # print("Experimental steps:%s\tTheoretical Steps:%s\n"%(max(pairs),(pi/4)*sqrt(n)))
+        print("Experimental steps:%s\tTheoretical Steps:%s\n"%(max(pairs),(pi/4)*sqrt(n)))
         # for obj in pairs:
             # print(obj)
         pairs = []
@@ -99,9 +100,9 @@ def staggeredSearch(N,U,steps,marked):
     return psiN,probs
 
 
-N=[20,40]
+N=[32,32,32]
 marked = 0
-theta = pi/2
+theta =[ pi/2, pi/2.3,pi/1.7]
 tVec = spaceGen(N)
 # print(tVec)
 
@@ -110,8 +111,9 @@ H=completeTessList(N)
 oracle = oracleList(N,marked)
 
 colors = ['r','b','g','k']
-lines = ['-','--','-.',':']
-configVec = zip(colors,lines)
+lines = ['-','-','-','-']
+lines2 = ['--','--','--','--']
+configVec = zip(colors,lines,lines2)
 
 staggeredSearchList(N, tVec, marked, oracle, H, theta,configVec)
 

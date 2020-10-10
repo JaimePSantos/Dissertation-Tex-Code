@@ -37,7 +37,7 @@ def hamiltoneanList(N,adjM,marked,gammaList):
     for (adjMatrix,gamma) in zip(adjM,gammaList):
         H.append(-(gamma*adjMatrix))
     for ham in H:
-        ham[marked][marked] = -1
+            ham[marked][marked] = -1
     return H
 
 def evo(H,t):
@@ -71,7 +71,7 @@ def plotSearch(N,probT,tSpace,configVec):
     for T,walk,config,n in zip(tSpace,probT,configVec,N):
         print(config)
         plot(T,walk,color=config[0],linestyle=config[1],label="N=%s"%n)
-        vlines(max(T),0,1,color=config[0],linestyle=config[1])
+        vlines(max(T),0,1,color=config[0],linestyle=config[2])
         legend()
         xlabel("Number of steps")
         ylabel("Probability of the marked element")
@@ -84,13 +84,14 @@ def runSearch(N,marked,tSpace,configVec,hamList):
             evol = evo(ham,t)
             psiN = fin(n,evol)
             prob += [(absolute(psiN[marked][0])**2)]
+        print("Sqrt(N):%s\tprob:%s\n"%(1/n,prob[0]))
         probT.append(prob)
         prob = []
     plotSearch(N,probT,tSpace,configVec)
     show()
 
 
-NVec= [50,100,150]
+NVec= [40,50,60]
 marked = 0
 gammaList = gammaList(NVec)
 adjList = adjMatrixList(NVec)
@@ -98,8 +99,9 @@ hamList = hamiltoneanList(NVec,adjList,marked,gammaList)
 nSamples = 50
 TVec = spaceGen(NVec,nSamples)
 
-colors = ['r','b','g']
-lines = ['-','--','-.']
-configVec = zip(colors,lines)
+colors = ['r','b','g','k']
+lines = ['-','-','-','-']
+lines2 = ['--','--','--','--']
+configVec = zip(colors,lines,lines2)
 
 runSearch(NVec,marked,TVec,configVec,hamList)

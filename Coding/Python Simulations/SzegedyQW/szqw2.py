@@ -7,7 +7,6 @@ import networkx as nx
 import sys
 set_printoptions(threshold=sys.maxsize)
 
-#Not working
 def prob(graph,N,vertex):
     p=0
     for j in range(N):
@@ -55,12 +54,16 @@ def reflectA(graph,N):
     Ra = zeros(N**2)
     A = dot(AA(graph,N),2)
     Ra = around(A-eye(N*N))
+    # print('A')
+    # print(Ra)
     return Ra
 
 def reflectB(graph,N):
     Rb = zeros(N**2)
     B = dot(BB(graph,N),2)
     Rb = around(B-eye(N**2))    
+    # print('B')
+    # print(Rb)
     return Rb
 
 def operator(graph,N):
@@ -70,13 +73,24 @@ def operator(graph,N):
     return Op
 
 def plotqw(N,prob):
-    plot(arange(N**2),prob) 
+    plot(arange(N**2),prob) #plot the lines
     xlabel("Graph Node")
     ylabel("Probability")
     show()
 
 
-def init_state(N,graph,st):
+def init_state(N,graph,st): #generalizar isto ?
+    # adj = graph.adjacency_matrix()
+    # adja = adj[:,st]
+    # ket = graph_state(N,st)
+    # psi0 = dot(kron(ket,adja),1/sqrt(N-1))
+
+    # print("ket")
+    # print (ket)
+    # print("adja")
+    # print(adja)
+    # print ("psi0")
+    # print (psi0)
     psi0 = np.zeros((N**2))
     psi0[int(0)] = 1/sqrt(2)
     psi0[int((N**2)-1)] = 1/sqrt(2)
@@ -106,11 +120,25 @@ def szqwalk(graph,N):
     plotqw(N,probvec)
 
 
+## TESTES ##
+
 N=10
 g = Graph({})
 graph = g.linegraph(N)
 szqwalk(graph,N)
 
+# print(operator(graph,N))
+
+
+# g = reflectA(graph,N)
+# h= reflectB(graph,N)
+# print(g*h)
+# print("RA")
+# print(g)
+# print("RB")
+# print(h)
+# print("RA * RB")
+# print(dot(g,h))
 
 
 

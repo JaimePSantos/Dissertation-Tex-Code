@@ -73,6 +73,7 @@ class Graph(object):
         z = str(0)
         for k in range(N):
             self.add_vertex(str(k))
+
         if(tipo=='alpha'):
             for i in range(N-1):
                 if(not(i%2)):
@@ -82,6 +83,8 @@ class Graph(object):
                 else:
                     continue
         if(tipo=='beta'):
+            self.add_edge({str(0),str(N-1)})
+
             for i in range(N-1):
                 if(i%2):
                     y = str(i)
@@ -89,8 +92,18 @@ class Graph(object):
                     self.add_edge({y,z})
                 else:
                     continue
-                
+            self.add_edge({str(N-1),str(0)}) 
+
         return self
+    
+    def compBipartite(self,N):
+        y = N/2
+        for i in range(0,y-1):
+            y=str(i)
+            z=str(i+y)
+            for j in range(y,N):
+                self.add_edge({i,j})
+
 
     def __str__(self):
         res = "vertices: "
@@ -191,14 +204,17 @@ class Graph(object):
 
 
 ##################################TESTS##########################################################
-# N=3
-# g = Graph({})
+#N=8
+#g = Graph({})
+#graph = g.complete_bipartite(N)
+# print(graph)
 # graph = g.line_tesselation(N,'beta')
 # graph = g.linegraph(N)
 # i=0
 # v= graph.vertex_degreeprob(str(i))
 # print(v)
-# adjl = graph.adjacency_list()
+#adjl = graph.adjacency_list()
+#print(adjl)
 # adjm = graph.adjacency_matrix()
 # print(adjm)
 #print(graph)

@@ -5,6 +5,7 @@ from scipy import linalg
 import networkx as nx
 import sys
 from numpy import kron
+import operator
 from numpy.core.umath import absolute
 
 def init(N):
@@ -44,16 +45,25 @@ def fin(N,evo):
     psiN = evo.dot(psiN)
     return psiN
 
-def plotSearch(N,probT,tSpace,configVec):
-    print(tSpace)
+def plotSearch(N,theta,probT,tSpace,configVec):
     for steps,walk,config,n in zip(tSpace,probT,configVec,N):
-        # print(config)
-        # print(steps)
-        plot(walk,color=config[0],linestyle=config[1],label="N=%s"%n)
+        plot(walk,color=config[0],linestyle=config[1],label="N=%s"%(n))
         vlines(max(steps),0,walk[-1],color=config[0],linestyle=config[2])
         legend()
         xlabel("Number of steps")
         ylabel("Probability of the marked element")
+    
+    show()
+
+def plotTheta(N,theta,probT,tSpace,configVec):
+    thetaDict = {} 
+    for steps,walk,n,th in zip(tSpace,probT,N,theta):
+        thetaDict[th] = max(walk)
+        
+    lists = sorted(thetaDict.items())
+    x, y = zip(*lists)
+    plot(x,y)
+    show()
 
 def spaceGen(N):
     stepVec = []
@@ -80,15 +90,16 @@ def staggeredSearchList(N,tSpace,marked,oracleList,completeTessList,thetas,confi
             stepsAux.append(step)
         probT.append(prob)
         stepsAuxT.append(stepsAux)
-        print("Experimental steps:%s\tTheoretical Steps:%s\n"%(max(pairs),(pi/4)*sqrt(n)))
+        #print("Experimental steps:%s\tTheoretical Steps:%s\n"%(max(pairs),(pi/4)*sqrt(n)))
         # for obj in pairs:
             # print(obj)
         pairs = []
         stepsAux = []
         prob = []
     # print(probT)
-    plotSearch(N,probT,stepsAuxT,configVec)
-    show()
+    # plotSearch(N,thetas,probT,stepsAuxT,configVec)
+    plotTheta(N,thetas,probT,stepsAuxT,configVec)
+    # show()
 
 def staggeredSearch(N,U,steps,marked):
     psiN = init(N)
@@ -99,10 +110,12 @@ def staggeredSearch(N,U,steps,marked):
         probs[t] = probAux[marked]
     return psiN,probs
 
-
-N=[32,32,32]
+Samples = 200
+N=[64]*Samples
+# N=[16,32,64,128]
+# theta = [(pi/2),(pi/2),(pi/2),(pi/2)]
 marked = 0
-theta =[ pi/2, pi/2.3,pi/1.7]
+theta =linspace(0,np.pi,Samples).tolist()
 tVec = spaceGen(N)
 # print(tVec)
 
@@ -111,7 +124,7 @@ H=completeTessList(N)
 oracle = oracleList(N,marked)
 
 colors = ['r','b','g','k']
-lines = ['-','-','-','-']
+lines = ['-','-','-' ,'-']
 lines2 = ['--','--','--','--']
 configVec = zip(colors,lines,lines2)
 

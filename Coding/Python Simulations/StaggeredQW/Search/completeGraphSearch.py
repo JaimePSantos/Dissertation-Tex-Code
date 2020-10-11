@@ -7,6 +7,8 @@ import sys
 from numpy import kron
 import operator
 from numpy.core.umath import absolute
+from basic_units import radians, degrees, cos
+import math 
 
 def init(N):
     psi0 = ones((N,1))/ sqrt(N)
@@ -52,18 +54,69 @@ def plotSearch(N,theta,probT,tSpace,configVec):
         legend()
         xlabel("Number of steps")
         ylabel("Probability of the marked element")
-    
     show()
 
-def plotTheta(N,theta,probT,tSpace,configVec):
-    thetaDict = {} 
-    for steps,walk,n,th in zip(tSpace,probT,N,theta):
-        thetaDict[th] = max(walk)
+def plotTheta(N,theta,probT):
+    thetaDict = {}
+    tList = []
+    tList2 = []
+    for prob,th in zip(probT,theta):
+        print("Max prob:%s \t\t Theta:%s "%(max(prob),th))
+        tList.append((th,max(prob)))
         
-    lists = sorted(thetaDict.items())
-    x, y = zip(*lists)
-    plot(x,y)
+    x,y = zip(*tList)
+    xlim(0,np.pi)
+    xticks(np.linspace(0, np.pi, 5),['0','$\pi/4$','$\pi/2$','$3\pi/4$','$\pi$'])
+    xlabel("Value of θ")
+    ylabel("Maximum probability of the marked element for N=%s"%N[0])
+    vlines(np.pi/2,0,max(y),linestyle = '--', color = 'b')
+    plot(x,y,xunits=radians)
     show()
+    return tList
+
+def plotTheta2(N,theta,probT):
+    thetaDict = {}
+    tList = []
+    tList2 = []
+    for prob,th in zip(probT,theta):
+        tList.append((th,max(prob)))
+    return tList
+
+
+def plotMultipleThetas(N):
+    probTMTheta = []
+    configVec = []
+    probT = []
+    thetaDist = []
+    for n in N:
+        tVec = spaceGen(n)
+        H = completeTessList(n)
+        oracle = oracleList(n,0)
+        # theta = np.linspace(0,np.pi,Samples).tolist()
+        theta = np.linspace(0,2*np.pi,Samples).tolist()
+
+        probT,a = staggeredSearchList(n, tVec, 0, oracle, H, theta,configVec)
+        thetaDist = plotTheta2(n,theta,probT)
+        probTMTheta.append(thetaDist)
+        probT = []
+        thetaDist = []
+
+    for probTheta,n in zip(probTMTheta,N):
+        x,y = zip(*probTheta)
+        plot(x,y,label="N=%s"%(n[0]))
+        legend()
+        xlim(0,2*np.pi)
+        # xticks(np.linspace(0, np.pi, 5),['0','$\pi/4$','$\pi/2$','$3\pi/4$','$\pi$'])
+        xticks(np.linspace(0, 2*np.pi, 9),['0','$\pi/4$','$\pi/2$','$3\pi/4$','$\pi$','$5\pi/4$','$3\pi/2$','$7\pi/2$','$2\pi$'])
+
+        xlabel("Value of θ")
+        ylabel("Maximum probability of the marked element")
+        # vlines(np.pi/2,0,max(y),linestyle = '--', color = 'b')
+        vlines([np.pi/2,3*np.pi/2],0,max(y),linestyle = '--', color = 'b')
+
+        
+    show()   
+
 
 def spaceGen(N):
     stepVec = []
@@ -91,15 +144,11 @@ def staggeredSearchList(N,tSpace,marked,oracleList,completeTessList,thetas,confi
         probT.append(prob)
         stepsAuxT.append(stepsAux)
         #print("Experimental steps:%s\tTheoretical Steps:%s\n"%(max(pairs),(pi/4)*sqrt(n)))
-        # for obj in pairs:
-            # print(obj)
         pairs = []
         stepsAux = []
         prob = []
-    # print(probT)
-    # plotSearch(N,thetas,probT,stepsAuxT,configVec)
-    plotTheta(N,thetas,probT,stepsAuxT,configVec)
-    # show()
+    return probT,stepsAuxT
+    return probT
 
 def staggeredSearch(N,U,steps,marked):
     psiN = init(N)
@@ -111,38 +160,38 @@ def staggeredSearch(N,U,steps,marked):
     return psiN,probs
 
 Samples = 200
-N=[64]*Samples
-# N=[16,32,64,128]
-# theta = [(pi/2),(pi/2),(pi/2),(pi/2)]
+plotThetaN = [256]*Samples
+
+plotSearchN=[16,32,64,128]
+
+plotMultipleThetaN = [[16]*Samples,[32]*Samples,[64]*Samples,[128]*Samples]
+# print(plotMultipleThetaN)
+
+plotSearchtheta = [(pi/2)]*len(plotSearchN)
 marked = 0
-theta =linspace(0,np.pi,Samples).tolist()
-tVec = spaceGen(N)
-# print(tVec)
+plotThetatheta =np.linspace(0,np.pi,Samples).tolist()
 
+tVecTheta = spaceGen(plotThetaN)
+tVecSearch = spaceGen(plotSearchN)
 
-H=completeTessList(N)
-oracle = oracleList(N,marked)
+HTheta=completeTessList(plotThetaN)
+HSearch=completeTessList(plotSearchN)
+
+oracleTheta = oracleList(plotThetaN,marked)
+oracleSearch = oracleList(plotSearchN,marked)
+
 
 colors = ['r','b','g','k']
 lines = ['-','-','-' ,'-']
 lines2 = ['--','--','--','--']
 configVec = zip(colors,lines,lines2)
 
-staggeredSearchList(N, tVec, marked, oracle, H, theta,configVec)
+# probTTheta,stepsAuxTTheta = staggeredSearchList(plotThetaN, tVecTheta, marked, oracleTheta, HTheta, plotThetatheta,configVec)
 
-# print(H)
-# print(oracle)
-# H = completeTess(N)
-# O = oracle(N,marked)
-# U = completeEvo(theta,H,O)
-# W,probs = staggeredSearch(N,U,steps,marked)
-# probs2 = ampToProb(N,W,marked)
-# print(probs2)
-# print(steps)
-# print("\nIdeal steps: %s\nFinal state for %s steps:\n%s"%(idealSteps,steps,W))
-# print("\nAmplitudes:\n%s"%amps)
+# probTSearch,stepsAuxTSearch = staggeredSearchList(plotSearchN, tVecSearch, marked, oracleSearch, HSearch, plotSearchtheta,configVec)
+# probTMultipleTheta = [[]]
+# stepsAuxTMultipleTheta = [[]]
+# plotTheta(plotThetaN,plotThetatheta,probTTheta)
+# plotSearch(plotSearchN,plotSearchtheta,probTSearch,stepsAuxTSearch,configVec)
 
-# plot(probs)
-# xlabel("Steps")
-# ylabel("Probability")
-# show()
+plotMultipleThetas(plotMultipleThetaN)

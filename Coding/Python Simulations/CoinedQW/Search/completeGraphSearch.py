@@ -6,6 +6,7 @@ import networkx as nx
 import sys
 from numpy import kron
 from numpy.core.umath import absolute
+rcParams['figure.figsize'] = 11, 8
 
 def ket2pos(pos,dim):
     position = 0
@@ -119,7 +120,7 @@ def coinedSearchList(N,tSpace,marked,shiftList,oracleList,coinList,configVec):
         psiN = init(n)
         prob +=  [ampToProb(n,psiN)[marked][0]]
         # probs[0] = ampToProb(n,psiN)[marked]
-        for step in range(1,steps+3):
+        for step in range(1,steps+1):
             psiN = evol.dot(psiN)
             probAux = ampToProb(n,psiN)
             # print(probAux)

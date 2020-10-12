@@ -9,7 +9,7 @@ import operator
 from numpy.core.umath import absolute
 from basic_units import radians, degrees, cos
 import math 
-
+rcParams['figure.figsize'] = 11, 8
 def init(N):
     psi0 = ones((N,1))/ sqrt(N)
     return psi0
@@ -83,17 +83,16 @@ def plotTheta2(N,theta,probT):
     return tList
 
 
-def plotMultipleThetas(N):
+def plotMultipleThetas(N,configVec):
     probTMTheta = []
-    configVec = []
     probT = []
     thetaDist = []
     for n in N:
         tVec = spaceGen(n)
         H = completeTessList(n)
         oracle = oracleList(n,0)
-        # theta = np.linspace(0,np.pi,Samples).tolist()
-        theta = np.linspace(0,2*np.pi,Samples).tolist()
+        theta = np.linspace(0,np.pi,Samples).tolist()
+        # theta = np.linspace(0,2*np.pi,Samples).tolist()
 
         probT,a = staggeredSearchList(n, tVec, 0, oracle, H, theta,configVec)
         thetaDist = plotTheta2(n,theta,probT)
@@ -101,20 +100,19 @@ def plotMultipleThetas(N):
         probT = []
         thetaDist = []
 
-    for probTheta,n in zip(probTMTheta,N):
+    for probTheta,n,config in zip(probTMTheta,N,configVec):
         x,y = zip(*probTheta)
-        plot(x,y,label="N=%s"%(n[0]))
+        plot(x,y,color=config[0],linestyle=config[1],label="N=%s"%(n[0]))
         legend()
-        xlim(0,2*np.pi)
-        # xticks(np.linspace(0, np.pi, 5),['0','$\pi/4$','$\pi/2$','$3\pi/4$','$\pi$'])
-        xticks(np.linspace(0, 2*np.pi, 9),['0','$\pi/4$','$\pi/2$','$3\pi/4$','$\pi$','$5\pi/4$','$3\pi/2$','$7\pi/2$','$2\pi$'])
-
+        xlim(0,np.pi)
+        xticks(np.linspace(0, np.pi, 5),['0','$\pi/4$','$\pi/2$','$3\pi/4$','$\pi$'])
+        # xticks(np.linspace(0, 2*np.pi, 9),['0','$\pi/4$','$\pi/2$','$3\pi/4$','$\pi$','$5\pi/4$','$3\pi/2$','$7\pi/2$','$2\pi$'])
         xlabel("Value of θ")
         ylabel("Maximum probability of the marked element")
-        # vlines(np.pi/2,0,max(y),linestyle = '--', color = 'b')
-        vlines([np.pi/2,3*np.pi/2],0,max(y),linestyle = '--', color = 'b')
+        vlines(np.pi/2,0,max(y),linestyle = '--', color = 'b')
+        # vlines([np.pi/2,3*np.pi/2],0,max(y),linestyle = '--', color = 'b')
 
-        
+        # fig=figure(figsize=(11,8))
     show()   
 
 
@@ -148,7 +146,7 @@ def staggeredSearchList(N,tSpace,marked,oracleList,completeTessList,thetas,confi
         stepsAux = []
         prob = []
     return probT,stepsAuxT
-    return probT
+    # return probT
 
 def staggeredSearch(N,U,steps,marked):
     psiN = init(N)
@@ -162,9 +160,9 @@ def staggeredSearch(N,U,steps,marked):
 Samples = 200
 plotThetaN = [256]*Samples
 
-plotSearchN=[16,32,64,128]
+plotSearchN=[16,32,64]
 
-plotMultipleThetaN = [[16]*Samples,[32]*Samples,[64]*Samples,[128]*Samples]
+plotMultipleThetaN = [[64]*Samples,[128]*Samples,[256]*Samples]
 # print(plotMultipleThetaN)
 
 plotSearchtheta = [(pi/2)]*len(plotSearchN)
@@ -188,10 +186,10 @@ configVec = zip(colors,lines,lines2)
 
 # probTTheta,stepsAuxTTheta = staggeredSearchList(plotThetaN, tVecTheta, marked, oracleTheta, HTheta, plotThetatheta,configVec)
 
-# probTSearch,stepsAuxTSearch = staggeredSearchList(plotSearchN, tVecSearch, marked, oracleSearch, HSearch, plotSearchtheta,configVec)
+probTSearch,stepsAuxTSearch = staggeredSearchList(plotSearchN, tVecSearch, marked, oracleSearch, HSearch, plotSearchtheta,configVec)
 # probTMultipleTheta = [[]]
 # stepsAuxTMultipleTheta = [[]]
 # plotTheta(plotThetaN,plotThetatheta,probTTheta)
-# plotSearch(plotSearchN,plotSearchtheta,probTSearch,stepsAuxTSearch,configVec)
+plotSearch(plotSearchN,plotSearchtheta,probTSearch,stepsAuxTSearch,configVec)
 
-plotMultipleThetas(plotMultipleThetaN)
+# plotMultipleThetas(plotMultipleThetaN,configVec)

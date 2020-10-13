@@ -36,8 +36,8 @@ def hamiltoneanList(N,adjM,marked,gammaList):
     H = []
     for (adjMatrix,gamma) in zip(adjM,gammaList):
         H.append(-(gamma*adjMatrix))
-    for ham in H:
-            ham[marked][marked] = -1
+    # for ham in H:
+            # ham[marked][marked] = -1
     return H
 
 def evo(H,t):
@@ -84,14 +84,14 @@ def runSearch(N,marked,tSpace,configVec,hamList):
             evol = evo(ham,t)
             psiN = fin(n,evol)
             prob += [(absolute(psiN[marked][0])**2)]
-        print("Sqrt(N):%s\tprob:%s\n"%(1/n,prob[0]))
+        # print("Sqrt(N):%s\tprob:%s\n"%(1/n,prob[0]))
         probT.append(prob)
         prob = []
     plotSearch(N,probT,tSpace,configVec)
-    show()
+    # show()
+    return probT
 
-
-NVec= [40,50,60]
+NVec= [2]
 marked = 0
 gammaList = gammaList(NVec)
 adjList = adjMatrixList(NVec)
@@ -104,4 +104,43 @@ lines = ['-','-','-','-']
 lines2 = ['--','--','--','--']
 configVec = zip(colors,lines,lines2)
 
+def second_largest(numbers):
+    count = 0
+    m1 = m2 = float('-inf')
+    for x in numbers:
+        count += 1
+        if x > m2:
+            if x >= m1:
+                m1, m2 = x, m1            
+            else:
+                m2 = x
+    return m2 if count >= 2 else None
+
 runSearch(NVec,marked,TVec,configVec,hamList)
+
+Samples = 10
+NVec2 = [2]*Samples
+gamma2 = linspace(0,1/NVec2[0], Samples)
+gamma22 = linspace(1/NVec2[0],1/2*NVec2[0],Samples)
+
+a=  linspace(0,1/NVec2[0], int(Samples/2))
+b = linspace((1/NVec2[0])+1/int(Samples/2),1/2*NVec2[0], int(Samples/2))
+
+gammaList2 = concatenate([a,b])
+
+adjList2 = adjMatrixList(NVec2)
+hamList2 = hamiltoneanList(NVec2,adjList2,marked,gammaList2)
+
+# for h in hamList2: 
+#     print("%s\n"%h)
+
+# print(gamma2)
+for h in hamList2:
+    eigValues = linalg.eig(h)
+    maxEig = max((eigValues[0])).real
+    # print(maxEig)
+    sndMaxEig = second_largest(eigValues[0]).real
+    # print(sndMaxEig)
+    # print("Hamiltonian:%s \t\t Eigenvalues:%s"%(h,eigValues[0]))
+    print(sndMaxEig - maxEig)
+    # print(maxEig - sndMaxEig)

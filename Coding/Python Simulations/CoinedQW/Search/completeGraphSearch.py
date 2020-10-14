@@ -155,7 +155,7 @@ def fin(N,marked,steps):
     return psiN,probs
 
 
-N =[16,32,64]
+N =[4]
 marked = 0
 
 shiftList = flipFlopList(N)

@@ -36,8 +36,8 @@ def hamiltoneanList(N,adjM,marked,gammaList):
     H = []
     for (adjMatrix,gamma) in zip(adjM,gammaList):
         H.append(-(gamma*adjMatrix))
-    # for ham in H:
-            # ham[marked][marked] = -1
+    for ham in H:
+            ham[marked][marked] = -1
     return H
 
 def evo(H,t):
@@ -91,11 +91,12 @@ def runSearch(N,marked,tSpace,configVec,hamList):
     # show()
     return probT
 
-NVec= [2]
+NVec= [100]
 marked = 0
 gammaList = gammaList(NVec)
 adjList = adjMatrixList(NVec)
 hamList = hamiltoneanList(NVec,adjList,marked,gammaList)
+print("Ideal Ham:%s\n\n\n"%hamList)
 nSamples = 50
 TVec = spaceGen(NVec,nSamples)
 
@@ -116,17 +117,16 @@ def second_largest(numbers):
                 m2 = x
     return m2 if count >= 2 else None
 
-runSearch(NVec,marked,TVec,configVec,hamList)
+# runSearch(NVec,marked,TVec,configVec,hamList)
 
-Samples = 10
-NVec2 = [2]*Samples
-gamma2 = linspace(0,1/NVec2[0], Samples)
-gamma22 = linspace(1/NVec2[0],1/2*NVec2[0],Samples)
+Samples = 100
+NVec2 = [1024]*Samples
 
-a=  linspace(0,1/NVec2[0], int(Samples/2))
-b = linspace((1/NVec2[0])+1/int(Samples/2),1/2*NVec2[0], int(Samples/2))
-
-gammaList2 = concatenate([a,b])
+# fstInterval=  linspace(0,1/NVec2[0], int(Samples/2))
+# sndInterval = linspace((1/NVec2[0])+1/int(Samples),2/NVec2[0], int(Samples/2))
+# gammaList2 = concatenate([fstInterval,sndInterval])
+gammaList2 = linspace(0,2/NVec2[0],Samples)
+print(gammaList2)
 
 adjList2 = adjMatrixList(NVec2)
 hamList2 = hamiltoneanList(NVec2,adjList2,marked,gammaList2)
@@ -135,12 +135,23 @@ hamList2 = hamiltoneanList(NVec2,adjList2,marked,gammaList2)
 #     print("%s\n"%h)
 
 # print(gamma2)
-for h in hamList2:
-    eigValues = linalg.eig(h)
-    maxEig = max((eigValues[0])).real
+x=[]
+y=[]
+# E1 -> 2 menor VP E0 -> menor
+for h,gamma in zip(hamList2,gammaList2):
+    eigValues = (linalg.eig(h))
+    maxEig = max((absolute(eigValues[0])))
     # print(maxEig)
-    sndMaxEig = second_largest(eigValues[0]).real
+    sndMaxEig = second_largest(absolute(eigValues[0]))
     # print(sndMaxEig)
-    # print("Hamiltonian:%s \t\t Eigenvalues:%s"%(h,eigValues[0]))
-    print(sndMaxEig - maxEig)
+    # print("Hamiltonian:%s \n Eigenvalues:%s \t\t MaxEigen:%s\t\t SndMaxEigen:%s\n\n"%(h,eigValues[0],maxEig,sndMaxEig))
+    # print(sndMaxEig - maxEig)
     # print(maxEig - sndMaxEig)
+    # x.append(sndMaxEig - maxEig)
+    x.append(gamma*NVec2[0])
+    y.append(maxEig - sndMaxEig)
+    # print(gamma*NVec2[0])
+    # print(gamma)
+
+plot(x,y)
+show()

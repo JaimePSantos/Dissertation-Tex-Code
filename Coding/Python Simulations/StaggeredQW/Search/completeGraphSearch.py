@@ -162,7 +162,7 @@ plotThetaN = [256]*Samples
 
 plotSearchN=[16,32,64]
 
-plotMultipleThetaN = [[64]*Samples,[128]*Samples,[256]*Samples]
+plotMultipleThetaN = [[16]*Samples,[32]*Samples,[64]*Samples]
 # print(plotMultipleThetaN)
 
 plotSearchtheta = [(pi/2)]*len(plotSearchN)
@@ -190,6 +190,6 @@ probTSearch,stepsAuxTSearch = staggeredSearchList(plotSearchN, tVecSearch, marke
 # probTMultipleTheta = [[]]
 # stepsAuxTMultipleTheta = [[]]
 # plotTheta(plotThetaN,plotThetatheta,probTTheta)
-plotSearch(plotSearchN,plotSearchtheta,probTSearch,stepsAuxTSearch,configVec)
+# plotSearch(plotSearchN,plotSearchtheta,probTSearch,stepsAuxTSearch,configVec)
 
-# plotMultipleThetas(plotMultipleThetaN,configVec)
+plotMultipleThetas(plotMultipleThetaN,configVec)

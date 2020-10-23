@@ -6,6 +6,8 @@ import networkx as nx
 import sys
 from numpy import kron
 from numpy.core.umath import absolute
+matplotlib.rcParams.update({'font.size': 14})
+rcParams['figure.figsize'] = 11, 8
 
 def init(N):
     psi0 = ones((N,1))/ sqrt(N)
@@ -76,6 +78,20 @@ def plotSearch(N,probT,tSpace,configVec):
         xlabel("Number of steps")
         ylabel("Probability of the marked element")
 
+def valueOfGamma(N,H,gamma):
+    x = []
+    y = []
+    for h,gamma in zip(hamList2,gammaList2):
+        eigValues = (linalg.eig(h))
+        maxEig = max((absolute(eigValues[0])))
+        sndMaxEig = second_largest(absolute(eigValues[0]))
+        x.append(gamma*N[0])
+        y.append(maxEig-sndMaxEig)
+    plot(x,y)
+    xlabel("γN")
+    ylabel("ΔE")
+    show()
+
 def runSearch(N,marked,tSpace,configVec,hamList):
     prob = []
     probT = []
@@ -88,22 +104,32 @@ def runSearch(N,marked,tSpace,configVec,hamList):
         probT.append(prob)
         prob = []
     plotSearch(N,probT,tSpace,configVec)
-    # show()
+    show()
     return probT
 
-NVec= [100]
+
+NVec= [16,32,64]
 marked = 0
 gammaList = gammaList(NVec)
 adjList = adjMatrixList(NVec)
 hamList = hamiltoneanList(NVec,adjList,marked,gammaList)
 print("Ideal Ham:%s\n\n\n"%hamList)
-nSamples = 50
+nSamples = 100
 TVec = spaceGen(NVec,nSamples)
 
 colors = ['r','b','g','k']
 lines = ['-','-','-','-']
 lines2 = ['--','--','--','--']
 configVec = zip(colors,lines,lines2)
+
+def second_smallest(numbers):
+    m1, m2 = float('inf'), float('inf')
+    for x in numbers:
+        if x <= m1:
+            m1, m2 = x, m1
+        elif x < m2:
+            m2 = x
+    return m2
 
 def second_largest(numbers):
     count = 0
@@ -117,41 +143,42 @@ def second_largest(numbers):
                 m2 = x
     return m2 if count >= 2 else None
 
-# runSearch(NVec,marked,TVec,configVec,hamList)
+runSearch(NVec,marked,TVec,configVec,hamList)
 
 Samples = 100
-NVec2 = [1024]*Samples
+NVec2 = [512]*Samples
 
 # fstInterval=  linspace(0,1/NVec2[0], int(Samples/2))
 # sndInterval = linspace((1/NVec2[0])+1/int(Samples),2/NVec2[0], int(Samples/2))
 # gammaList2 = concatenate([fstInterval,sndInterval])
-gammaList2 = linspace(0,2/NVec2[0],Samples)
-print(gammaList2)
+# gammaList2 = linspace(0,2/NVec2[0],Samples)
+# print(gammaList2)
 
-adjList2 = adjMatrixList(NVec2)
-hamList2 = hamiltoneanList(NVec2,adjList2,marked,gammaList2)
+# adjList2 = adjMatrixList(NVec2)
+# hamList2 = hamiltoneanList(NVec2,adjList2,marked,gammaList2)
+# valueOfGamma(NVec2,hamList2,gammaList2)
 
 # for h in hamList2: 
 #     print("%s\n"%h)
 
 # print(gamma2)
-x=[]
-y=[]
-# E1 -> 2 menor VP E0 -> menor
-for h,gamma in zip(hamList2,gammaList2):
-    eigValues = (linalg.eig(h))
-    maxEig = max((absolute(eigValues[0])))
-    # print(maxEig)
-    sndMaxEig = second_largest(absolute(eigValues[0]))
-    # print(sndMaxEig)
-    # print("Hamiltonian:%s \n Eigenvalues:%s \t\t MaxEigen:%s\t\t SndMaxEigen:%s\n\n"%(h,eigValues[0],maxEig,sndMaxEig))
-    # print(sndMaxEig - maxEig)
-    # print(maxEig - sndMaxEig)
-    # x.append(sndMaxEig - maxEig)
-    x.append(gamma*NVec2[0])
-    y.append(maxEig - sndMaxEig)
+# x=[]
+# y=[]
+# # E1 -> 2 menor VP E0 -> menor
+# for h,gamma in zip(hamList2,gammaList2):
+#     eigValues = (linalg.eig(h))
+#     maxEig = max((absolute(eigValues[0])))
+#     # print(maxEig)
+#     sndMaxEig = second_largest(absolute(eigValues[0]))
+#     # print(sndMaxEig)
+#     # print("Hamiltonian:%s \n Eigenvalues:%s \t\t MaxEigen:%s\t\t SndMaxEigen:%s\n\n"%(h,eigValues[0],maxEig,sndMaxEig))
+#     # print(sndMaxEig - maxEig)
+#     # print(maxEig - sndMaxEig)
+#     # x.append(sndMaxEig - maxEig)
+#     x.append(gamma*NVec2[0])
+#     y.append(maxEig - sndMaxEig)
     # print(gamma*NVec2[0])
     # print(gamma)
 
-plot(x,y)
-show()
+# plot(x,y)
+# show()

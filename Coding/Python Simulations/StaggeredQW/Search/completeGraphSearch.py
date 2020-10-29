@@ -2,7 +2,7 @@ from numpy import *
 from matplotlib.pyplot import *
 import matplotlib
 from scipy import linalg
-import networkx as nx
+# import networkx as nx
 import sys
 from numpy import kron
 import operator
@@ -137,6 +137,7 @@ def staggeredSearchList(N,tSpace,marked,oracleList,completeTessList,thetas,confi
         for step in range(1,steps+1):
             psiN = evol.dot(psiN)
             prob += [(absolute(psiN[marked][0])**2)]
+            print(prob)
             pairs.append(((absolute(psiN[marked][0])**2),step))
             stepsAux.append(step)
         probT.append(prob)
@@ -190,6 +191,6 @@ probTSearch,stepsAuxTSearch = staggeredSearchList(plotSearchN, tVecSearch, marke
 # probTMultipleTheta = [[]]
 # stepsAuxTMultipleTheta = [[]]
 # plotTheta(plotThetaN,plotThetatheta,probTTheta)
-# plotSearch(plotSearchN,plotSearchtheta,probTSearch,stepsAuxTSearch,configVec)
+plotSearch(plotSearchN,plotSearchtheta,probTSearch,stepsAuxTSearch,configVec)
 
-plotMultipleThetas(plotMultipleThetaN,configVec)
+# plotMultipleThetas(plotMultipleThetaN,configVec)

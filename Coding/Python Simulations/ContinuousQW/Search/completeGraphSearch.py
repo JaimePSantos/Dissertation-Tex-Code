@@ -2,7 +2,6 @@ from numpy import *
 from matplotlib.pyplot import *
 import matplotlib
 from scipy import linalg
-import networkx as nx
 import sys
 from numpy import kron
 from numpy.core.umath import absolute
@@ -100,6 +99,7 @@ def runSearch(N,marked,tSpace,configVec,hamList):
             evol = evo(ham,t)
             psiN = fin(n,evol)
             prob += [(absolute(psiN[marked][0])**2)]
+            print(prob)
         # print("Sqrt(N):%s\tprob:%s\n"%(1/n,prob[0]))
         probT.append(prob)
         prob = []
@@ -108,7 +108,7 @@ def runSearch(N,marked,tSpace,configVec,hamList):
     return probT
 
 
-NVec= [16,32,64]
+NVec= [4,8,16]
 marked = 0
 gammaList = gammaList(NVec)
 adjList = adjMatrixList(NVec)

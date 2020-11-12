@@ -1,5 +1,6 @@
 import numpy as np
-import matplotlib.pyplot as plt 
+from matplotlib.pyplot import *
+import matplotlib
 from scipy import linalg
 
 def init(N):
@@ -22,36 +23,144 @@ def unitary(N,marked):
     diff = diffusion(N)
     return np.dot(diff,orac)
 
-def groverSearch(N,marked,steps):
+def spaceGen(N):
+    stepVec = []
+    tVec = []
+    for n in N:
+        idealSteps = np.floor((np.pi/4)*np.sqrt(n))
+        stepVec.append(int(idealSteps))
+    return stepVec
+
+def plotSearch(N,probT,steps,configVec):
+    stepAux = []
+    stepList = []
+    for step in steps:
+        for i in range(1,step+1):
+            stepAux.append(i)
+        stepList.append(stepAux)
+        stepAux = []
+    for n,steps,config,walk in zip(N,stepList,configVec,probT):
+        print(walk)
+        print(steps)
+        plot(walk,color=config[0],linestyle=config[1],label="N=%s"%(n))
+        vlines(max(steps),0,walk[-1],color=config[0],linestyle=config[2])
+        legend()
+        xlabel("Number of steps")
+        ylabel("Probability of the marked element")
+    show()
+
+
+def groverSearch(N,stepSpace,marked):
     prob = []
     probT = []
-    for n in N:
+    for n,steps in zip(N,stepSpace):
         u = unitary(n,marked)
         psiN=init(n)
-        for t in range(steps):
+        prob += [np.absolute(psiN[marked][0][0])**2]
+        for step in range(1,steps+1):
             psiN = np.dot(u,psiN)
-            for mark in marked:
-                prob+=[np.absolute(psiN[marked][0]**2)]
+            # for mark in marked:
+            prob+=[np.absolute(psiN[marked][0][0]**2)]
+        probT.append(prob)
+        prob = []
+    return probT
+
+def multipleMarked(N,stepSpace,markedListList):
+    prob = 0
+    probT = []
+    for n,steps,markedList in zip(N,stepSpace,markedListList):
+        # print(markedList)
+        u = unitary(n,markedList)
+        # print("MultipleMarked:\n%s\n"%u)
+        psi0=init(n)
+        psiN = np.dot(u,psi0)
+        # print("MultipleMarked:\n%s\n"%psiN)
+        for marked in markedList:
+            # print("MultipleMarked:\n%s\n"%psiN[marked][0])
+            prob+=np.absolute(psiN[marked][0])**2
             # print(prob)
+        probT.append(prob)
+        prob = 0
+    
+    # print(probT)
 
-        
-    return prob
+    return probT
 
 
-        
-        
-N=[16]
-steps = 1
-marked = [0,1]
-N1 = [16]
-steps1 = 2
-N2 = [16]
-steps2 = 3
-N3 = [16]
-steps3 = 4
-# print("Oracle:\n%s\n"%oracle(N,marked))
-# print("Diffusion:\n%s\n"%diffusion(N))
-print("Grover evolution for %s steps and %s elements:\n%s\n"%(steps,N,groverSearch(N,marked,steps)))
-print("Grover evolution for %s steps and %s elements:\n%s\n"%(steps1,N1,groverSearch(N1,marked,steps1)))
-print("Grover evolution for %s steps and %s elements:\n%s\n"%(steps2,N2,groverSearch(N2,marked,steps2)))
-print("Grover evolution for %s steps and %s elements:\n%s\n"%(steps2,N2,groverSearch(N3,marked,steps3)))
+def markedList(N):
+    elementListAux1 = []
+    elementListAux2 = []
+    elementList = []
+    for n in N:
+        markedElementRange = np.arange(int(n/4)+1).tolist()
+        for element in markedElementRange:
+            for i in range(element):
+                elementListAux1.append(i)
+                # print(elementListAux1)
+            if len(elementListAux1)>0:
+                elementListAux2.append(elementListAux1)
+            # print(elementListAux1)
+            elementListAux1 =[]
+            # print(elementListAux2)
+        # elementListAux2.pop(0)
+        elementList.append(elementListAux2)
+        elementListAux2 = []
+    # print(elementList)
+    return elementList
+
+def singleShotGrover(N,markedListListList):
+    prob = 0
+    probTAux = []
+    probT = []
+    for n,markedListList in zip(N,markedListListList):
+        # print(n)
+        # print(markedListList)
+        for markedList in markedListList:
+            # print(markedList)
+            u = unitary(n,markedList)
+            # print("singleShot:\n%s\n"%u)
+            psi0=init(n)
+            psiN = np.dot(u,psi0)
+            # print("singleShot:\n%s\n"%psiN)
+            for marked in markedList:
+                # print("singleShot:\n%s\n"%psiN[marked][0])
+                prob+=np.absolute(psiN[marked][0])**2
+                # print(prob)
+            probTAux.append(prob)
+            prob=0
+        probT.append(probTAux)
+        probTAux = []
+    return probT
+
+def plotSingShot(walkList):
+    for walk in walkList:
+        # print(walk)
+        plot(walk)
+    show()
+
+# marked = [0,1,2]
+# steps = spaceGen(N)
+
+colors = ['r','b','g','k']
+lines = ['-','-','-' ,'-']
+lines2 = ['--','--','--','--']
+configVec = zip(colors,lines,lines2)
+
+NSingShot =[64,128,256]
+markedSingShot = markedList(NSingShot)
+# for marked in markedSingShot:
+    # print("\nMarkedSingShot:\n%s\n"%marked)
+groverSingle = singleShotGrover(NSingShot,markedSingShot)
+plotSingShot(groverSingle)
+
+NMarked=[16,16,16,16]
+markedListList = [[0],[0,1],[0,1,2],[0,1,2,3]]
+steps1 = spaceGen(NMarked)
+# grover = groverSearch(N,steps,marked)
+groverMarked = multipleMarked(NMarked,steps1,markedListList)
+
+# print("\nSingle Shot Grover Distribution:\n%s\n"%groverSingle)
+# print(groverMarked)
+
+# plot(groverSingle)
+# show()

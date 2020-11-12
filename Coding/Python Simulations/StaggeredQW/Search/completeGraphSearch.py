@@ -49,6 +49,8 @@ def fin(N,evo):
 
 def plotSearch(N,theta,probT,tSpace,configVec):
     for steps,walk,config,n in zip(tSpace,probT,configVec,N):
+        print(walk)
+        print(steps)
         plot(walk,color=config[0],linestyle=config[1],label="N=%s"%(n))
         vlines(max(steps),0,walk[-1],color=config[0],linestyle=config[2])
         legend()
@@ -137,7 +139,7 @@ def staggeredSearchList(N,tSpace,marked,oracleList,completeTessList,thetas,confi
         for step in range(1,steps+1):
             psiN = evol.dot(psiN)
             prob += [(absolute(psiN[marked][0])**2)]
-            print(prob)
+            # print(prob)
             pairs.append(((absolute(psiN[marked][0])**2),step))
             stepsAux.append(step)
         probT.append(prob)

@@ -2,6 +2,8 @@ import numpy as np
 from matplotlib.pyplot import *
 import matplotlib
 from scipy import linalg
+rcParams['figure.figsize'] = 11, 8
+matplotlib.rcParams.update({'font.size': 14})
 
 def init(N):
     psi0 = np.ones((N,1))/ np.sqrt(N)
@@ -77,15 +79,11 @@ def multipleMarked(N,stepSpace,markedListList):
         # print("MultipleMarked:\n%s\n"%psiN)
         for marked in markedList:
             # print("MultipleMarked:\n%s\n"%psiN[marked][0])
-            prob+=np.absolute(psiN[marked][0])**2
+      prob+=np.absolute(psiN[marked][0])**2
             # print(prob)
         probT.append(prob)
         prob = 0
-    
-    # print(probT)
-
     return probT
-
 
 def markedList(N):
     elementListAux1 = []
@@ -115,6 +113,7 @@ def singleShotGrover(N,markedListListList):
     for n,markedListList in zip(N,markedListListList):
         # print(n)
         # print(markedListList)
+        psiN = np.zeros(n)
         for markedList in markedListList:
             # print(markedList)
             u = unitary(n,markedList)
@@ -132,14 +131,26 @@ def singleShotGrover(N,markedListListList):
         probTAux = []
     return probT
 
-def plotSingShot(walkList):
-    for walk in walkList:
-        # print(walk)
-        plot(walk)
+def plotSingShot(N,walkList,configVec):
+    for walk,config,n in zip(walkList,configVec,N):
+        print(len(walk))
+        plot(np.append(np.roll(walk,1),walk[int(n/4)-1]),color=config[0],linestyle=config[1],label="N=%s"%(n))
+        # plot(walk,color=config[0],linestyle=config[1],label="N=%s"%(n))
+        xlim(1,int(n/4)+1)
+        dim = np.arange(1,int(n/4)+1,3)
+        xticks(dim)
+        vlines(int(n/4),0,walk[-1],color=config[0],linestyle=config[2])
+        legend()
+        xlabel("Number of marked elements")
+        ylabel("Total probability of marked elements")
     show()
+
+
 
 # marked = [0,1,2]
 # steps = spaceGen(N)
+
+
 
 colors = ['r','b','g','k']
 lines = ['-','-','-' ,'-']
@@ -148,16 +159,15 @@ configVec = zip(colors,lines,lines2)
 
 NSingShot =[64,128,256]
 markedSingShot = markedList(NSingShot)
-# for marked in markedSingShot:
-    # print("\nMarkedSingShot:\n%s\n"%marked)
 groverSingle = singleShotGrover(NSingShot,markedSingShot)
-plotSingShot(groverSingle)
+# print(groverSingle)
+plotSingShot(NSingShot,groverSingle,configVec)
 
-NMarked=[16,16,16,16]
-markedListList = [[0],[0,1],[0,1,2],[0,1,2,3]]
-steps1 = spaceGen(NMarked)
+# NMarked=[16,16,16,16]
+# markedListList = [[0],[0,1],[0,1,2],[0,1,2,3]]
+# steps1 = spaceGen(NMarked)
 # grover = groverSearch(N,steps,marked)
-groverMarked = multipleMarked(NMarked,steps1,markedListList)
+# groverMarked = multipleMarked(NMarked,steps1,markedListList)
 
 # print("\nSingle Shot Grover Distribution:\n%s\n"%groverSingle)
 # print(groverMarked)

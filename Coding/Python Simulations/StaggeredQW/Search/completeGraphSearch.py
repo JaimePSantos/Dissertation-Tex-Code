@@ -10,6 +10,8 @@ from numpy.core.umath import absolute
 from basic_units import radians, degrees, cos
 import math 
 rcParams['figure.figsize'] = 11, 8
+matplotlib.rcParams.update({'font.size': 14})
+
 def init(N):
     psi0 = ones((N,1))/ sqrt(N)
     return psi0

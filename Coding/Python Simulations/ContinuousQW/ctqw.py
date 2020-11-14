@@ -31,9 +31,9 @@ def prob_vec(psiN,N):
 def plotmultqw(N,prob1,prob2,prob3,label1,label2,label3,typeOfPlot,superposition):
     x = arange(-N/2,N/2)
     if typeOfPlot == 'Gamma':
-        plot(x,prob1,'b',label="Gamma= %s"%str(label1))
-        plot(x,prob2,'g',label="Gamma= %s"%str(label2))
-        plot(x,prob3,'r',label="Gamma= %s"%str(label3))
+        plot(x,prob1,'b',label=r"$\gamma = \frac{1}{%s\sqrt{2}}$"%str(label1))
+        plot(x,prob2,'g',label=r"$\gamma = \frac{1}{%s\sqrt{2}}$"%str(label2))
+        plot(x,prob3,'r',label=r"$\gamma = \frac{1}{%s\sqrt{2}}$"%str(label3))
     if typeOfPlot == 'Time':
         plot(x,prob1,'b',label="Time Interval= %s"%str(label1))
         plot(x,prob2,'g',label="Time Interval= %s"%str(label2))
@@ -79,11 +79,15 @@ t = 100
 t1 = 40
 t2 = 80
 t3 = 120
-gamma = 1/(2*np.sqrt(2)) #gamma otimo que aumenta a distancia das cristas
+denom = 2
+gamma = 1/(denom*np.sqrt(2)) #gamma otimo que aumenta a distancia das cristas
 
-gamma1 = 1/(2*np.sqrt(2)) 
-gamma2 = 1/(3*np.sqrt(2)) 
-gamma3 = 1/(4*np.sqrt(2)) 
+denom1=2
+denom2=3
+denom3=6
+gamma1 = 1/(denom1*np.sqrt(2)) 
+gamma2 = 1/(denom2*np.sqrt(2)) 
+gamma3 = 1/(denom3*np.sqrt(2)) 
 
 lg = Graph({})
 lg = lg.linegraph(N) #defined in graph.py, must have "pip install natsort" -> TODO: Remove the dependency
@@ -106,7 +110,7 @@ plotqw(N,qwSup,True,initCondSup)
 qwg1 = ctqwalk(lg,N,t,gamma1,initState)
 qwg2 = ctqwalk(lg,N,t,gamma2,initState)
 qwg3 = ctqwalk(lg,N,t,gamma3,initState)
-plotmultqw(N,qwg1,qwg2,qwg3,gamma1,gamma2,gamma3,'Gamma',False)
+plotmultqw(N,qwg1,qwg2,qwg3,denom1,denom2,denom3,'Gamma',False)
 
 qwt1=ctqwalk(lg,N,t1,gamma,initState)
 qwt2=ctqwalk(lg,N,t2,gamma,initState)

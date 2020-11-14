@@ -4,6 +4,8 @@ from graphs import *
 from scipy import linalg
 import matplotlib.patches as mpatches
 from fractions import Fraction
+rcParams['figure.figsize'] = 11, 8
+matplotlib.rcParams.update({'font.size': 15})
 
 def init_state(N,init):
     psi0 = np.zeros((N,1))
@@ -36,36 +38,33 @@ def prob_vec(psiN,N):
         probs[x]=psiN[x]*conjugate(psiN[x]) 
     return probs
 
-def plotmultqw(N,prob,prob2,prob3,theta1,theta2,theta3):
+def plotmultqw(N,prob1,prob2,prob3,label1,label2,label3,initCond):
     # matplotlib.rcParams.update({'font.size': 14})
 
     x = arange(-N/2,N/2)
-    plot(x,prob,'b',label="pi/3")
-    plot(x,prob2,'g',label="pi/4")
-    plot(x,prob3,'r',label="pi/5") #plot the lines
-    legend(["pi/3", "pi/4","pi/5"])
+    plot(x,prob1,'b',label=r"$\theta = \frac{\pi}{%s}$"%label1)
+    plot(x,prob2,'g',label=r"$\theta = \frac{\pi}{%s}$"%label2)
+    plot(x,prob3,'r',label=r"$\theta = \frac{\pi}{%s}$"%label3) #plot the lines
+    legend()
     xlabel("Graph Node")
     ylabel("Probability")
-    show()
+    # show()
+    savefig(r'C:\Users\Jaime\Documents\GitHub\Jaime-Santos-Dissertation\Results\Simulations\StagQuantumWalk\stagqwMultiple')
+    clf()
 
-def plotqw(N,prob):
+def plotqw(N,prob,initcond):
     #x = arange(N)
     x = linspace(N/2,-N/2,N)
-    plot(x,prob,'r')
+    plot(x,prob)
     xlabel("Graph Node")
     ylabel("Probability")
-    show()
+    # show()
+    savefig(r'C:\Users\Jaime\Documents\GitHub\Jaime-Santos-Dissertation\Results\Simulations\StagQuantumWalk\stagqwSingle'+str(initcond))
+    clf()
 
 def stgqwalk(t1,t2, N, theta,steps,init):
     A = t1.adjacency_matrix()
-    B = t2.adjacency_matrix()
-    # print("Alfa")
-    # print(A)
-    # print("#######")
-    # print("Beta")
-    # print(B)
-    # print("#######")
-    
+    B = t2.adjacency_matrix()    
     Ha = A 
     Hb = B 
     psi0 = init_state(N,init)
@@ -76,9 +75,14 @@ def stgqwalk(t1,t2, N, theta,steps,init):
     return probvec
 
 N = 200
-theta1= pi/3
-theta2= pi/4
-theta3= pi/5
+denom1 = 3
+denom2 = 4
+denom3 = 5
+initcond = 10
+
+theta1= pi/denom1
+theta2= pi/denom2
+theta3= pi/denom3
 steps = 50
 i = Graph({})
 j = Graph({})
@@ -86,12 +90,16 @@ j = Graph({})
 t1 = i.line_tesselation(N,'alpha') 
 t2 = j.line_tesselation(N,'beta')
 
-#print(t1.adjacency_matrix())
-#print()
-#print(t2.adjacency_matrix())
-k1=stgqwalk(t1,t2,N,theta1,steps,1)
-k2=stgqwalk(t1,t2,N,theta2,steps,0)
-k3=stgqwalk(t1,t2,N,theta3,steps,0)
+qwSup1=stgqwalk(t1,t2,N,theta1,steps,initcond)
+qwSup2=stgqwalk(t1,t2,N,theta2,steps,initcond)
+qwSup3=stgqwalk(t1,t2,N,theta3,steps,initcond)
+plotmultqw(N,qwSup1,qwSup2,qwSup3,denom1,denom2,denom3,str(initcond))
 
-# plotmultqw(N,k1,k2,k3,theta1,theta2,theta3)
-plotqw(N,k1)
+steps1 = 50
+initcond0 = 0
+qwSingle0=stgqwalk(t1,t2,N,theta1,steps1,initcond0)
+plotqw(N,qwSingle0,initcond0)
+
+initcond1 = 1
+qwSingle1=stgqwalk(t1,t2,N,theta1,steps1,initcond1)
+plotqw(N,qwSingle1,initcond1)

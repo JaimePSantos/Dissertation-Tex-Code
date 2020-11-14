@@ -1,7 +1,7 @@
 from numpy import *
 from matplotlib.pyplot import *
 rcParams['figure.figsize'] = 11, 8
-matplotlib.rcParams.update({'font.size': 14})
+matplotlib.rcParams.update({'font.size': 15})
 
 
 def coins(Matrix):
@@ -32,21 +32,14 @@ def walk_op(N,state0,state1):
     c01= outer(state0,state1)
     c10= outer(state1,state0)
     c11= outer(state1,state1)
-
     ShiftPlus = roll(eye(N),1,axis=0)
-    # print("Shift Plus:\n",ShiftPlus)
     ShiftMinus = roll(eye(N),-1,axis=0)
-    # print("Shift Minus:\n",ShiftMinus)
-    
-    Shift = kron(c00,ShiftPlus) + kron(c11,ShiftMinus)
- 
-    # print("Shift Matrix:\n",Shift)
+    Shift = kron(c00,ShiftPlus) + kron(c11,ShiftMinus) 
     return Shift
 
 def CU_op(coin, shift,N):
     U = shift.dot(kron(coin,eye(N)))
     return U
-
 
 def final_state(U,psi0,steps):
     for t in range(0,steps):
@@ -59,15 +52,15 @@ def prob_vec(psiN,N):
         probs[x]=psiN[x]*conjugate(psiN[x]) + psiN[N+x]*conjugate(psiN[N+x]) #duvida aqui
     return probs
 
-
-def plotqw(N,prob):
+def plotqw(N,prob,init):
     x = arange(-N/2,N/2)
-    # fig=figure(figsize=(50, 50))
     plot(x,prob) 
     xlabel("Graph Node")
     ylabel("Probability")
-
-    show()
+    savefig(r'C:\Users\Jaime\Documents\GitHub\Jaime-Santos-Dissertation\Results\Simulations\CoinedQuantumWalk\Coinedpsi0'+str(init))
+    clf()
+    cla()
+    close()
 
 def plotmultqw(N,prob1,prob2,prob3,steps1,steps2,steps3):
     x = arange(-N/2,N/2)
@@ -77,28 +70,20 @@ def plotmultqw(N,prob1,prob2,prob3,steps1,steps2,steps3):
     legend()
     xlabel("Graph Node")
     ylabel("Probability")
-    show()
+    savefig(r'C:\Users\Jaime\Documents\GitHub\Jaime-Santos-Dissertation\Results\Simulations\CoinedQuantumWalk\CoinedMultiplepsi001')
+    clf()
 
-
-def cqwalk(N,Steps,state0,state1):
+def cqwalk(N,Steps,state0,state1,initcond):
     P = int((N+1)/2)
-    
     Coin = coins("H")
-
     shift= walk_op(N,state0,state1)
-
     U = CU_op(Coin,shift,N)
-
-    coinstate = init_cond("1",state0,state1)
-
+    coinstate = initcond
     amp = array([1])
     psi0 = init_state(N,array([P]),amp,coinstate)
     psiN = final_state(U,psi0,Steps)
     probvec = prob_vec(psiN,N)
-    
     return probvec
-    # plotqw(N,probvec)
-
     
 N = 200
 steps = 100
@@ -109,11 +94,23 @@ steps3 = 120
 state0 = array([1,0])
 state1 = array([0,1])
 
-qw = cqwalk(N,steps,state0,state1)
-plotqw(N,qw)
-# Multiple plots
-# qw1=cqwalk(N,steps1,state0,state1)
-# qw2=cqwalk(N,steps2,state0,state1)
-# qw3=cqwalk(N,steps3,state0,state1)
+init = '01'
+initcond = init_cond(init,state0,state1)
+init1 = '1'
+initcond1 = init_cond(init1,state0,state1)
+init2 = '0'
+initcond2 = init_cond(init2,state0,state1)
 
-# plotmultqw(N,qw1,qw2,qw3,steps1,steps2,steps3)
+# # Single Plots
+qw = cqwalk(N,steps,state0,state1,initcond)
+plotqw(N,qw,init)
+qwx = cqwalk(N,steps,state0,state1,initcond1)
+plotqw(N,qwx,init1)
+qwy = cqwalk(N,steps,state0,state1,initcond2)
+plotqw(N,qwy,init2)
+
+# # Multiple plots
+qw1=cqwalk(N,steps1,state0,state1,initcond)
+qw2=cqwalk(N,steps2,state0,state1,initcond)
+qw3=cqwalk(N,steps3,state0,state1,initcond)
+plotmultqw(N,qw1,qw2,qw3,steps1,steps2,steps3)

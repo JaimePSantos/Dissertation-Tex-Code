@@ -3,7 +3,7 @@ from matplotlib.pyplot import *
 import matplotlib
 from scipy import linalg
 rcParams['figure.figsize'] = 11, 8
-matplotlib.rcParams.update({'font.size': 14})
+matplotlib.rcParams.update({'font.size': 15})
 
 def init(N):
     psi0 = np.ones((N,1))/ np.sqrt(N)

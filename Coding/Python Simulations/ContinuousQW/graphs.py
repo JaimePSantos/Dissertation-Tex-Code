@@ -167,14 +167,14 @@ class Graph(object):
 
 
 ##################################TESTS##########################################################
-N=4
-g = Graph({})
-graph = g.bipartite_linegraph(N)
+# N=4
+# g = Graph({})
+# graph = g.bipartite_linegraph(N)
 # i=0
 # v= graph.vertex_degreeprob(str(i))
 # print(v)
-adjl = graph.adjacency_list()
-adjm = graph.adjacency_matrix()
-print(adjm)
-print(adjl)
+# adjl = graph.adjacency_list()
+# adjm = graph.adjacency_matrix()
+# print(adjm)
+# print(adjl)
 #print(graph)

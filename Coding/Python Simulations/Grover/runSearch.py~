@@ -35,6 +35,7 @@ def spaceGen(N):
         stepVec.append(int(idealSteps))
     return stepVec
 
+#TODO: Figure out why there is only one walk being plotted.
 def plotSearch(N,probT,steps,configVec):
     stepAux = []
     plotName = ""

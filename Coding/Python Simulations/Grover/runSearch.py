@@ -45,7 +45,7 @@ def plotSearch(N,probT,steps,configVec):
             stepAux.append(i)
         stepList.append(stepAux)
         stepAux = []
-    for nsteps,config,walk in zip(N,stepList,configVec,probT):
+    for n,steps,config,walk in zip(N,stepList,configVec,probT):
         print(walk)
         print(steps)
         plot(walk,color=config[0],linestyle=config[1],label="N=%s"%(n))

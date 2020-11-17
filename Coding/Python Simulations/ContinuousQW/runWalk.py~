@@ -40,7 +40,7 @@ def plotmultqw(N,prob1,prob2,prob3,label1,label2,label3,typeOfPlot,plotName):
         plot(x,prob1,'b',label="Time Interval= %s"%str(label1))
         plot(x,prob2,'g',label="Time Interval= %s"%str(label2))
         plot(x,prob3,'r',label="Time Interval= %s"%str(label3))
-    savefig(r'/home/jaime/Programming/Jaime-Santos-Dissertation/Results/Simulations/CoinedQuantumWalk/ctqwMultiple'+str(plotName))
+    savefig(r'/home/jaime/Programming/Jaime-Santos-Dissertation/Results/Simulations/ContQuantumWalk/ctqwMultiple'+str(plotName))
     legend()
     xlabel("Graph Node")
     ylabel("Probability")
@@ -52,7 +52,7 @@ def plotqw(N,prob,plotName):
     plot(x,prob) #plot the lines
     xlabel("Graph Node")
     ylabel("Probability")
-    savefig(r'/home/jaime/Programming/Jaime-Santos-Dissertation/Results/Simulations/CoinedQuantumWalk/ctqwSingle'+str(plotName))
+    savefig(r'/home/jaime/Programming/Jaime-Santos-Dissertation/Results/Simulations/ContQuantumWalk/ctqwSingle'+str(plotName))
     clf()
 
 def ctqwalk(G, N, t, gamma, initState):

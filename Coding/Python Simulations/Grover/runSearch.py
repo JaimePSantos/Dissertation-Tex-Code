@@ -1,3 +1,5 @@
+#GroverSearch
+
 import numpy as np
 from matplotlib.pyplot import *
 import matplotlib
@@ -33,15 +35,17 @@ def spaceGen(N):
         stepVec.append(int(idealSteps))
     return stepVec
 
+#TODO: Figure out why there is only one walk being plotted.
 def plotSearch(N,probT,steps,configVec):
     stepAux = []
+    plotName = ""
     stepList = []
     for step in steps:
         for i in range(1,step+1):
             stepAux.append(i)
         stepList.append(stepAux)
         stepAux = []
-    for n,steps,config,walk in zip(N,stepList,configVec,probT):
+    for nsteps,config,walk in zip(N,stepList,configVec,probT):
         print(walk)
         print(steps)
         plot(walk,color=config[0],linestyle=config[1],label="N=%s"%(n))
@@ -49,8 +53,10 @@ def plotSearch(N,probT,steps,configVec):
         legend()
         xlabel("Number of steps")
         ylabel("Probability of the marked element")
-    show()
-
+    for n in N:
+        plotName+=str(n)
+    savefig(r'/home/jaime/Programming/Jaime-Santos-Dissertation/Results/Simulations/Grover/GroverOneMarked'+plotName)
+    clf()
 
 def groverSearch(N,stepSpace,marked):
     prob = []
@@ -61,7 +67,6 @@ def groverSearch(N,stepSpace,marked):
         prob += [np.absolute(psiN[marked][0][0])**2]
         for step in range(1,steps+1):
             psiN = np.dot(u,psiN)
-            # for mark in marked:
             prob+=[np.absolute(psiN[marked][0][0]**2)]
         probT.append(prob)
         prob = []
@@ -71,7 +76,6 @@ def multipleMarked(N,stepSpace,markedListList):
     prob = 0
     probT = []
     for n,steps,markedList in zip(N,stepSpace,markedListList):
-        # print(markedList)
         u = unitary(n,markedList)
         # print("MultipleMarked:\n%s\n"%u)
         psi0=init(n)
@@ -79,7 +83,8 @@ def multipleMarked(N,stepSpace,markedListList):
         # print("MultipleMarked:\n%s\n"%psiN)
         for marked in markedList:
             # print("MultipleMarked:\n%s\n"%psiN[marked][0])
-      prob+=np.absolute(psiN[marked][0])**2
+            # prob+=np.absolute(psiN[marked][0])**2
+            pass
             # print(prob)
         probT.append(prob)
         prob = 0
@@ -132,8 +137,8 @@ def singleShotGrover(N,markedListListList):
     return probT
 
 def plotSingShot(N,walkList,configVec):
+    plotName=""
     for walk,config,n in zip(walkList,configVec,N):
-        print(len(walk))
         plot(np.append(np.roll(walk,1),walk[int(n/4)-1]),color=config[0],linestyle=config[1],label="N=%s"%(n))
         # plot(walk,color=config[0],linestyle=config[1],label="N=%s"%(n))
         xlim(1,int(n/4)+1)
@@ -143,13 +148,10 @@ def plotSingShot(N,walkList,configVec):
         legend()
         xlabel("Number of marked elements")
         ylabel("Total probability of marked elements")
-    show()
-
-
-
-# marked = [0,1,2]
-# steps = spaceGen(N)
-
+    for n in N:
+       plotName+=str(n) 
+    savefig(r'/home/jaime/Programming/Jaime-Santos-Dissertation/Results/Simulations/Grover/GroverSingleShot'+plotName)
+    clf()
 
 
 colors = ['r','b','g','k']
@@ -160,17 +162,11 @@ configVec = zip(colors,lines,lines2)
 NSingShot =[64,128,256]
 markedSingShot = markedList(NSingShot)
 groverSingle = singleShotGrover(NSingShot,markedSingShot)
-# print(groverSingle)
 plotSingShot(NSingShot,groverSingle,configVec)
 
-# NMarked=[16,16,16,16]
-# markedListList = [[0],[0,1],[0,1,2],[0,1,2,3]]
-# steps1 = spaceGen(NMarked)
-# grover = groverSearch(N,steps,marked)
-# groverMarked = multipleMarked(NMarked,steps1,markedListList)
-
-# print("\nSingle Shot Grover Distribution:\n%s\n"%groverSingle)
-# print(groverMarked)
-
-# plot(groverSingle)
-# show()
+N=[16,32,64]
+marked=[0]
+steps=spaceGen(N)
+grover = groverSearch(N,steps,marked)
+print(grover)
+plotSearch(N,grover,steps,configVec)

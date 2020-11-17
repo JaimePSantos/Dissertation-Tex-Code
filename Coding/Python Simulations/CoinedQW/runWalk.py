@@ -1,3 +1,5 @@
+#CoinedQuantumWalk
+
 from numpy import *
 from matplotlib.pyplot import *
 rcParams['figure.figsize'] = 11, 8
@@ -57,10 +59,9 @@ def plotqw(N,prob,init):
     plot(x,prob) 
     xlabel("Graph Node")
     ylabel("Probability")
-    savefig(r'C:\Users\Jaime\Documents\GitHub\Jaime-Santos-Dissertation\Results\Simulations\CoinedQuantumWalk\Coinedpsi0'+str(init))
+#    savefig(r'C:\Users\Jaime\Documents\GitHub\Jaime-Santos-Dissertation\Results\Simulations\CoinedQuantumWalk\Coinedpsi0'+str(init))
+    savefig(r'/home/jaime/Programming/Jaime-Santos-Dissertation/Results/Simulations/CoinedQuantumWalk/Coinedpsi0'+str(init))
     clf()
-    cla()
-    close()
 
 def plotmultqw(N,prob1,prob2,prob3,steps1,steps2,steps3):
     x = arange(-N/2,N/2)
@@ -70,7 +71,8 @@ def plotmultqw(N,prob1,prob2,prob3,steps1,steps2,steps3):
     legend()
     xlabel("Graph Node")
     ylabel("Probability")
-    savefig(r'C:\Users\Jaime\Documents\GitHub\Jaime-Santos-Dissertation\Results\Simulations\CoinedQuantumWalk\CoinedMultiplepsi001')
+#    savefig(r'C:\Users\Jaime\Documents\GitHub\Jaime-Santos-Dissertation\Results\Simulations\CoinedQuantumWalk\CoinedMultiplepsi001')
+    savefig(r'/home/jaime/Programming/Jaime-Santos-Dissertation/Results/Simulations/CoinedQuantumWalk/CoinedMultiplepsi001')
     clf()
 
 def cqwalk(N,Steps,state0,state1,initcond):

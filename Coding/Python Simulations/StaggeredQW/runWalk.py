@@ -1,3 +1,5 @@
+#StaggeredQuantumWalk
+
 from numpy import *
 from matplotlib.pyplot import *
 from graphs import *
@@ -49,7 +51,8 @@ def plotmultqw(N,prob1,prob2,prob3,label1,label2,label3,initCond):
     xlabel("Graph Node")
     ylabel("Probability")
     # show()
-    savefig(r'C:\Users\Jaime\Documents\GitHub\Jaime-Santos-Dissertation\Results\Simulations\StagQuantumWalk\stagqwMultiple')
+#    savefig(r'C:\Users\Jaime\Documents\GitHub\Jaime-Santos-Dissertation\Results\Simulations\StagQuantumWalk\stagqwMultiple')
+    savefig(r'/home/jaime/Programming/Jaime-Santos-Dissertation/Results/Simulations/CoinedQuantumWalk/stagqwMultiple')
     clf()
 
 def plotqw(N,prob,initcond):
@@ -59,7 +62,8 @@ def plotqw(N,prob,initcond):
     xlabel("Graph Node")
     ylabel("Probability")
     # show()
-    savefig(r'C:\Users\Jaime\Documents\GitHub\Jaime-Santos-Dissertation\Results\Simulations\StagQuantumWalk\stagqwSingle'+str(initcond))
+#    savefig(r'C:\Users\Jaime\Documents\GitHub\Jaime-Santos-Dissertation\Results\Simulations\StagQuantumWalk\stagqwSingle'+str(initcond))
+    savefig(r'/home/jaime/Programming/Jaime-Santos-Dissertation/Results/Simulations/CoinedQuantumWalk/stagqwSingle'+str(initcond))
     clf()
 
 def stgqwalk(t1,t2, N, theta,steps,init):

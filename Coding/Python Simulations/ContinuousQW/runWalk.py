@@ -1,3 +1,5 @@
+#ContinuousQuantumWalk
+
 from numpy import *
 import matplotlib.pyplot as plt
 from graphs import *
@@ -28,7 +30,7 @@ def prob_vec(psiN,N):
         probs[x]=psiN[x]*conjugate(psiN[x]) #duvida aqui
     return probs
 
-def plotmultqw(N,prob1,prob2,prob3,label1,label2,label3,typeOfPlot,superposition):
+def plotmultqw(N,prob1,prob2,prob3,label1,label2,label3,typeOfPlot,plotName):
     x = arange(-N/2,N/2)
     if typeOfPlot == 'Gamma':
         plot(x,prob1,'b',label=r"$\gamma = \frac{1}{%s\sqrt{2}}$"%str(label1))
@@ -38,28 +40,19 @@ def plotmultqw(N,prob1,prob2,prob3,label1,label2,label3,typeOfPlot,superposition
         plot(x,prob1,'b',label="Time Interval= %s"%str(label1))
         plot(x,prob2,'g',label="Time Interval= %s"%str(label2))
         plot(x,prob3,'r',label="Time Interval= %s"%str(label3))
+    savefig(r'/home/jaime/Programming/Jaime-Santos-Dissertation/Results/Simulations/CoinedQuantumWalk/ctqwMultiple'+str(plotName))
     legend()
     xlabel("Graph Node")
     ylabel("Probability")
-    if typeOfPlot == 'Gamma':
-        savefig(r'C:\Users\Jaime\Documents\GitHub\Jaime-Santos-Dissertation\Results\Simulations\ContQuantumWalk\ctqwMultipleGamma')
-    if typeOfPlot == 'Time':
-        if superposition:
-            savefig(r'C:\Users\Jaime\Documents\GitHub\Jaime-Santos-Dissertation\Results\Simulations\ContQuantumWalk\ctqwMultipleTimeSuperposition')
-        else:
-            savefig(r'C:\Users\Jaime\Documents\GitHub\Jaime-Santos-Dissertation\Results\Simulations\ContQuantumWalk\ctqwMultipleTime')
     clf()
 
 
-def plotqw(N,prob,superposition,initCond):
+def plotqw(N,prob,plotName):
     x = np.linspace(-100,100,N)
     plot(x,prob) #plot the lines
     xlabel("Graph Node")
     ylabel("Probability")
-    if superposition:
-        savefig(r'C:\Users\Jaime\Documents\GitHub\Jaime-Santos-Dissertation\Results\Simulations\ContQuantumWalk\ctqwSingleSup')
-    else:
-        savefig(r'C:\Users\Jaime\Documents\GitHub\Jaime-Santos-Dissertation\Results\Simulations\ContQuantumWalk\ctqwSinglePsi'+str(initCond))
+    savefig(r'/home/jaime/Programming/Jaime-Santos-Dissertation/Results/Simulations/CoinedQuantumWalk/ctqwSingle'+str(plotName))
     clf()
 
 def ctqwalk(G, N, t, gamma, initState):
@@ -96,30 +89,30 @@ lg = lg.linegraph(N) #defined in graph.py, must have "pip install natsort" -> TO
 initCond = '0'
 initState = init_state(N,initCond)
 qw = ctqwalk(lg,N,t,gamma,initState)
-plotqw(N,qw,False,initCond)
+plotqw(N,qw,'Psi0')
 
 qwGamma = ctqwalk(lg,N,t,gamma3,initState)
-plotqw(N,qwGamma,False,initCond+"LowerGamma")
+plotqw(N,qwGamma,"Psi0LowerGamma")
 
 initCondSup = 'sup'
 initStateSup = init_state(N,initCondSup)
 qwSup = ctqwalk(lg,N,t,gamma,initStateSup)
-plotqw(N,qwSup,True,initCondSup)
+plotqw(N,qwSup,'Sup')
 
 # # Multiple Plots
 qwg1 = ctqwalk(lg,N,t,gamma1,initState)
 qwg2 = ctqwalk(lg,N,t,gamma2,initState)
 qwg3 = ctqwalk(lg,N,t,gamma3,initState)
-plotmultqw(N,qwg1,qwg2,qwg3,denom1,denom2,denom3,'Gamma',False)
+plotmultqw(N,qwg1,qwg2,qwg3,denom1,denom2,denom3,'Gamma','Gamma')
 
 qwt1=ctqwalk(lg,N,t1,gamma,initState)
 qwt2=ctqwalk(lg,N,t2,gamma,initState)
 qwt3=ctqwalk(lg,N,t3,gamma,initState)
-plotmultqw(N,qwt1,qwt2,qwt3,t1,t2,t3,'Time',False)
+plotmultqw(N,qwt1,qwt2,qwt3,t1,t2,t3,'Time','Time')
 
 qwt1Sup=ctqwalk(lg,N,t1,gamma,initStateSup)
 qwt2Sup=ctqwalk(lg,N,t2,gamma,initStateSup)
 qwt3Sup=ctqwalk(lg,N,t3,gamma,initStateSup)
-plotmultqw(N,qwt1Sup,qwt2Sup,qwt3Sup,t1,t2,t3,'Time',superposition=True)
+plotmultqw(N,qwt1Sup,qwt2Sup,qwt3Sup,t1,t2,t3,'Time','TimeSuperposition')
 
 

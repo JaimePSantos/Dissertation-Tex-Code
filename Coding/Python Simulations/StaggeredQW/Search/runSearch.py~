@@ -116,6 +116,7 @@ def plotMultipleThetas(N,configVec):
         thetaDist = []
         plotName+=str(n[0])
     for probTheta,n,config in zip(probTMTheta,N,configVec):
+        print(config)
         x,y = zip(*probTheta)
         plot(x,y,color=config[0],linestyle=config[1],label="N=%s"%(n[0]))
         legend()
@@ -127,6 +128,7 @@ def plotMultipleThetas(N,configVec):
         vlines(np.pi/2,0,max(y),linestyle = '--', color = 'b')
        # vlines([np.pi/2,3*np.pi/2],0,max(y),linestyle = '--', color = 'b')
     savefig(r'/home/jaime/Programming/Jaime-Santos-Dissertation/Results/Simulations/StagQuantumWalk/Search/Theta'+plotName)
+    clf()
 
     
 def spaceGen(N):
@@ -197,9 +199,10 @@ configVec = zip(colors,lines,lines2)
 # probTTheta= staggeredSearchList(plotThetaN, tVecTheta, marked, oracleTheta, HTheta, plotThetatheta,configVec)
 
 probTSearch = staggeredSearchList(plotSearchN, tVecSearch, marked, oracleSearch, HSearch, plotSearchtheta,configVec)
-#plotSearch(plotSearchN,plotSearchtheta,probTSearch,tVecSearch,configVec)
+plotSearch(plotSearchN,plotSearchtheta,probTSearch,tVecSearch,configVec)
 
-plotMultipleThetas(plotMultipleThetaN,configVec)
+configVec2 = zip(colors,lines,lines2)
+plotMultipleThetas(plotMultipleThetaN,configVec2)
 #plotMTN2 = [[16]*100,[32]*100,[64]*100]
 
 #plotMultipleThetas(plotMTN2,configVec)

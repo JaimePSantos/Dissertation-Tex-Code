@@ -198,9 +198,10 @@ configVec = zip(colors,lines,lines2)
 # probTTheta= staggeredSearchList(plotThetaN, tVecTheta, marked, oracleTheta, HTheta, plotThetatheta,configVec)
 
 probTSearch = staggeredSearchList(plotSearchN, tVecSearch, marked, oracleSearch, HSearch, plotSearchtheta,configVec)
-#plotSearch(plotSearchN,plotSearchtheta,probTSearch,tVecSearch,configVec)
+plotSearch(plotSearchN,plotSearchtheta,probTSearch,tVecSearch,configVec)
 
-plotMultipleThetas(plotMultipleThetaN,configVec)
+configVec2 = zip(colors,lines,lines2)
+plotMultipleThetas(plotMultipleThetaN,configVec2)
 #plotMTN2 = [[16]*100,[32]*100,[64]*100]
 
 #plotMultipleThetas(plotMTN2,configVec)

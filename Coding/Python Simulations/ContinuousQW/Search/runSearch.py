@@ -136,7 +136,7 @@ def second_largest(numbers):
                 m2 = x
     return m2 if count >= 2 else None
 
-NVec= [4,8,16]
+NVec= [16,32,64]
 marked = 0
 gammaList = gammaList(NVec)
 adjList = adjMatrixList(NVec)
@@ -155,7 +155,7 @@ contQWalk=runSearch(NVec,marked,TVec,configVec,hamList)
 plotSearch(NVec,contQWalk,TVec,configVec)
 
 Samples = 100
-NVec2 = [256]*Samples
+NVec2 = [512]*Samples
 gammaList2 = linspace(0,2/NVec2[0],Samples)
 adjList2 = adjMatrixList(NVec2)
 hamList2 = hamiltoneanList(NVec2,adjList2,marked,gammaList2)

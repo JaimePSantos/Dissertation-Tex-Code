@@ -71,17 +71,23 @@ def spaceGen(N,numOfSamples):
     return tVec
 
 def plotSearch(N,probT,tSpace,configVec):
+    plotName = ""
     for T,walk,config,n in zip(tSpace,probT,configVec,N):
-        print(config)
+        #print(config)
         plot(T,walk,color=config[0],linestyle=config[1],label="N=%s"%n)
         vlines(max(T),0,1,color=config[0],linestyle=config[2])
         legend()
         xlabel("Number of steps")
         ylabel("Probability of the marked element")
+    for n in N:
+        plotName+=str(n)
+    savefig(r'/home/jaime/Programming/Jaime-Santos-Dissertation/Results/Simulations/ContQuantumWalk/Search/'+str(plotName))
+    clf()
 
 def valueOfGamma(N,H,gamma):
     x = []
     y = []
+    plotName=""
     for h,gamma in zip(hamList2,gammaList2):
         eigValues = (linalg.eig(h))
         maxEig = max((absolute(eigValues[0])))
@@ -91,7 +97,9 @@ def valueOfGamma(N,H,gamma):
     plot(x,y)
     xlabel("γN")
     ylabel("ΔE")
-    show()
+    plotName=N[0]
+    savefig(r'/home/jaime/Programming/Jaime-Santos-Dissertation/Results/Simulations/ContQuantumWalk/Search/gamma'+str(plotName))
+    clf() 
 
 def runSearch(N,marked,tSpace,configVec,hamList):
     prob = []
@@ -101,28 +109,11 @@ def runSearch(N,marked,tSpace,configVec,hamList):
             evol = evo(ham,t)
             psiN = fin(n,evol)
             prob += [(absolute(psiN[marked][0])**2)]
-            print(prob)
+            #print(prob)
         # print("Sqrt(N):%s\tprob:%s\n"%(1/n,prob[0]))
         probT.append(prob)
         prob = []
-    plotSearch(N,probT,tSpace,configVec)
-    show()
     return probT
-
-
-NVec= [4,8,16]
-marked = 0
-gammaList = gammaList(NVec)
-adjList = adjMatrixList(NVec)
-hamList = hamiltoneanList(NVec,adjList,marked,gammaList)
-print("Ideal Ham:%s\n\n\n"%hamList)
-nSamples = 100
-TVec = spaceGen(NVec,nSamples)
-
-colors = ['r','b','g','k']
-lines = ['-','-','-','-']
-lines2 = ['--','--','--','--']
-configVec = zip(colors,lines,lines2)
 
 def second_smallest(numbers):
     m1, m2 = float('inf'), float('inf')
@@ -145,20 +136,30 @@ def second_largest(numbers):
                 m2 = x
     return m2 if count >= 2 else None
 
-runSearch(NVec,marked,TVec,configVec,hamList)
+NVec= [4,8,16]
+marked = 0
+gammaList = gammaList(NVec)
+adjList = adjMatrixList(NVec)
+hamList = hamiltoneanList(NVec,adjList,marked,gammaList)
+#print("Ideal Ham:%s\n\n\n"%hamList)
+nSamples = 100
+TVec = spaceGen(NVec,nSamples)
+
+colors = ['r','b','g','k']
+lines = ['-','-','-','-']
+lines2 = ['--','--','--','--']
+configVec = zip(colors,lines,lines2)
+
+
+contQWalk=runSearch(NVec,marked,TVec,configVec,hamList)
+plotSearch(NVec,contQWalk,TVec,configVec)
 
 Samples = 100
-NVec2 = [512]*Samples
-
-# fstInterval=  linspace(0,1/NVec2[0], int(Samples/2))
-# sndInterval = linspace((1/NVec2[0])+1/int(Samples),2/NVec2[0], int(Samples/2))
-# gammaList2 = concatenate([fstInterval,sndInterval])
-# gammaList2 = linspace(0,2/NVec2[0],Samples)
-# print(gammaList2)
-
-# adjList2 = adjMatrixList(NVec2)
-# hamList2 = hamiltoneanList(NVec2,adjList2,marked,gammaList2)
-# valueOfGamma(NVec2,hamList2,gammaList2)
+NVec2 = [256]*Samples
+gammaList2 = linspace(0,2/NVec2[0],Samples)
+adjList2 = adjMatrixList(NVec2)
+hamList2 = hamiltoneanList(NVec2,adjList2,marked,gammaList2)
+valueOfGamma(NVec2,hamList2,gammaList2)
 
 # for h in hamList2: 
 #     print("%s\n"%h)

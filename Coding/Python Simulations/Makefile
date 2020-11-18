@@ -1,5 +1,9 @@
 all:
-	+$(MAKE) -C CoinedQW	
-	+$(MAKE) -C ContinuousQW
-	+$(MAKE) -C Grover
-	+$(MAKE) -C StaggeredQW
+	@+$(MAKE) -C CoinedQW	
+	@printf "\nSucessfully executed coined quantum walk model.\n"
+	@+$(MAKE) -C ContinuousQW
+	@printf "\nSucessfully executed continuous quantum walk model.\n"
+	@+$(MAKE) -C Grover
+	@printf "\nSucessfully executed Grover.\n"
+	@+$(MAKE) -C StaggeredQW
+	@printf "\nSucessfully executed staggered quantum walk model.\n"

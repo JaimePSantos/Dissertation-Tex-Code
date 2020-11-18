@@ -4,10 +4,10 @@ from numpy import *
 from matplotlib.pyplot import *
 import matplotlib
 from scipy import linalg
-import networkx as nx
 import sys
 from numpy import kron
 from numpy.core.umath import absolute
+matplotlib.rcParams.update({'font.size': 14})
 rcParams['figure.figsize'] = 11, 8
 
 def ket2pos(pos,dim):
@@ -101,16 +101,26 @@ def spaceGen(N):
         stepVec.append(int(idealSteps))
     return stepVec
 
-def plotSearch(N,probT,tSpace,configVec):
-    print(tSpace)
-    for steps,walk,config,n in zip(tSpace,probT,configVec,N):
+def plotSearch(N,probT,steps,configVec):
+    plotName = ""
+    stepAux = []
+    stepList = []
+    for step in steps:
+        for i in range(1,step+1):
+            stepAux.append(i)
+        stepList.append(stepAux)
+        stepAux = []
+    for steps,walk,config,n in zip(stepList,probT,configVec,N):
         # print(walk)
         plot(walk,color=config[0],linestyle=config[1],label="N=%s"%n)
         vlines(max(steps),0,walk[-1],color=config[0],linestyle=config[2])
         legend()
         xlabel("Number of steps")
         ylabel("Probability of the marked element")
-
+    for n in N:
+        plotName+=str(n)
+    savefig(r'/home/jaime/Programming/Jaime-Santos-Dissertation/Results/Simulations/CoinedQuantumWalk/Search/CoinedSearch'+plotName)
+    clf()
 def coinedSearchList(N,tSpace,marked,shiftList,oracleList,coinList,configVec):
     prob=[]
     probAux = []
@@ -141,9 +151,7 @@ def coinedSearchList(N,tSpace,marked,shiftList,oracleList,coinList,configVec):
     # print(probT)
     # for walk in probT:
         # plot(walk)
-    plotSearch(N,probT,stepsAuxT,configVec)
-    show()
-
+    return probT
 
 def fin(N,marked,steps):
     psiN = init(N)
@@ -157,7 +165,7 @@ def fin(N,marked,steps):
     return psiN,probs
 
 
-N =[4]
+N = [16,32,64]
 marked = 0
 
 shiftList = flipFlopList(N)
@@ -174,5 +182,5 @@ lines = ['-','-','-','-']
 lines2 = ['--','--','--','--']
 configVec = zip(colors,lines,lines2)
 
-coinedSearchList(N,tVec,marked,shiftList,oracleList,coinList,configVec)
-
+coinedSearch=coinedSearchList(N,tVec,marked,shiftList,oracleList,coinList,configVec)
+plotSearch(N,coinedSearch,tVec,configVec)

@@ -52,7 +52,7 @@ def plotmultqw(N,prob1,prob2,prob3,label1,label2,label3,initCond):
     ylabel("Probability")
     # show()
 #    savefig(r'C:\Users\Jaime\Documents\GitHub\Jaime-Santos-Dissertation\Results\Simulations\StagQuantumWalk\stagqwMultiple')
-    savefig(r'/home/jaime/Programming/Jaime-Santos-Dissertation/Results/Simulations/CoinedQuantumWalk/stagqwMultiple')
+    savefig(r'/home/jaime/Programming/Jaime-Santos-Dissertation/Results/Simulations/StagQuantumWalk/stagqwMultiple')
     clf()
 
 def plotqw(N,prob,initcond):
@@ -63,7 +63,7 @@ def plotqw(N,prob,initcond):
     ylabel("Probability")
     # show()
 #    savefig(r'C:\Users\Jaime\Documents\GitHub\Jaime-Santos-Dissertation\Results\Simulations\StagQuantumWalk\stagqwSingle'+str(initcond))
-    savefig(r'/home/jaime/Programming/Jaime-Santos-Dissertation/Results/Simulations/CoinedQuantumWalk/stagqwSingle'+str(initcond))
+    savefig(r'/home/jaime/Programming/Jaime-Santos-Dissertation/Results/Simulations/StagQuantumWalk/stagqwSingle'+str(initcond))
     clf()
 
 def stgqwalk(t1,t2, N, theta,steps,init):

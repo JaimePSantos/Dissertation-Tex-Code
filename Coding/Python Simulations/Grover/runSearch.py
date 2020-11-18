@@ -35,7 +35,6 @@ def spaceGen(N):
         stepVec.append(int(idealSteps))
     return stepVec
 
-#TODO: Figure out why there is only one walk being plotted.
 def plotSearch(N,probT,steps,configVec):
     stepAux = []
     plotName = ""
@@ -46,8 +45,6 @@ def plotSearch(N,probT,steps,configVec):
         stepList.append(stepAux)
         stepAux = []
     for n,steps,config,walk in zip(N,stepList,configVec,probT):
-        print(walk)
-        print(steps)
         plot(walk,color=config[0],linestyle=config[1],label="N=%s"%(n))
         vlines(max(steps),0,walk[-1],color=config[0],linestyle=config[2])
         legend()
@@ -74,18 +71,19 @@ def groverSearch(N,stepSpace,marked):
 
 def multipleMarked(N,stepSpace,markedListList):
     prob = 0
+    for step in steps:
+        for i in range(1,step+1):
+            stepAux.append(i)
+        stepList.append(stepAux)
+        stepAux = []
     probT = []
     for n,steps,markedList in zip(N,stepSpace,markedListList):
         u = unitary(n,markedList)
-        # print("MultipleMarked:\n%s\n"%u)
         psi0=init(n)
         psiN = np.dot(u,psi0)
-        # print("MultipleMarked:\n%s\n"%psiN)
         for marked in markedList:
-            # print("MultipleMarked:\n%s\n"%psiN[marked][0])
             # prob+=np.absolute(psiN[marked][0])**2
             pass
-            # print(prob)
         probT.append(prob)
         prob = 0
     return probT
@@ -99,16 +97,12 @@ def markedList(N):
         for element in markedElementRange:
             for i in range(element):
                 elementListAux1.append(i)
-                # print(elementListAux1)
             if len(elementListAux1)>0:
                 elementListAux2.append(elementListAux1)
-            # print(elementListAux1)
             elementListAux1 =[]
-            # print(elementListAux2)
         # elementListAux2.pop(0)
         elementList.append(elementListAux2)
         elementListAux2 = []
-    # print(elementList)
     return elementList
 
 def singleShotGrover(N,markedListListList):
@@ -116,20 +110,13 @@ def singleShotGrover(N,markedListListList):
     probTAux = []
     probT = []
     for n,markedListList in zip(N,markedListListList):
-        # print(n)
-        # print(markedListList)
         psiN = np.zeros(n)
         for markedList in markedListList:
-            # print(markedList)
             u = unitary(n,markedList)
-            # print("singleShot:\n%s\n"%u)
             psi0=init(n)
             psiN = np.dot(u,psi0)
-            # print("singleShot:\n%s\n"%psiN)
             for marked in markedList:
-                # print("singleShot:\n%s\n"%psiN[marked][0])
                 prob+=np.absolute(psiN[marked][0])**2
-                # print(prob)
             probTAux.append(prob)
             prob=0
         probT.append(probTAux)
@@ -162,11 +149,10 @@ configVec = zip(colors,lines,lines2)
 NSingShot =[64,128,256]
 markedSingShot = markedList(NSingShot)
 groverSingle = singleShotGrover(NSingShot,markedSingShot)
-plotSingShot(NSingShot,groverSingle,configVec)
+#plotSingShot(NSingShot,groverSingle,configVec)
 
 N=[16,32,64]
 marked=[0]
 steps=spaceGen(N)
 grover = groverSearch(N,steps,marked)
-print(grover)
 plotSearch(N,grover,steps,configVec)

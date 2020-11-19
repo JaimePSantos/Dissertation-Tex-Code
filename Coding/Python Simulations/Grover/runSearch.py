@@ -31,7 +31,7 @@ def spaceGen(N):
     stepVec = []
     tVec = []
     for n in N:
-        idealSteps = np.floor((np.pi/4)*np.sqrt(n))
+        idealSteps =np.floor((np.pi/4)*np.sqrt(n))
         stepVec.append(int(idealSteps))
     return stepVec
 
@@ -149,10 +149,11 @@ configVec = zip(colors,lines,lines2)
 NSingShot =[64,128,256]
 markedSingShot = markedList(NSingShot)
 groverSingle = singleShotGrover(NSingShot,markedSingShot)
-#plotSingShot(NSingShot,groverSingle,configVec)
+plotSingShot(NSingShot,groverSingle,configVec)
 
-N=[16,32,64]
+configVec2 = zip(colors,lines,lines2)
+N=[16,32,64,128]
 marked=[0]
 steps=spaceGen(N)
 grover = groverSearch(N,steps,marked)
-plotSearch(N,grover,steps,configVec)
+plotSearch(N,grover,steps,configVec2)

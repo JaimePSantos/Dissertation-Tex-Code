@@ -1,3 +1,4 @@
 all:
 	+$(MAKE) -C Coding/"Python Simulations"
-	+$(MAKE) -C Coding/Results
+	+$(MAKE) -C Results
+	latexmk ~/Programming/DissertationTex/dissertation.tex

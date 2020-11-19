@@ -121,6 +121,7 @@ def plotSearch(N,probT,steps,configVec):
         plotName+=str(n)
     savefig(r'/home/jaime/Programming/Jaime-Santos-Dissertation/Results/Simulations/CoinedQuantumWalk/Search/CoinedSearch'+plotName)
     clf()
+
 def coinedSearchList(N,tSpace,marked,shiftList,oracleList,coinList,configVec):
     prob=[]
     probAux = []

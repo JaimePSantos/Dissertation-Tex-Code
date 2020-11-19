@@ -116,7 +116,6 @@ def plotMultipleThetas(N,configVec):
         thetaDist = []
         plotName+=str(n[0])
     for probTheta,n,config in zip(probTMTheta,N,configVec):
-        print(config)
         x,y = zip(*probTheta)
         plot(x,y,color=config[0],linestyle=config[1],label="N=%s"%(n[0]))
         legend()

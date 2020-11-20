@@ -35,6 +35,29 @@ def spaceGen(N):
         stepVec.append(int(idealSteps))
     return stepVec
 
+def spaceGenMultiple(N,numberOfMarked):
+    stepVec = []
+    tVec = []
+    for n in N:
+        idealSteps =np.floor((np.pi/4)*np.sqrt(n/numberOfMarked))
+        stepVec.append(int(idealSteps))
+    return stepVec
+
+def groverSearch(N,stepSpace,marked):
+    prob = []
+    probT = []
+    for n,steps in zip(N,stepSpace):
+        u = unitary(n,marked)
+#        print("N=%s\tSteps=%s"%(n,steps))
+        psiN=init(n)
+        prob += [np.absolute(psiN[marked][0][0])**2]
+        for step in range(1,steps+1):
+            psiN = np.dot(u,psiN)
+            prob+=[np.absolute(psiN[marked][0][0]**2)]
+        probT.append(prob)
+        prob = []
+    return probT
+
 def plotSearch(N,probT,steps,configVec):
     stepAux = []
     plotName = ""
@@ -55,38 +78,50 @@ def plotSearch(N,probT,steps,configVec):
     savefig(r'/home/jaime/Programming/Jaime-Santos-Dissertation/Results/Simulations/Grover/GroverOneMarked'+plotName)
     clf()
 
-def groverSearch(N,stepSpace,marked):
-    prob = []
+def groverSearchMultiple(N,stepSpace,marked):
+    prob = 0
     probT = []
+    probTAux = []
+    i =0
     for n,steps in zip(N,stepSpace):
         u = unitary(n,marked)
+#        print("MultipleMarked N=%s\tSteps=%s"%(n,steps))
         psiN=init(n)
-        prob += [np.absolute(psiN[marked][0][0])**2]
+        prob=(np.absolute((psiN[marked][0][0])**2)*len(marked))
+        probTAux.append(prob)
         for step in range(1,steps+1):
             psiN = np.dot(u,psiN)
-            prob+=[np.absolute(psiN[marked][0][0]**2)]
-        probT.append(prob)
-        prob = []
+            for mark in marked: 
+                prob+=np.absolute((psiN[mark][0]))**2
+#            print("inside "+str(prob))
+#            print()
+            probTAux.append(prob)
+            prob=0
+#        print("outside"+str(psiN))
+        probT.append(probTAux)
+        probTAux = []
+#    print(probT)
     return probT
 
-def multipleMarked(N,stepSpace,markedListList):
-    prob = 0
+def plotSearchMultiple(N,probT,steps,configVec):
+    stepAux = []
+    plotName = ""
+    stepList = []
     for step in steps:
         for i in range(1,step+1):
             stepAux.append(i)
         stepList.append(stepAux)
         stepAux = []
-    probT = []
-    for n,steps,markedList in zip(N,stepSpace,markedListList):
-        u = unitary(n,markedList)
-        psi0=init(n)
-        psiN = np.dot(u,psi0)
-        for marked in markedList:
-            # prob+=np.absolute(psiN[marked][0])**2
-            pass
-        probT.append(prob)
-        prob = 0
-    return probT
+    for n,steps,config,walk in zip(N,stepList,configVec,probT):
+        plot(walk,color=config[0],linestyle=config[1],label="N=%s"%(n))
+        vlines(max(steps),0,walk[-1],color=config[0],linestyle=config[2])
+        legend()
+        xlabel("Number of steps")
+        ylabel("Total probability of the marked elements")
+    for n in N:
+        plotName+=str(n)
+    savefig(r'/home/jaime/Programming/Jaime-Santos-Dissertation/Results/Simulations/Grover/GroverMultipleMarked'+plotName)
+    clf()
 
 def markedList(N):
     elementListAux1 = []
@@ -152,8 +187,16 @@ groverSingle = singleShotGrover(NSingShot,markedSingShot)
 plotSingShot(NSingShot,groverSingle,configVec)
 
 configVec2 = zip(colors,lines,lines2)
-N=[16,32,64,128]
+N=[32,64,128,256]
 marked=[0]
 steps=spaceGen(N)
 grover = groverSearch(N,steps,marked)
 plotSearch(N,grover,steps,configVec2)
+
+NMMarked = [32,64,128,256]
+mMarked = [0,1]
+configVec3 = zip(colors,lines,lines2)
+stepsMMarked = spaceGenMultiple(NMMarked,len(mMarked))
+groverMMarked = groverSearchMultiple(NMMarked,stepsMMarked,mMarked)
+plotSearchMultiple(NMMarked,groverMMarked,stepsMMarked,configVec3)
+

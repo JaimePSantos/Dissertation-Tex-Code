@@ -1,4 +1,4 @@
 all:
+	@echo "Executing random walk models and then copying them to the Latex project"
 	+$(MAKE) -C Coding/"Python Simulations"
 	+$(MAKE) -C Results
-	latexmk ~/Programming/DissertationTex/dissertation.tex

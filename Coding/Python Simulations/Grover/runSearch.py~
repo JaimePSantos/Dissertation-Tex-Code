@@ -187,13 +187,13 @@ groverSingle = singleShotGrover(NSingShot,markedSingShot)
 plotSingShot(NSingShot,groverSingle,configVec)
 
 configVec2 = zip(colors,lines,lines2)
-N=[16,32,64,128]
+N=[32,64,128,256]
 marked=[0]
 steps=spaceGen(N)
 grover = groverSearch(N,steps,marked)
 plotSearch(N,grover,steps,configVec2)
 
-NMMarked = [64,128,256,512]
+NMMarked = [32,64,128,256]
 mMarked = [0,1]
 configVec3 = zip(colors,lines,lines2)
 stepsMMarked = spaceGenMultiple(NMMarked,len(mMarked))

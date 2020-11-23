@@ -7,7 +7,7 @@ from scipy import linalg
 import sys
 from numpy import kron
 from numpy.core.umath import absolute
-matplotlib.rcParams.update({'font.size': 14})
+matplotlib.rcParams.update({'font.size': 15})
 rcParams['figure.figsize'] = 11, 8
 
 def ket2pos(pos,dim):

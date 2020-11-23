@@ -181,7 +181,7 @@ lines = ['-','-','-' ,'-']
 lines2 = ['--','--','--','--']
 configVec = zip(colors,lines,lines2)
 
-NSingShot =[64,128,256]
+NSingShot =[32,64,128,256]
 markedSingShot = markedList(NSingShot)
 groverSingle = singleShotGrover(NSingShot,markedSingShot)
 plotSingShot(NSingShot,groverSingle,configVec)

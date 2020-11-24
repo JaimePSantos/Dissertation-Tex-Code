@@ -63,7 +63,7 @@ def plotqw(N,prob,init):
     savefig(r'/home/jaime/Programming/Jaime-Santos-Dissertation/Results/Simulations/CoinedQuantumWalk/Coinedpsi0'+str(init))
     clf()
 
-def plotmultqw(N,prob1,prob2,prob3,steps1,steps2,steps3):
+def plotmultqw(N,probT,init,steps,configVec):
     x = arange(-N/2,N/2)
     plot(x,prob1,'b',label="Steps= %s"%str(steps1))
     plot(x,prob2,'g',label="Steps= %s"%str(steps2))
@@ -86,7 +86,34 @@ def cqwalk(N,Steps,state0,state1,initcond):
     psiN = final_state(U,psi0,Steps)
     probvec = prob_vec(psiN,N)
     return probvec
+
+def multipleCoined(n,steps,state0,state1,initcond):
+    probvec = []
+    for step in steps:
+        P = int((n+1)/2)
+        Coin = coins("H")
+        shift= walk_op(N,state0,state1)
+        U = CU_op(Coin,shift,n)
+        coinstate = initcond
+        amp = array([1])
+        psi0 = init_state(n,array([P]),amp,coinstate)
+        psiN = final_state(U,psi0,step)
+        probvec.append(prob_vec(psiN,n))
+    return probvec
     
+def plotmultqw2(N,probT,init,steps,configVec):
+    x = arange(-N/2,N/2)
+    stepsName=""
+    for walk,config,step in zip(probT,configVec,steps):
+        plot(x,walk,color=config[0],linestyle=config[1],label="Steps=%s"%step)
+        stepsName+=str(step)
+    legend()
+    xlabel("Graph Node")
+    ylabel("Probability")
+#    savefig(r'C:\Users\Jaime\Documents\GitHub\Jaime-Santos-Dissertation\Results\Simulations\CoinedQuantumWalk\CoinedMultiplepsi001')
+    savefig(r'/home/jaime/Programming/Jaime-Santos-Dissertation/Results/Simulations/CoinedQuantumWalk/CoinedMultiple_psi'+str(init)+'_'+str(stepsName))
+    clf()
+
 N = 200
 steps = 100
 steps1 = 40
@@ -104,15 +131,34 @@ init2 = '0'
 initcond2 = init_cond(init2,state0,state1)
 
 # # Single Plots
-qw = cqwalk(N,steps,state0,state1,initcond)
-plotqw(N,qw,init)
-qwx = cqwalk(N,steps,state0,state1,initcond1)
-plotqw(N,qwx,init1)
-qwy = cqwalk(N,steps,state0,state1,initcond2)
-plotqw(N,qwy,init2)
+#qw = cqwalk(N,steps,state0,state1,initcond)
+#plotqw(N,qw,init)
+#qwx = cqwalk(N,steps,state0,state1,initcond1)
+#plotqw(N,qwx,init1)
+#qwy = cqwalk(N,steps,state0,state1,initcond2)
+#plotqw(N,qwy,init2)
+#
+## # Multiple plots
+#qw1=cqwalk(N,steps1,state0,state1,initcond)
+#qw2=cqwalk(N,steps2,state0,state1,initcond)
+#qw3=cqwalk(N,steps3,state0,state1,initcond)
+#plotmultqw(N,qw1,qw2,qw3,steps1,steps2,steps3)
+colors = ['r','b','g','k']
+lines = ['-','-','-','-']
+configVec = zip(colors,lines)
 
-# # Multiple plots
-qw1=cqwalk(N,steps1,state0,state1,initcond)
-qw2=cqwalk(N,steps2,state0,state1,initcond)
-qw3=cqwalk(N,steps3,state0,state1,initcond)
-plotmultqw(N,qw1,qw2,qw3,steps1,steps2,steps3)
+stepMult = [32,64,128]
+multQWpsi0 = multipleCoined(N,stepMult,state0,state1,initcond2)
+plotmultqw2(N,multQWpsi0,init2,stepMult,configVec)
+
+configVec2 = zip(colors,lines)
+
+stepMult2 = [32,64,128]
+multQWpsi1 = multipleCoined(N,stepMult2,state0,state1,initcond1) 
+plotmultqw2(N,multQWpsi1,init1,stepMult2,configVec2)
+
+configVec3 = zip(colors,lines)
+
+stepMult3 = [32,64,128]
+multQWpsi01 = multipleCoined(N,stepMult3,state0,state1,initcond) 
+plotmultqw2(N,multQWpsi01,init,stepMult3,configVec3)

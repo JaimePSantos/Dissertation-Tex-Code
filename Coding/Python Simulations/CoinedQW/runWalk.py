@@ -26,7 +26,7 @@ def init_cond(init,state0,state1):
     if init == "1":
         psi0 = array([[0],[1]])
     if init == "01":
-        psi0 = array([[1/sqrt(2)],[(1*1j)/sqrt(2)]])
+        psi0 = array([[1/sqrt(2)],[(-1*1j)/sqrt(2)]])
     return psi0
 
 def walk_op(N,state0,state1):

@@ -36,6 +36,7 @@ matplotlib.rcParams.update({'font.size': 15})
 # starting at x=0
 # each step has zero mean and a variance of 1
 
+# TODO: Implementar equacao 3.4 do renato portugal
 def walkn(nsteps):  # random walk using a normal distribution for step sizes
     r = stats.norm.rvs(size=nsteps)  # normal distribution mean=0 variance=1
     # r is a vector values randomly generated with a normal distribution

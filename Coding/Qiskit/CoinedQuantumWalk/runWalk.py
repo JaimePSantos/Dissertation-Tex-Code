@@ -96,6 +96,7 @@ def multResultsSim(multipleCircs):
             result = {}
     return resultList
 
+#TODO: Falta formatar os graficos. Adicionar o titulo de cada subplot e talvez diminuir a espessura de cada barra.
 def multSubPlot(resultList):
     nrows = len(resultList) 
     ncols = 1

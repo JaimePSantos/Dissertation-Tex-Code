@@ -23,7 +23,6 @@ def completeGraphWalk(N):
     qreg = QuantumRegister(N)
     qcoin = QuantumRegister(N)
     qc = QuantumCircuit(qreg,qcoin,name='CompleteGraph')
-    #TODO: The swaps are not working properly. 
     qc.swap(qreg[0:N],qcoin)
     return qc
 

@@ -1,0 +1,258 @@
+[I 19:26:31.881 NotebookApp] Serving notebooks from local directory: /home/jaime/Programming/Jaime-Santos-Dissertation
+[I 19:26:31.881 NotebookApp] Jupyter Notebook 6.1.5 is running at:
+[I 19:26:31.881 NotebookApp] http://localhost:8888/?token=77f2a04c56e30f27b6611a6668870ce0c0b92858985d49a1
+[I 19:26:31.881 NotebookApp]  or http://127.0.0.1:8888/?token=77f2a04c56e30f27b6611a6668870ce0c0b92858985d49a1
+[I 19:26:31.881 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 19:26:31.960 NotebookApp] 
+    
+    To access the notebook, open this file in a browser:
+        file:///home/jaime/.local/share/jupyter/runtime/nbserver-2543-open.html
+    Or copy and paste one of these URLs:
+        http://localhost:8888/?token=77f2a04c56e30f27b6611a6668870ce0c0b92858985d49a1
+     or http://127.0.0.1:8888/?token=77f2a04c56e30f27b6611a6668870ce0c0b92858985d49a1
+[I 19:27:02.164 NotebookApp] Writing notebook-signing key to /home/jaime/.local/share/jupyter/notebook_secret
+[W 19:27:02.165 NotebookApp] Notebook Coding/Qiskit/CoinedQuantumWalk/CoinedCycle.ipynb is not trusted
+[I 19:27:02.691 NotebookApp] Kernel started: b4810ac8-26e1-4271-8dc6-44a19fe866b6, name: python3
+[W 19:27:02.796 NotebookApp] 404 GET /nbextensions/widgets/notebook/js/extension.js (127.0.0.1) 18.60ms referer=http://localhost:8888/notebooks/Coding/Qiskit/CoinedQuantumWalk/CoinedCycle.ipynb
+[I 19:28:44.233 NotebookApp] Saving file at /Coding/Qiskit/CoinedQuantumWalk/CoinedCycle.ipynb
+[W 19:28:44.234 NotebookApp] Notebook Coding/Qiskit/CoinedQuantumWalk/CoinedCycle.ipynb is not trusted
+[I 19:28:44.319 NotebookApp] Starting buffering for b4810ac8-26e1-4271-8dc6-44a19fe866b6:f5e39c0e733e4015a080df81ea094b28
+[I 19:28:46.659 NotebookApp] Shutting down on /api/shutdown request.
+[I 19:28:46.660 NotebookApp] Shutting down 1 kernel
+[I 19:28:47.262 NotebookApp] Kernel shutdown: b4810ac8-26e1-4271-8dc6-44a19fe866b6
+[I 19:28:47.263 NotebookApp] Shutting down 0 terminals
+[I 19:28:53.876 NotebookApp] Serving notebooks from local directory: /home/jaime/Programming/Jaime-Santos-Dissertation
+[I 19:28:53.876 NotebookApp] Jupyter Notebook 6.1.5 is running at:
+[I 19:28:53.876 NotebookApp] http://localhost:8888/?token=0bc20c67432fc8c102670622b8fe89e3635ad18446274c2d
+[I 19:28:53.876 NotebookApp]  or http://127.0.0.1:8888/?token=0bc20c67432fc8c102670622b8fe89e3635ad18446274c2d
+[I 19:28:53.876 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 19:28:53.946 NotebookApp] 
+    
+    To access the notebook, open this file in a browser:
+        file:///home/jaime/.local/share/jupyter/runtime/nbserver-2885-open.html
+    Or copy and paste one of these URLs:
+        http://localhost:8888/?token=0bc20c67432fc8c102670622b8fe89e3635ad18446274c2d
+     or http://127.0.0.1:8888/?token=0bc20c67432fc8c102670622b8fe89e3635ad18446274c2d
+[W 19:29:07.245 NotebookApp] Notebook Coding/Qiskit/CoinedQuantumWalk/CoinedCycle.ipynb is not trusted
+[I 19:29:07.766 NotebookApp] Kernel started: 4b55fb26-7f4c-4e0a-b0b8-0034554fec76, name: python3
+[W 19:29:08.019 NotebookApp] 404 GET /nbextensions/widgets/notebook/js/extension.js (127.0.0.1) 11.60ms referer=http://localhost:8888/notebooks/Coding/Qiskit/CoinedQuantumWalk/CoinedCycle.ipynb
+[I 19:30:16.977 NotebookApp] Shutting down on /api/shutdown request.
+[I 19:30:16.978 NotebookApp] Shutting down 1 kernel
+[I 19:30:17.681 NotebookApp] Kernel shutdown: 4b55fb26-7f4c-4e0a-b0b8-0034554fec76
+[I 19:30:17.681 NotebookApp] Shutting down 0 terminals
+[I 19:30:31.369 NotebookApp] Serving notebooks from local directory: /home/jaime/Programming/Jaime-Santos-Dissertation
+[I 19:30:31.369 NotebookApp] Jupyter Notebook 6.1.5 is running at:
+[I 19:30:31.369 NotebookApp] http://localhost:8888/?token=8c4dd4949c40fe7724fb0d573c845c8027b78a2afaaa5a58
+[I 19:30:31.369 NotebookApp]  or http://127.0.0.1:8888/?token=8c4dd4949c40fe7724fb0d573c845c8027b78a2afaaa5a58
+[I 19:30:31.369 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 19:30:31.438 NotebookApp] 
+    
+    To access the notebook, open this file in a browser:
+        file:///home/jaime/.local/share/jupyter/runtime/nbserver-3238-open.html
+    Or copy and paste one of these URLs:
+        http://localhost:8888/?token=8c4dd4949c40fe7724fb0d573c845c8027b78a2afaaa5a58
+     or http://127.0.0.1:8888/?token=8c4dd4949c40fe7724fb0d573c845c8027b78a2afaaa5a58
+[W 19:30:49.866 NotebookApp] Notebook Coding/Qiskit/CoinedQuantumWalk/CoinedCycle.ipynb is not trusted
+[I 19:30:50.365 NotebookApp] Kernel started: b8e2056c-4cc5-40cb-9459-6f53268f777e, name: python3
+[W 19:30:50.536 NotebookApp] 404 GET /nbextensions/widgets/notebook/js/extension.js (127.0.0.1) 12.94ms referer=http://localhost:8888/notebooks/Coding/Qiskit/CoinedQuantumWalk/CoinedCycle.ipynb
+[I 19:32:50.360 NotebookApp] Saving file at /Coding/Qiskit/CoinedQuantumWalk/CoinedCycle.ipynb
+[W 19:32:50.361 NotebookApp] Notebook Coding/Qiskit/CoinedQuantumWalk/CoinedCycle.ipynb is not trusted
+/bin/python3: No module named notebook
+/bin/python3: No module named notebook
+/bin/python3: No module named notebook
+[I 20:17:42.002 NotebookApp] Serving notebooks from local directory: /home/jaime/Programming/Jaime-Santos-Dissertation
+[I 20:17:42.002 NotebookApp] Jupyter Notebook 6.1.5 is running at:
+[I 20:17:42.002 NotebookApp] http://localhost:8888/?token=b3019ed7e291008086be736bffd536283a165eaa719235a4
+[I 20:17:42.002 NotebookApp]  or http://127.0.0.1:8888/?token=b3019ed7e291008086be736bffd536283a165eaa719235a4
+[I 20:17:42.002 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 20:17:42.073 NotebookApp] 
+    
+    To access the notebook, open this file in a browser:
+        file:///home/jaime/.local/share/jupyter/runtime/nbserver-2295-open.html
+    Or copy and paste one of these URLs:
+        http://localhost:8888/?token=b3019ed7e291008086be736bffd536283a165eaa719235a4
+     or http://127.0.0.1:8888/?token=b3019ed7e291008086be736bffd536283a165eaa719235a4
+[I 21:49:35.297 NotebookApp] Serving notebooks from local directory: /home/jaime/Programming/Jaime-Santos-Dissertation
+[I 21:49:35.298 NotebookApp] Jupyter Notebook 6.1.5 is running at:
+[I 21:49:35.298 NotebookApp] http://localhost:8888/?token=eed4fd87e9415dfc0bfafbe97f4d0ecda1b0d1661670ada0
+[I 21:49:35.298 NotebookApp]  or http://127.0.0.1:8888/?token=eed4fd87e9415dfc0bfafbe97f4d0ecda1b0d1661670ada0
+[I 21:49:35.298 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 21:49:35.369 NotebookApp] 
+    
+    To access the notebook, open this file in a browser:
+        file:///home/jaime/.local/share/jupyter/runtime/nbserver-1938-open.html
+    Or copy and paste one of these URLs:
+        http://localhost:8888/?token=eed4fd87e9415dfc0bfafbe97f4d0ecda1b0d1661670ada0
+     or http://127.0.0.1:8888/?token=eed4fd87e9415dfc0bfafbe97f4d0ecda1b0d1661670ada0
+[W 22:32:34.036 NotebookApp] Notebook Coding/Qiskit/CoinedQuantumWalk/CnotDecomp.ipynb is not trusted
+[I 22:32:34.430 NotebookApp] Kernel started: 20fa98c8-4000-46ae-a864-782f76dff1a3, name: python3
+[W 22:32:34.645 NotebookApp] 404 GET /nbextensions/widgets/notebook/js/extension.js (127.0.0.1) 15.55ms referer=http://localhost:8888/notebooks/Coding/Qiskit/CoinedQuantumWalk/CnotDecomp.ipynb
+[I 22:34:34.385 NotebookApp] Saving file at /Coding/Qiskit/CoinedQuantumWalk/CnotDecomp.ipynb
+[W 22:34:34.386 NotebookApp] Notebook Coding/Qiskit/CoinedQuantumWalk/CnotDecomp.ipynb is not trusted
+[I 22:36:34.383 NotebookApp] Saving file at /Coding/Qiskit/CoinedQuantumWalk/CnotDecomp.ipynb
+[W 22:36:34.383 NotebookApp] Notebook Coding/Qiskit/CoinedQuantumWalk/CnotDecomp.ipynb is not trusted
+[I 22:40:17.418 NotebookApp] Starting buffering for 20fa98c8-4000-46ae-a864-782f76dff1a3:e55ba05b0fbb4460b521977f756f683c
+[I 18:31:21.062 NotebookApp] Serving notebooks from local directory: /home/jaime/Programming/Jaime-Santos-Dissertation
+[I 18:31:21.063 NotebookApp] Jupyter Notebook 6.1.5 is running at:
+[I 18:31:21.063 NotebookApp] http://localhost:8888/?token=47c336eccab23cf0fc3688674dfb65f1230e8bbf0a987fdf
+[I 18:31:21.063 NotebookApp]  or http://127.0.0.1:8888/?token=47c336eccab23cf0fc3688674dfb65f1230e8bbf0a987fdf
+[I 18:31:21.063 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 18:31:21.131 NotebookApp] 
+    
+    To access the notebook, open this file in a browser:
+        file:///home/jaime/.local/share/jupyter/runtime/nbserver-11680-open.html
+    Or copy and paste one of these URLs:
+        http://localhost:8888/?token=47c336eccab23cf0fc3688674dfb65f1230e8bbf0a987fdf
+     or http://127.0.0.1:8888/?token=47c336eccab23cf0fc3688674dfb65f1230e8bbf0a987fdf
+[W 18:33:15.251 NotebookApp] Notebook Coding/Qiskit/CoinedQuantumWalk/CnotDecomp.ipynb is not trusted
+[I 18:33:15.547 NotebookApp] Kernel started: 1a85de0e-b653-44f2-9d03-6343ab715cad, name: python3
+[W 18:33:15.735 NotebookApp] 404 GET /nbextensions/widgets/notebook/js/extension.js (127.0.0.1) 19.81ms referer=http://localhost:8888/notebooks/Coding/Qiskit/CoinedQuantumWalk/CnotDecomp.ipynb
+[W 18:33:19.688 NotebookApp] Notebook Coding/Qiskit/CoinedQuantumWalk/CoinedCycle.ipynb is not trusted
+[I 18:33:20.120 NotebookApp] Kernel started: d3766c15-9c1e-4298-afc4-ca5e9569f7db, name: python3
+[W 18:33:20.397 NotebookApp] 404 GET /nbextensions/widgets/notebook/js/extension.js (127.0.0.1) 1.85ms referer=http://localhost:8888/notebooks/Coding/Qiskit/CoinedQuantumWalk/CoinedCycle.ipynb
+[I 19:05:14.344 NotebookApp] Starting buffering for 1a85de0e-b653-44f2-9d03-6343ab715cad:83d57c2ecd874f5d97f5fe2ef1101c7d
+[I 19:07:20.135 NotebookApp] Saving file at /Coding/Qiskit/CoinedQuantumWalk/CoinedCycle.ipynb
+[W 19:07:20.136 NotebookApp] Notebook Coding/Qiskit/CoinedQuantumWalk/CoinedCycle.ipynb is not trusted
+[I 19:15:20.135 NotebookApp] Saving file at /Coding/Qiskit/CoinedQuantumWalk/CoinedCycle.ipynb
+[W 19:15:20.135 NotebookApp] Notebook Coding/Qiskit/CoinedQuantumWalk/CoinedCycle.ipynb is not trusted
+[I 21:44:39.293 NotebookApp] Starting buffering for d3766c15-9c1e-4298-afc4-ca5e9569f7db:ce722e7ad3584750be6022416137f640
+[I 20:35:44.699 NotebookApp] Serving notebooks from local directory: /home/jaime/Programming/Jaime-Santos-Dissertation
+[I 20:35:44.699 NotebookApp] Jupyter Notebook 6.1.5 is running at:
+[I 20:35:44.699 NotebookApp] http://localhost:8888/?token=3b6ecf26f091ff3d39aada08da3f48fe7076cdba94e19946
+[I 20:35:44.700 NotebookApp]  or http://127.0.0.1:8888/?token=3b6ecf26f091ff3d39aada08da3f48fe7076cdba94e19946
+[I 20:35:44.700 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 20:35:44.777 NotebookApp] 
+    
+    To access the notebook, open this file in a browser:
+        file:///home/jaime/.local/share/jupyter/runtime/nbserver-2899-open.html
+    Or copy and paste one of these URLs:
+        http://localhost:8888/?token=3b6ecf26f091ff3d39aada08da3f48fe7076cdba94e19946
+     or http://127.0.0.1:8888/?token=3b6ecf26f091ff3d39aada08da3f48fe7076cdba94e19946
+[I 12:10:27.990 NotebookApp] Serving notebooks from local directory: /home/jaime/Programming/Jaime-Santos-Dissertation
+[I 12:10:27.991 NotebookApp] Jupyter Notebook 6.1.5 is running at:
+[I 12:10:27.991 NotebookApp] http://localhost:8888/?token=64d59af7cf396e05c489d5068114ac09070f38e016a9512f
+[I 12:10:27.991 NotebookApp]  or http://127.0.0.1:8888/?token=64d59af7cf396e05c489d5068114ac09070f38e016a9512f
+[I 12:10:27.991 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 12:10:28.059 NotebookApp] 
+    
+    To access the notebook, open this file in a browser:
+        file:///home/jaime/.local/share/jupyter/runtime/nbserver-3597-open.html
+    Or copy and paste one of these URLs:
+        http://localhost:8888/?token=64d59af7cf396e05c489d5068114ac09070f38e016a9512f
+     or http://127.0.0.1:8888/?token=64d59af7cf396e05c489d5068114ac09070f38e016a9512f
+[I 19:20:57.775 NotebookApp] Serving notebooks from local directory: /home/jaime/Programming/Jaime-Santos-Dissertation
+[I 19:20:57.776 NotebookApp] Jupyter Notebook 6.1.5 is running at:
+[I 19:20:57.776 NotebookApp] http://localhost:8888/?token=fdb6b5b168fe50531b0c583c0b7a53b57fbd1949d61ff34b
+[I 19:20:57.777 NotebookApp]  or http://127.0.0.1:8888/?token=fdb6b5b168fe50531b0c583c0b7a53b57fbd1949d61ff34b
+[I 19:20:57.777 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 19:20:57.853 NotebookApp] 
+    
+    To access the notebook, open this file in a browser:
+        file:///home/jaime/.local/share/jupyter/runtime/nbserver-2127-open.html
+    Or copy and paste one of these URLs:
+        http://localhost:8888/?token=fdb6b5b168fe50531b0c583c0b7a53b57fbd1949d61ff34b
+     or http://127.0.0.1:8888/?token=fdb6b5b168fe50531b0c583c0b7a53b57fbd1949d61ff34b
+[W 20:02:23.575 NotebookApp] Notebook Coding/Qiskit/GroverSearch/allSearch.ipynb is not trusted
+[W 20:02:23.696 NotebookApp] 404 GET /nbextensions/widgets/notebook/js/extension.js (127.0.0.1) 13.33ms referer=http://localhost:8888/notebooks/Coding/Qiskit/GroverSearch/allSearch.ipynb
+[I 20:02:23.870 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/oracleGrover.png (127.0.0.1) 2.50ms
+[I 20:02:23.938 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/diffGrover.png (127.0.0.1) 1.47ms
+[I 20:02:24.003 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/Grover.png (127.0.0.1) 1.36ms
+[I 20:02:24.107 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/shiftRenato.png (127.0.0.1) 1.44ms
+[I 20:02:24.109 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/coinCompleteRenato.png (127.0.0.1) 1.17ms
+[I 20:02:24.110 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/Complete.png (127.0.0.1) 0.97ms
+[I 20:02:24.219 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/bipartitegraph.png (127.0.0.1) 1.08ms
+[I 20:02:24.220 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/Bipartite.png (127.0.0.1) 0.76ms
+[I 20:02:25.103 NotebookApp] Kernel started: e5edd850-293e-4305-9cbe-0ebc211b1869, name: python3
+[I 20:05:53.569 NotebookApp] Saving file at /Coding/Qiskit/GroverSearch/IBMTools.py
+[I 20:06:25.104 NotebookApp] Saving file at /Coding/Qiskit/GroverSearch/allSearch.ipynb
+[W 20:06:25.105 NotebookApp] Notebook Coding/Qiskit/GroverSearch/allSearch.ipynb is not trusted
+[I 20:08:25.084 NotebookApp] Saving file at /Coding/Qiskit/GroverSearch/allSearch.ipynb
+[W 20:08:25.085 NotebookApp] Notebook Coding/Qiskit/GroverSearch/allSearch.ipynb is not trusted
+[I 21:20:07.910 NotebookApp] Saving file at /Coding/Qiskit/GroverSearch/completeGraphFuncs.py
+[I 21:20:25.151 NotebookApp] Saving file at /Coding/Qiskit/GroverSearch/allSearch.ipynb
+[W 21:20:25.152 NotebookApp] Notebook Coding/Qiskit/GroverSearch/allSearch.ipynb is not trusted
+[I 21:27:31.256 NotebookApp] Saving file at /Coding/Qiskit/GroverSearch/completeGraphFuncs.py
+[I 21:28:09.933 NotebookApp] Saving file at /Coding/Qiskit/GroverSearch/completeGraphFuncs.py
+[I 21:28:25.153 NotebookApp] Saving file at /Coding/Qiskit/GroverSearch/allSearch.ipynb
+[W 21:28:25.153 NotebookApp] Notebook Coding/Qiskit/GroverSearch/allSearch.ipynb is not trusted
+[I 21:32:25.146 NotebookApp] Saving file at /Coding/Qiskit/GroverSearch/allSearch.ipynb
+[W 21:32:25.147 NotebookApp] Notebook Coding/Qiskit/GroverSearch/allSearch.ipynb is not trusted
+[I 21:38:25.151 NotebookApp] Saving file at /Coding/Qiskit/GroverSearch/allSearch.ipynb
+[W 21:38:25.153 NotebookApp] Notebook Coding/Qiskit/GroverSearch/allSearch.ipynb is not trusted
+[I 21:38:56.504 NotebookApp] Saving file at /Coding/Qiskit/GroverSearch/completeGraphFuncs.py
+[I 21:39:47.296 NotebookApp] Saving file at /Coding/Qiskit/GroverSearch/allSearch.ipynb
+[W 21:39:47.298 NotebookApp] Notebook Coding/Qiskit/GroverSearch/allSearch.ipynb is not trusted
+[I 21:39:48.979 NotebookApp] Starting buffering for e5edd850-293e-4305-9cbe-0ebc211b1869:6a59d9d3990542ca95fbb3edf93a518a
+[I 03:41:55.774 NotebookApp] Serving notebooks from local directory: /home/jaime/Programming/Jaime-Santos-Dissertation
+[I 03:41:55.776 NotebookApp] Jupyter Notebook 6.1.5 is running at:
+[I 03:41:55.776 NotebookApp] http://localhost:8888/?token=ac96ae6322429a5af494364f2f5f8f04c5adde54b9ad1cdd
+[I 03:41:55.776 NotebookApp]  or http://127.0.0.1:8888/?token=ac96ae6322429a5af494364f2f5f8f04c5adde54b9ad1cdd
+[I 03:41:55.776 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 03:41:55.871 NotebookApp] 
+    
+    To access the notebook, open this file in a browser:
+        file:///home/jaime/.local/share/jupyter/runtime/nbserver-3746-open.html
+    Or copy and paste one of these URLs:
+        http://localhost:8888/?token=ac96ae6322429a5af494364f2f5f8f04c5adde54b9ad1cdd
+     or http://127.0.0.1:8888/?token=ac96ae6322429a5af494364f2f5f8f04c5adde54b9ad1cdd
+[W 03:43:00.495 NotebookApp] Notebook Coding/Qiskit/GroverSearch/allSearch.ipynb is not trusted
+[I 03:43:00.960 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/oracleGrover.png (127.0.0.1) 2.67ms
+[I 03:43:01.107 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/diffGrover.png (127.0.0.1) 1.35ms
+[I 03:43:01.188 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/Grover.png (127.0.0.1) 1.14ms
+[I 03:43:01.357 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/shiftRenato.png (127.0.0.1) 1.81ms
+[I 03:43:01.376 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/coinCompleteRenato.png (127.0.0.1) 1.71ms
+[I 03:43:01.383 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/Complete.png (127.0.0.1) 4.25ms
+[I 03:43:01.503 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/bipartitegraph.png (127.0.0.1) 1.82ms
+[I 03:43:01.505 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/Bipartite.png (127.0.0.1) 1.34ms
+[I 03:43:03.212 NotebookApp] Kernel started: 08013a9b-5173-4658-8f38-fefbf228ebae, name: python3
+[W 03:43:08.242 NotebookApp] 404 GET /nbextensions/widgets/notebook/js/extension.js (127.0.0.1) 64.27ms referer=http://localhost:8888/notebooks/Coding/Qiskit/GroverSearch/allSearch.ipynb
+[I 03:45:03.167 NotebookApp] Saving file at /Coding/Qiskit/GroverSearch/allSearch.ipynb
+[W 03:45:03.168 NotebookApp] Notebook Coding/Qiskit/GroverSearch/allSearch.ipynb is not trusted
+[I 03:47:03.166 NotebookApp] Saving file at /Coding/Qiskit/GroverSearch/allSearch.ipynb
+[W 03:47:03.167 NotebookApp] Notebook Coding/Qiskit/GroverSearch/allSearch.ipynb is not trusted
+[I 04:39:14.988 NotebookApp] Shutting down on /api/shutdown request.
+[I 04:39:14.989 NotebookApp] Shutting down 1 kernel
+[I 04:39:15.796 NotebookApp] Kernel shutdown: 08013a9b-5173-4658-8f38-fefbf228ebae
+[I 04:39:15.796 NotebookApp] Shutting down 0 terminals
+[I 04:39:15.798 NotebookApp] KernelRestarter: restarting kernel (1/5), keep random ports
+WARNING:root:kernel 08013a9b-5173-4658-8f38-fefbf228ebae restarted
+[I 15:34:50.260 NotebookApp] Serving notebooks from local directory: /home/jaime/Programming/Jaime-Santos-Dissertation
+[I 15:34:50.261 NotebookApp] Jupyter Notebook 6.1.5 is running at:
+[I 15:34:50.261 NotebookApp] http://localhost:8888/?token=fc1e6d679c4c88f0276751d834e091e54d0e5dee1112e016
+[I 15:34:50.261 NotebookApp]  or http://127.0.0.1:8888/?token=fc1e6d679c4c88f0276751d834e091e54d0e5dee1112e016
+[I 15:34:50.261 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 15:34:50.332 NotebookApp] 
+    
+    To access the notebook, open this file in a browser:
+        file:///home/jaime/.local/share/jupyter/runtime/nbserver-1967-open.html
+    Or copy and paste one of these URLs:
+        http://localhost:8888/?token=fc1e6d679c4c88f0276751d834e091e54d0e5dee1112e016
+     or http://127.0.0.1:8888/?token=fc1e6d679c4c88f0276751d834e091e54d0e5dee1112e016
+[W 18:11:44.105 NotebookApp] Notebook Coding/Qiskit/GroverSearch/allSearch.ipynb is not trusted
+[W 18:11:44.158 NotebookApp] 404 GET /nbextensions/widgets/notebook/js/extension.js (127.0.0.1) 13.92ms referer=http://localhost:8888/notebooks/Coding/Qiskit/GroverSearch/allSearch.ipynb
+[I 18:11:44.384 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/oracleGrover.png (127.0.0.1) 1.71ms
+[I 18:11:44.446 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/diffGrover.png (127.0.0.1) 1.12ms
+[I 18:11:44.511 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/Grover.png (127.0.0.1) 1.27ms
+[I 18:11:44.600 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/shiftRenato.png (127.0.0.1) 1.30ms
+[I 18:11:44.602 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/coinCompleteRenato.png (127.0.0.1) 0.96ms
+[I 18:11:44.608 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/Complete.png (127.0.0.1) 1.37ms
+[I 18:11:44.683 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/bipartitegraph.png (127.0.0.1) 1.10ms
+[I 18:11:44.685 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/Bipartite.png (127.0.0.1) 0.89ms
+[I 18:11:45.472 NotebookApp] Kernel started: 0accc29e-78c3-44e9-9808-ef9566b5615a, name: python3
+[I 18:22:25.869 NotebookApp] Shutting down on /api/shutdown request.
+[I 18:22:25.870 NotebookApp] Shutting down 1 kernel
+[I 18:22:26.172 NotebookApp] Kernel shutdown: 0accc29e-78c3-44e9-9808-ef9566b5615a
+[I 18:22:26.173 NotebookApp] Shutting down 0 terminals
+[I 15:46:04.871 NotebookApp] Serving notebooks from local directory: /home/jaime/Programming/Jaime-Santos-Dissertation
+[I 15:46:04.872 NotebookApp] Jupyter Notebook 6.1.5 is running at:
+[I 15:46:04.872 NotebookApp] http://localhost:8888/?token=3ec32b1e4aab82fb8c5e7d5ff392c8b55d266047ddc465eb
+[I 15:46:04.872 NotebookApp]  or http://127.0.0.1:8888/?token=3ec32b1e4aab82fb8c5e7d5ff392c8b55d266047ddc465eb
+[I 15:46:04.872 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 15:46:04.943 NotebookApp] 
+    
+    To access the notebook, open this file in a browser:
+        file:///home/jaime/.local/share/jupyter/runtime/nbserver-1970-open.html
+    Or copy and paste one of these URLs:
+        http://localhost:8888/?token=3ec32b1e4aab82fb8c5e7d5ff392c8b55d266047ddc465eb
+     or http://127.0.0.1:8888/?token=3ec32b1e4aab82fb8c5e7d5ff392c8b55d266047ddc465eb
+[I 15:51:07.342 NotebookApp] 302 GET /tree (127.0.0.1) 0.66ms

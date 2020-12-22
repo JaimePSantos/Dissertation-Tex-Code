@@ -3,7 +3,7 @@ from qiskit.tools.monitor import job_monitor
 from qiskit.providers.ibmq import least_busy
 from qiskit import *
 
-IBMQ.load_account()
+#IBMQ.load_account()
 
 def run(circuit, backend, **kwargs):
     if type(backend) is str:

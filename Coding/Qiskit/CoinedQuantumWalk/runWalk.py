@@ -75,15 +75,45 @@ def runWalk(N,times,stateVec):
     qsub = QuantumRegister(1)
     creg = ClassicalRegister(N)
     qwc = QuantumCircuit(qreg,qsub,creg)
+    qwc.x(qreg[0])
     for i in range(0,times):
         qwc.h(qsub[0])
         decr(qwc,qreg,qsub,N)
         incr(qwc,qreg,qsub,N)
-        if not stateVec:
-            qwc.barrier()
-            qwc.measure(qreg,creg)
-            qwc.barrier()
+    if not stateVec:
+        qwc.barrier()
+        qwc.measure(qreg,creg)
+        qwc.barrier()
     return qwc
+
+def multResultsSim(multipleCircs):
+    resultList = []
+    result = {}
+    for circList in multipleCircs:
+        for circ in circList:
+            result = simul(circ,False)
+            resultList.append(result)
+            result = {}
+    return resultList
+
+def multSubPlot(resultList):
+    nrows = len(resultList) 
+    ncols = 1
+    index = 1
+    fig = plt.figure()
+    axs = []
+    for resultAux in resultList:
+        axs.append(fig.add_subplot(nrows,ncols,index))
+        axs[-1].bar(resultAux.keys(),resultAux.values())
+        index+=1
+    for axes in axs:
+        axs[-1].get_shared_x_axes().join(axs[-1],axes)
+    return fig
+
+def plotMultipleQiskit(multipleCircs):
+    resultList = multResultsSim(multipleCircs)
+    fig = multSubPlot(resultList)
+    plt.show()
 
 def runMultipleWalks(N,steps,stateVec):
     circList = []
@@ -107,15 +137,8 @@ defaultFileName = "CoinedQW_N"
 singleN = 10
 singleSteps = 5
 
-N=[2,3]
-steps=[1,2]
-
-#TODO: Estes graficos nao estao a ficar grande coisa, tenho que pensar numa ideia melhor.
-#singleWalk = runWalk(singleN, singleSteps,True)
-#results = simul(singleWalk, True)
-#plt.plot(results)
-#plot_state_city(results)
-#plt.show()
+N=[3]
+steps=[0,1,2,3]
 
 multipleWalks = runMultipleWalks(N,steps,False)
-saveMultipleHist(N,steps,multipleWalks,filePath,defaultFileName)
+plotMultipleQiskit(multipleWalks)

@@ -140,3 +140,119 @@
     Or copy and paste one of these URLs:
         http://localhost:8888/?token=64d59af7cf396e05c489d5068114ac09070f38e016a9512f
      or http://127.0.0.1:8888/?token=64d59af7cf396e05c489d5068114ac09070f38e016a9512f
+[I 19:20:57.775 NotebookApp] Serving notebooks from local directory: /home/jaime/Programming/Jaime-Santos-Dissertation
+[I 19:20:57.776 NotebookApp] Jupyter Notebook 6.1.5 is running at:
+[I 19:20:57.776 NotebookApp] http://localhost:8888/?token=fdb6b5b168fe50531b0c583c0b7a53b57fbd1949d61ff34b
+[I 19:20:57.777 NotebookApp]  or http://127.0.0.1:8888/?token=fdb6b5b168fe50531b0c583c0b7a53b57fbd1949d61ff34b
+[I 19:20:57.777 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 19:20:57.853 NotebookApp] 
+    
+    To access the notebook, open this file in a browser:
+        file:///home/jaime/.local/share/jupyter/runtime/nbserver-2127-open.html
+    Or copy and paste one of these URLs:
+        http://localhost:8888/?token=fdb6b5b168fe50531b0c583c0b7a53b57fbd1949d61ff34b
+     or http://127.0.0.1:8888/?token=fdb6b5b168fe50531b0c583c0b7a53b57fbd1949d61ff34b
+[W 20:02:23.575 NotebookApp] Notebook Coding/Qiskit/GroverSearch/allSearch.ipynb is not trusted
+[W 20:02:23.696 NotebookApp] 404 GET /nbextensions/widgets/notebook/js/extension.js (127.0.0.1) 13.33ms referer=http://localhost:8888/notebooks/Coding/Qiskit/GroverSearch/allSearch.ipynb
+[I 20:02:23.870 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/oracleGrover.png (127.0.0.1) 2.50ms
+[I 20:02:23.938 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/diffGrover.png (127.0.0.1) 1.47ms
+[I 20:02:24.003 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/Grover.png (127.0.0.1) 1.36ms
+[I 20:02:24.107 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/shiftRenato.png (127.0.0.1) 1.44ms
+[I 20:02:24.109 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/coinCompleteRenato.png (127.0.0.1) 1.17ms
+[I 20:02:24.110 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/Complete.png (127.0.0.1) 0.97ms
+[I 20:02:24.219 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/bipartitegraph.png (127.0.0.1) 1.08ms
+[I 20:02:24.220 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/Bipartite.png (127.0.0.1) 0.76ms
+[I 20:02:25.103 NotebookApp] Kernel started: e5edd850-293e-4305-9cbe-0ebc211b1869, name: python3
+[I 20:05:53.569 NotebookApp] Saving file at /Coding/Qiskit/GroverSearch/IBMTools.py
+[I 20:06:25.104 NotebookApp] Saving file at /Coding/Qiskit/GroverSearch/allSearch.ipynb
+[W 20:06:25.105 NotebookApp] Notebook Coding/Qiskit/GroverSearch/allSearch.ipynb is not trusted
+[I 20:08:25.084 NotebookApp] Saving file at /Coding/Qiskit/GroverSearch/allSearch.ipynb
+[W 20:08:25.085 NotebookApp] Notebook Coding/Qiskit/GroverSearch/allSearch.ipynb is not trusted
+[I 21:20:07.910 NotebookApp] Saving file at /Coding/Qiskit/GroverSearch/completeGraphFuncs.py
+[I 21:20:25.151 NotebookApp] Saving file at /Coding/Qiskit/GroverSearch/allSearch.ipynb
+[W 21:20:25.152 NotebookApp] Notebook Coding/Qiskit/GroverSearch/allSearch.ipynb is not trusted
+[I 21:27:31.256 NotebookApp] Saving file at /Coding/Qiskit/GroverSearch/completeGraphFuncs.py
+[I 21:28:09.933 NotebookApp] Saving file at /Coding/Qiskit/GroverSearch/completeGraphFuncs.py
+[I 21:28:25.153 NotebookApp] Saving file at /Coding/Qiskit/GroverSearch/allSearch.ipynb
+[W 21:28:25.153 NotebookApp] Notebook Coding/Qiskit/GroverSearch/allSearch.ipynb is not trusted
+[I 21:32:25.146 NotebookApp] Saving file at /Coding/Qiskit/GroverSearch/allSearch.ipynb
+[W 21:32:25.147 NotebookApp] Notebook Coding/Qiskit/GroverSearch/allSearch.ipynb is not trusted
+[I 21:38:25.151 NotebookApp] Saving file at /Coding/Qiskit/GroverSearch/allSearch.ipynb
+[W 21:38:25.153 NotebookApp] Notebook Coding/Qiskit/GroverSearch/allSearch.ipynb is not trusted
+[I 21:38:56.504 NotebookApp] Saving file at /Coding/Qiskit/GroverSearch/completeGraphFuncs.py
+[I 21:39:47.296 NotebookApp] Saving file at /Coding/Qiskit/GroverSearch/allSearch.ipynb
+[W 21:39:47.298 NotebookApp] Notebook Coding/Qiskit/GroverSearch/allSearch.ipynb is not trusted
+[I 21:39:48.979 NotebookApp] Starting buffering for e5edd850-293e-4305-9cbe-0ebc211b1869:6a59d9d3990542ca95fbb3edf93a518a
+[I 03:41:55.774 NotebookApp] Serving notebooks from local directory: /home/jaime/Programming/Jaime-Santos-Dissertation
+[I 03:41:55.776 NotebookApp] Jupyter Notebook 6.1.5 is running at:
+[I 03:41:55.776 NotebookApp] http://localhost:8888/?token=ac96ae6322429a5af494364f2f5f8f04c5adde54b9ad1cdd
+[I 03:41:55.776 NotebookApp]  or http://127.0.0.1:8888/?token=ac96ae6322429a5af494364f2f5f8f04c5adde54b9ad1cdd
+[I 03:41:55.776 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 03:41:55.871 NotebookApp] 
+    
+    To access the notebook, open this file in a browser:
+        file:///home/jaime/.local/share/jupyter/runtime/nbserver-3746-open.html
+    Or copy and paste one of these URLs:
+        http://localhost:8888/?token=ac96ae6322429a5af494364f2f5f8f04c5adde54b9ad1cdd
+     or http://127.0.0.1:8888/?token=ac96ae6322429a5af494364f2f5f8f04c5adde54b9ad1cdd
+[W 03:43:00.495 NotebookApp] Notebook Coding/Qiskit/GroverSearch/allSearch.ipynb is not trusted
+[I 03:43:00.960 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/oracleGrover.png (127.0.0.1) 2.67ms
+[I 03:43:01.107 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/diffGrover.png (127.0.0.1) 1.35ms
+[I 03:43:01.188 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/Grover.png (127.0.0.1) 1.14ms
+[I 03:43:01.357 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/shiftRenato.png (127.0.0.1) 1.81ms
+[I 03:43:01.376 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/coinCompleteRenato.png (127.0.0.1) 1.71ms
+[I 03:43:01.383 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/Complete.png (127.0.0.1) 4.25ms
+[I 03:43:01.503 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/bipartitegraph.png (127.0.0.1) 1.82ms
+[I 03:43:01.505 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/Bipartite.png (127.0.0.1) 1.34ms
+[I 03:43:03.212 NotebookApp] Kernel started: 08013a9b-5173-4658-8f38-fefbf228ebae, name: python3
+[W 03:43:08.242 NotebookApp] 404 GET /nbextensions/widgets/notebook/js/extension.js (127.0.0.1) 64.27ms referer=http://localhost:8888/notebooks/Coding/Qiskit/GroverSearch/allSearch.ipynb
+[I 03:45:03.167 NotebookApp] Saving file at /Coding/Qiskit/GroverSearch/allSearch.ipynb
+[W 03:45:03.168 NotebookApp] Notebook Coding/Qiskit/GroverSearch/allSearch.ipynb is not trusted
+[I 03:47:03.166 NotebookApp] Saving file at /Coding/Qiskit/GroverSearch/allSearch.ipynb
+[W 03:47:03.167 NotebookApp] Notebook Coding/Qiskit/GroverSearch/allSearch.ipynb is not trusted
+[I 04:39:14.988 NotebookApp] Shutting down on /api/shutdown request.
+[I 04:39:14.989 NotebookApp] Shutting down 1 kernel
+[I 04:39:15.796 NotebookApp] Kernel shutdown: 08013a9b-5173-4658-8f38-fefbf228ebae
+[I 04:39:15.796 NotebookApp] Shutting down 0 terminals
+[I 04:39:15.798 NotebookApp] KernelRestarter: restarting kernel (1/5), keep random ports
+WARNING:root:kernel 08013a9b-5173-4658-8f38-fefbf228ebae restarted
+[I 15:34:50.260 NotebookApp] Serving notebooks from local directory: /home/jaime/Programming/Jaime-Santos-Dissertation
+[I 15:34:50.261 NotebookApp] Jupyter Notebook 6.1.5 is running at:
+[I 15:34:50.261 NotebookApp] http://localhost:8888/?token=fc1e6d679c4c88f0276751d834e091e54d0e5dee1112e016
+[I 15:34:50.261 NotebookApp]  or http://127.0.0.1:8888/?token=fc1e6d679c4c88f0276751d834e091e54d0e5dee1112e016
+[I 15:34:50.261 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 15:34:50.332 NotebookApp] 
+    
+    To access the notebook, open this file in a browser:
+        file:///home/jaime/.local/share/jupyter/runtime/nbserver-1967-open.html
+    Or copy and paste one of these URLs:
+        http://localhost:8888/?token=fc1e6d679c4c88f0276751d834e091e54d0e5dee1112e016
+     or http://127.0.0.1:8888/?token=fc1e6d679c4c88f0276751d834e091e54d0e5dee1112e016
+[W 18:11:44.105 NotebookApp] Notebook Coding/Qiskit/GroverSearch/allSearch.ipynb is not trusted
+[W 18:11:44.158 NotebookApp] 404 GET /nbextensions/widgets/notebook/js/extension.js (127.0.0.1) 13.92ms referer=http://localhost:8888/notebooks/Coding/Qiskit/GroverSearch/allSearch.ipynb
+[I 18:11:44.384 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/oracleGrover.png (127.0.0.1) 1.71ms
+[I 18:11:44.446 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/diffGrover.png (127.0.0.1) 1.12ms
+[I 18:11:44.511 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/Grover.png (127.0.0.1) 1.27ms
+[I 18:11:44.600 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/shiftRenato.png (127.0.0.1) 1.30ms
+[I 18:11:44.602 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/coinCompleteRenato.png (127.0.0.1) 0.96ms
+[I 18:11:44.608 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/Complete.png (127.0.0.1) 1.37ms
+[I 18:11:44.683 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/bipartitegraph.png (127.0.0.1) 1.10ms
+[I 18:11:44.685 NotebookApp] 302 GET /notebooks/Coding/Qiskit/GroverSearch/Images/Bipartite.png (127.0.0.1) 0.89ms
+[I 18:11:45.472 NotebookApp] Kernel started: 0accc29e-78c3-44e9-9808-ef9566b5615a, name: python3
+[I 18:22:25.869 NotebookApp] Shutting down on /api/shutdown request.
+[I 18:22:25.870 NotebookApp] Shutting down 1 kernel
+[I 18:22:26.172 NotebookApp] Kernel shutdown: 0accc29e-78c3-44e9-9808-ef9566b5615a
+[I 18:22:26.173 NotebookApp] Shutting down 0 terminals
+[I 15:46:04.871 NotebookApp] Serving notebooks from local directory: /home/jaime/Programming/Jaime-Santos-Dissertation
+[I 15:46:04.872 NotebookApp] Jupyter Notebook 6.1.5 is running at:
+[I 15:46:04.872 NotebookApp] http://localhost:8888/?token=3ec32b1e4aab82fb8c5e7d5ff392c8b55d266047ddc465eb
+[I 15:46:04.872 NotebookApp]  or http://127.0.0.1:8888/?token=3ec32b1e4aab82fb8c5e7d5ff392c8b55d266047ddc465eb
+[I 15:46:04.872 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 15:46:04.943 NotebookApp] 
+    
+    To access the notebook, open this file in a browser:
+        file:///home/jaime/.local/share/jupyter/runtime/nbserver-1970-open.html
+    Or copy and paste one of these URLs:
+        http://localhost:8888/?token=3ec32b1e4aab82fb8c5e7d5ff392c8b55d266047ddc465eb
+     or http://127.0.0.1:8888/?token=3ec32b1e4aab82fb8c5e7d5ff392c8b55d266047ddc465eb
+[I 15:51:07.342 NotebookApp] 302 GET /tree (127.0.0.1) 0.66ms

@@ -75,11 +75,11 @@ def runWalk(N,times,stateVec):
     qsub = QuantumRegister(1)
     creg = ClassicalRegister(N)
     qwc = QuantumCircuit(qreg,qsub,creg)
-    qwc.x(qreg[0])
+    #qwc.x(qreg[0])
     for i in range(0,times):
         qwc.h(qsub[0])
-        decr(qwc,qreg,qsub,N)
         incr(qwc,qreg,qsub,N)
+        decr(qwc,qreg,qsub,N)
     if not stateVec:
         qwc.barrier()
         qwc.measure(qreg,creg)
@@ -105,15 +105,17 @@ def multSubPlot(resultList):
     axs = []
     for resultAux in resultList:
         axs.append(fig.add_subplot(nrows,ncols,index))
-        axs[-1].bar(resultAux.keys(),resultAux.values())
+        axs[-1].bar(resultAux.keys(),resultAux.values(),width=0.4)
         index+=1
-    for axes in axs:
-        axs[-1].get_shared_x_axes().join(axs[-1],axes)
+    #for axes in axs:
+    #    axs[-1].get_shared_x_axes().join(axs[-1],axes)
     return fig
 
 def plotMultipleQiskit(multipleCircs):
     resultList = multResultsSim(multipleCircs)
     fig = multSubPlot(resultList)
+    #for result in resultList:
+    #    plot_histogram(result)
     plt.show()
 
 def runMultipleWalks(N,steps,stateVec):
@@ -135,11 +137,17 @@ def runMultipleWalks(N,steps,stateVec):
 filePath = 'CoinedQuantumWalk/'
 defaultFileName = "CoinedQW_N"
 
-singleN = 10
-singleSteps = 5
+singleN = 3 
+singleSteps = 1 
 
 N=[3]
-steps=[0,1,2,3]
+steps=[1,2,3,4,5]
 
 multipleWalks = runMultipleWalks(N,steps,False)
 plotMultipleQiskit(multipleWalks)
+
+#singleWalk = runWalk(singleN,singleSteps,False)
+#singleWalk.draw(output='mpl')
+#result = simul(singleWalk,False)
+#plot_histogram(result)
+#plt.show()

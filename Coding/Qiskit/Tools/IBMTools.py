@@ -55,10 +55,10 @@ def printBestSeed(qc,basisGatesD,deviceBackend,startSeed,endSeed):
     print(min(dict.items(), key=lambda x: x[1])) 
     print(min(dict2.items(), key=lambda x: x[1]))
 
-def simul(qc,stateVec):
+def simul(qc,stateVec,shots):
     if stateVec:
         backend = Aer.get_backend('statevector_simulator')
-        result = execute(qc,backend,shots=3000).result().get_statevector(qc,decimals=3)
+        result = execute(qc,backend,shots=shots).result().get_statevector(qc,decimals=3)
     else:
         backend = Aer.get_backend('qasm_simulator')
         result = execute(qc,backend,shots=3000).result().get_counts()
@@ -84,3 +84,7 @@ def saveMultipleHist(N,steps,circListList,filePath,defaultFileName):
             print("%s was saved to %s"%(fileName,filePath))
             fileName = defaultFileName+str(n)
         fileName = ""
+
+def printDict(dictionary):
+    for i,k in zip(dictionary.keys(),dictionary.values()):
+        print("%s: %s"%(i,k))

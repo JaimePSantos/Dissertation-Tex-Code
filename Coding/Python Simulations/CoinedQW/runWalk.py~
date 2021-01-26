@@ -114,7 +114,7 @@ def plotmultqw2(N,probT,init,steps,configVec):
     savefig(r'/home/jaime/Programming/Jaime-Santos-Dissertation/Results/Simulations/CoinedQuantumWalk/CoinedMultiple_psi'+str(init)+'_'+str(stepsName))
     clf()
 
-N = 200
+N = 20
 steps = 100
 steps1 = 40
 steps2 = 80
@@ -147,7 +147,7 @@ colors = ['r','b','g','k']
 lines = ['-','-','-','-']
 configVec = zip(colors,lines)
 
-stepMult = [32,64,128]
+stepMult = [20]
 multQWpsi0 = multipleCoined(N,stepMult,state0,state1,initcond2)
 plotmultqw2(N,multQWpsi0,init2,stepMult,configVec)
 

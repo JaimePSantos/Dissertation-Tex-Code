@@ -103,7 +103,7 @@ def runWalkComplete2(markedVertex,N,times):
     qc = transpile(qc,basis_gates=['cx','u3'],optimization_level=1)
     qc.measure(range(N),range(N))
     return qc
-#
+
 def bipartiteWalk(N,n,qreg,qcoin):
     qreg = QuantumRegister(N)
     qcoin = QuantumRegister(n)

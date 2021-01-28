@@ -72,12 +72,13 @@ def decr(qwc,q,subnode,n):
     qwc.x(subnode[0])
     return qwc
 
-def runWalk(N,times,stateVec):
+def runWalk(N,steps,stateVec):
+    "Creates a single instance of the coined quantum walk cicuit."
     qreg = QuantumRegister(N)
     qsub = QuantumRegister(1)
     creg = ClassicalRegister(N)
     qwc = QuantumCircuit(qreg,qsub,creg)
-    for i in range(0,times):
+    for i in range(0,steps):
         qwc.h(qsub[0])
         incr(qwc,qreg,qsub,N)
         decr(qwc,qreg,qsub,N)
@@ -87,29 +88,34 @@ def runWalk(N,times,stateVec):
         qwc.barrier()
     return qwc
 
-def baseResultDict(n):
+def binResultDict(n):
+    "Retuns a dictionary composed of a range of N keys converted to binary."
     baseDict = {}
     for decNumber in range(2**n):
         decToBin = bin(decNumber)[2:].zfill(ceil(log(2**n,2)))
         baseDict[str(decToBin)] = 0
     return baseDict
 
-def multBaseResultDict(N,steps):
+def multBinResultDict(N,steps):
+    "Returns multiple binary dictionaries."
     baseResultDictList = []
     for n in N:
         for step in steps:
-            baseDict = baseResultDict(n)
+            baseDict = binResultDict(n)
             baseResultDictList.append(baseDict)
     return baseResultDictList
 
 def multNormalizedResultDict(baseDictList,qiskitDictList):
+    "Returns the result of merging qiskit produced dictionaries with dictionaries produced from multBinResultDict for graph formatting reasons."
+
     normalizedResultDictList = []
     for baseDict,qiskitDict in zip(baseDictList,qiskitDictList):
         normalizedResultDict = {**baseDict,**qiskitDict}
         normalizedResultDictList.append(normalizedResultDict)
     return normalizedResultDictList
-#TODO: Fazer merge dos dois dicionarios.
+
 def multResultsSim(multipleCircs,shots):
+    "Returns the dictionary produced by QASM simulator with the MSB changed to convention, and values (previously frequencies) converted to probabilities."
     resultList = []
     result = {}
     correctedResult = {}
@@ -121,33 +127,53 @@ def multResultsSim(multipleCircs,shots):
             result = {}
     return resultList
 
-#TODO: Decidir como ajustar os eixos da figura. 
-#TODO: Decidir como por os labels dos eixos da figura.
-def multSubPlot(resultList):
+#TODO: Delegar formatacao para uma funcao propria.
+#TODO: Os labels dos eixos nao estao perfeitamente centrados. O do y fica no ultimo subplot, por alguma razao.
+def multSubPlot(resultList,steps):
+    "Produces a matplotlib figure composed of several subplots for different numbers of graph nodes and circuit iterations."
     nrows = len(resultList) 
     ncols = 1
     index = 1
     fig = plt.figure()
-    axs = []
-    for resultAux in resultList:
-        axs.append(fig.add_subplot(nrows,ncols,index))
-        axs[-1].bar(resultAux.keys(),resultAux.values(),width=0.4)
+    axList = []
+    for resultAux,step in zip(resultList,steps):
+        axList.append(fig.add_subplot(nrows,ncols,index))
+        axList[-1].bar(resultAux.keys(),resultAux.values(),width=0.4,label = "Steps=%s"%step)
+        axList[-1].legend()
         index+=1
-    for ax in axs:
-        axs[-1].get_shared_y_axes().join(axs[-1],ax)
-    for ax in axs[:-1]:
+    for ax in axList:
+        axList[-1].get_shared_y_axes().join(axList[-1],ax)
+    for ax in axList[:-1]:
         ax.set_xticklabels([])
+    plt.xlabel("Graph Node")
+    plt.ylabel("Probability")
     fig.tight_layout(pad=1.0)
-    return fig
+    return axList 
 
 def plotMultipleQiskit(N,multipleCircs,steps,shots):
+    "Brings every dictionar and plot building functions together to either show or save the matplotlib figure."
     qiskitResultList = multResultsSim(multipleCircs,shots)
-    baseDictList = multBaseResultDict(N,steps)
+    baseDictList = multBinResultDict(N,steps)
     normalizedResultDictList = multNormalizedResultDict(baseDictList,qiskitResultList)
-    fig = multSubPlot(normalizedResultDictList)
-    plt.show()
+    fig = multSubPlot(normalizedResultDictList,steps)
+    return fig
+
+def saveCoinedFig(N,steps,fig, filePath, defaultFileName):
+    specificFileName = ""
+    i=0
+    for n in N:
+        specificFileName+= "N%s_S"%n
+        for step in steps:
+            specificFileName+="%s"%step
+        i+=1
+        if(len(N)-i==0):
+            break
+        specificFileName+="_"
+    savefig(fig, filePath,defaultFileName+specificFileName)
+    return specificFileName
 
 def runMultipleWalks(N,steps,stateVec):
+    "Creates several instances of the coined quantum walk circuit."
     circList = []
     circListAux = []
     for n in N:
@@ -165,7 +191,7 @@ def runMultipleWalks(N,steps,stateVec):
 
 
 filePath = 'CoinedQuantumWalk/'
-defaultFileName = "CoinedQW_N"
+defaultFileName = "CoinedQW_"
 
 singleN = 3 
 singleSteps = 1 
@@ -174,4 +200,5 @@ N=[3]
 steps=[0,1,2]
 shots = 3000
 multipleWalks = runMultipleWalks(N,steps,False)
-plotMultipleQiskit(N,multipleWalks,steps,shots)
+fig = plotMultipleQiskit(N,multipleWalks,steps,shots)
+saveCoinedFig(N,steps,fig,filePath,defaultFileName)

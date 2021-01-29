@@ -78,6 +78,7 @@ def runWalk(N,steps,stateVec):
     qsub = QuantumRegister(1)
     creg = ClassicalRegister(N)
     qwc = QuantumCircuit(qreg,qsub,creg)
+    qwc.x(qreg[0])
     for i in range(0,steps):
         qwc.h(qsub[0])
         incr(qwc,qreg,qsub,N)
@@ -88,6 +89,7 @@ def runWalk(N,steps,stateVec):
         qwc.barrier()
     return qwc
 
+#TODO: Substituir os bins por decimais de [-N/2-1, N/2].
 def binResultDict(n):
     "Retuns a dictionary composed of a range of N keys converted to binary."
     baseDict = {}
@@ -107,13 +109,13 @@ def multBinResultDict(N,steps):
 
 def multNormalizedResultDict(baseDictList,qiskitDictList):
     "Returns the result of merging qiskit produced dictionaries with dictionaries produced from multBinResultDict for graph formatting reasons."
-
     normalizedResultDictList = []
     for baseDict,qiskitDict in zip(baseDictList,qiskitDictList):
         normalizedResultDict = {**baseDict,**qiskitDict}
         normalizedResultDictList.append(normalizedResultDict)
     return normalizedResultDictList
 
+#TODO: Substituir os bins por decimais de [-N/2-1, N/2].
 def multResultsSim(multipleCircs,shots):
     "Returns the dictionary produced by QASM simulator with the MSB changed to convention, and values (previously frequencies) converted to probabilities."
     resultList = []
@@ -136,6 +138,7 @@ def multSubPlot(resultList,steps):
     index = 1
     fig = plt.figure()
     axList = []
+    auxList = []
     for resultAux,step in zip(resultList,steps):
         axList.append(fig.add_subplot(nrows,ncols,index))
         axList[-1].bar(resultAux.keys(),resultAux.values(),width=0.4,label = "Steps=%s"%step)
@@ -145,6 +148,7 @@ def multSubPlot(resultList,steps):
         axList[-1].get_shared_y_axes().join(axList[-1],ax)
     for ax in axList[:-1]:
         ax.set_xticklabels([])
+    axList[-1].set_xticklabels(resultList[-1].keys(),rotation=45)
     plt.xlabel("Graph Node")
     plt.ylabel("Probability")
     fig.tight_layout(pad=1.0)
@@ -197,7 +201,7 @@ singleN = 3
 singleSteps = 1 
 
 N=[3]
-steps=[0,1,2]
+steps=[0,1,2,3]
 shots = 3000
 multipleWalks = runMultipleWalks(N,steps,False)
 fig = plotMultipleQiskit(N,multipleWalks,steps,shots)

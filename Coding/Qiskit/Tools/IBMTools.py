@@ -88,3 +88,97 @@ def saveMultipleHist(N,steps,circListList,filePath,defaultFileName):
 def printDict(dictionary):
     for i,k in zip(dictionary.keys(),dictionary.values()):
         print("%s: %s"%(i,k))
+
+def decResultDict(n):
+    "Retuns a dictionary composed of a range of N keys converted to binary."
+    baseDict = {}
+    for decNumber in range(2**n):
+        dec = decNumber 
+        baseDict[str(dec)] = 0
+    return baseDict
+
+def multDecResultDict(N,steps):
+    "Returns multiple binary dictionaries."
+    baseResultDictList = []
+    for n in N:
+        for step in steps:
+            baseDict = decResultDict(n)
+            baseResultDictList.append(baseDict)
+    return baseResultDictList
+
+def binResultDict(n):
+    "Retuns a dictionary composed of a range of N keys converted to binary."
+    baseDict = {}
+    for decNumber in range(2**n):
+        decToBin = bin(decNumber)[2:].zfill(ceil(log(2**n,2)))
+        baseDict[str(decToBin)] = 0
+    return baseDict
+
+def multBinResultDict(N,steps):
+    "Returns multiple binary dictionaries."
+    baseResultDictList = []
+    for n in N:
+        for step in steps:
+            baseDict = binResultDict(n)
+            baseResultDictList.append(baseDict)
+    return baseResultDictList
+
+def multNormalizedResultDict(baseDictList,qiskitDictList):
+    "Returns the result of merging qiskit produced dictionaries with dictionaries produced from multBinResultDict for graph formatting reasons."
+    normalizedResultDictList = []
+    for baseDict,qiskitDict in zip(baseDictList,qiskitDictList):
+        normalizedResultDict = {**baseDict,**qiskitDict}
+        normalizedResultDictList.append(normalizedResultDict)
+    return normalizedResultDictList
+
+def multResultsSim(multipleCircs,shots,Decimal):
+    "Returns the dictionary produced by QASM simulator with the MSB changed to convention, and values (previously frequencies) converted to probabilities."
+    resultList = []
+    result = {}
+    correctedResult = {}
+    for circList in multipleCircs:
+        for circ in circList:
+            result = simul(circ,False,shots)
+            if Decimal:
+                correctedResult = { str(int(k[::-1],2)) : v/shots for k, v in result.items()}
+            else:
+                correctedResult = { k[::-1] : v/shots for k, v in result.items()}
+            resultList.append(correctedResult)
+            result = {}
+    return resultList
+
+#TODO: Delegar formatacao para uma funcao propria.
+#TODO: Os labels dos eixos nao estao perfeitamente centrados. O do y fica no ultimo subplot, por alguma razao.
+def multSubPlot(resultList,steps):
+    "Produces a matplotlib figure composed of several subplots for different numbers of graph nodes and circuit iterations."
+    nrows = len(resultList) 
+    ncols = 1
+    index = 1
+    fig = plt.figure()
+    axList = []
+    auxList = []
+    for resultAux,step in zip(resultList,steps):
+        axList.append(fig.add_subplot(nrows,ncols,index))
+        axList[-1].bar(resultAux.keys(),resultAux.values(),width=0.4,label = "Steps=%s"%step)
+        axList[-1].legend()
+        index+=1
+    for ax in axList:
+        axList[-1].get_shared_y_axes().join(axList[-1],ax)
+    for ax in axList[:-1]:
+        ax.set_xticklabels([])
+    axList[-1].set_xticklabels(resultList[-1].keys(),rotation=45)
+    plt.xlabel("Graph Node")
+    plt.ylabel("Probability")
+    fig.tight_layout(pad=1.0)
+    return axList 
+
+def plotMultipleQiskit(N,multipleCircs,steps,shots,Decimal):
+    "Brings every dictionar and plot building functions together to either show or save the matplotlib figure."
+    qiskitResultList = multResultsSim(multipleCircs,shots,Decimal)
+    if Decimal:
+        baseDictList = multDecResultDict(N,steps)
+    else:
+        baseDictList = multBinResultDict(N,steps)
+    normalizedResultDictList = multNormalizedResultDict(baseDictList,qiskitResultList)
+    fig = multSubPlot(normalizedResultDictList,steps)
+    return fig

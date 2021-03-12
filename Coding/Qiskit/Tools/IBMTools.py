@@ -7,7 +7,7 @@ matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 from qiskit.visualization import( plot_histogram,
                         plot_state_city)
-
+import numpy as np
 #IBMQ.load_account()
 
 def run(circuit, backend, **kwargs):
@@ -88,6 +88,27 @@ def saveMultipleHist(N,steps,circListList,filePath,defaultFileName):
 def printDict(dictionary):
     for i,k in zip(dictionary.keys(),dictionary.values()):
         print("%s: %s"%(i,k))
+
+def cnx(qc,*qubits):
+    if len(qubits) >= 3:
+        last = qubits[-1]
+        #A matrix: (made up of a  and Y rotation, lemma4.3)
+        qc.crz(np.pi/2, qubits[-2], qubits[-1])
+        #cry
+        qc.cu(np.pi/2, 0, 0,0, qubits[-2],qubits[-1])
+        #Control not gate
+        cnx(qc,*qubits[:-2],qubits[-1])
+        #B matrix (cry again, but opposite angle)
+        qc.cu(-np.pi/2, 0, 0,0, qubits[-2], qubits[-1])
+        #Control
+        cnx(qc,*qubits[:-2],qubits[-1])
+        #C matrix (final rotation)
+        qc.crz(-np.pi/2,qubits[-2],qubits[-1])
+    elif len(qubits)==3:
+        qc.ccx(*qubits)
+    elif len(qubits)==2:
+        qc.cx(*qubits)
+    return qc
 
 def decResultDict(n):
     "Retuns a dictionary composed of a range of N keys converted to binary."

@@ -1,3 +1,3 @@
 all:
-	cp -R Simulations/* ~/Programming/DissertationTex/img
-	cp -R Qiskit/* ~/Programming/DissertationTex/img/Qiskit
+	cp -R Simulations/* ~/Programming/Tex-Dissertation/img
+	cp -R Qiskit/* ~/Programming/Tex-Dissertation/img/Qiskit

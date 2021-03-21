@@ -7,8 +7,8 @@ from IBMTools import(
         printDict,
         plotMultipleQiskit)
 import numpy as np
-import matplotlib
-matplotlib.use('TkAgg')
+import matplotlib as mpl
+mpl.use('TkAgg')
 import matplotlib.pyplot as plt
 from qiskit import( ClassicalRegister,
         QuantumRegister,
@@ -19,8 +19,8 @@ from qiskit import( ClassicalRegister,
         )
 from qiskit.visualization import( plot_histogram,
         plot_state_city)
-plt.rcParams['figure.figsize'] = 11,8
-matplotlib.rcParams.update({'font.size' : 15})
+mpl.rcParams['figure.figsize'] = 11,8
+mpl.rcParams.update({'font.size' : 15})
 
 def markedListGrover(markedList,N):
     oracleList = np.ones(2**N)
@@ -36,14 +36,14 @@ def getOracle(markedList,N):
 
 def oracleGrover(markedList,N):
     qreg = QuantumRegister(N)
-    qc = QuantumCircuit(qreg,name='Oracle')
+    qc = QuantumCircuit(qreg,name='    Oracle    ')
     qc.diagonal(markedList,qreg)
     qc=transpile(qc,optimization_level=3)
     return qc
 
 def diffusionGrover(N):
     qreg = QuantumRegister(N)
-    difCirc = QuantumCircuit(qreg,name='Diffusion')
+    difCirc = QuantumCircuit(qreg,name='     Diff    ')
     difCirc.h(qreg)
     aux = markedListGrover([0],N)
     qcAux = oracleGrover(aux,N)
@@ -67,6 +67,42 @@ def grover(N,steps,marked):
     qc = transpile(qc,optimization_level=1)
     return qc
 
+def drawCirc(N,steps,marked,style):
+    qc = QuantumCircuit(N,N)
+    qcOracle = oracleGrover(markedListGrover(marked,N),N)
+    qcDiffusion = diffusionGrover(N)
+    qc.h(range(N))
+    qc.barrier()
+    for i in range(steps):
+        qc.append(qcOracle,range(N))
+        qc.append(qcDiffusion,range(N))
+        qc.barrier()
+    qc.measure(range(N),range(N))
+    qc = transpile(qc)
+    fig = qc.draw(output='mpl',style=style)
+    return qc
+
+def drawOracle(N,marked,style):
+    qreg = QuantumRegister(N)
+    qc = QuantumCircuit(qreg,name='    Oracle    ')
+    qc.diagonal(markedListGrover(marked,N),qreg)
+    qc=transpile(qc,basis_gates=['cx','rz','ccx','x','h'])
+    fig = qc.draw(output='mpl',style=style)
+    return fig 
+
+def drawDiffusion(N,style):
+    qreg = QuantumRegister(N)
+    difCirc = QuantumCircuit(qreg,name='     Diff    ')
+    difCirc.h(qreg)
+    aux = markedListGrover([0],N)
+    qcAux = oracleGrover(aux,N)
+    difCirc.append(qcAux,range(N))
+    difCirc.h(qreg)
+    difCirc=transpile(difCirc,basis_gates=['cx','rz','ccx','x','h'])
+    fig = difCirc.draw(output='mpl',style=style)
+    return fig
+
+
 def saveGroverSearchFig(N,steps,markedVertex,fig, filePath, defaultFileName):
     specificFileName = ""
     i=0
@@ -79,10 +115,11 @@ def saveGroverSearchFig(N,steps,markedVertex,fig, filePath, defaultFileName):
             break
         specificFileName+="_"
     savefig(fig, filePath,defaultFileName+specificFileName)
+    plt.clf()
     return specificFileName
 
 def runMultipleSearchComplete(N,steps,markedVertex):
-     "Creates several instances of the coined quantum walk search circuit."
+     "Creates several instances of the grover search circuit."
      circList = []
      circListAux = []
      for n in N:
@@ -99,12 +136,34 @@ def runMultipleSearchComplete(N,steps,markedVertex):
 
 filePath = 'GroverQiskit/'
 defaultFileName = "GroverQiskitSearch_"
+circFilePath = 'GroverQiskit/Circuits/'
+defaultCircFileName = "GroverQiskitCirc_"
+defaultCircOracleFileName = "GroverQiskitCircOracle_"
+defaultCircDiffFileName = "GroverQiskitCircDiff_"
+
+
+style = {'figwidth':20,'fontsize':17,'subfontsize':14}#,'compress':True}
 
 N = [3]
 markedList = [1,2] 
 steps = [0,1,2]
 shots = 3000
 
-multipleGrover = runMultipleSearchComplete(N,steps,markedList)
-fig = plotMultipleQiskit(N,multipleGrover,steps,shots,True)
-saveGroverSearchFig(N,steps,markedList,fig,filePath,defaultFileName)
+singleN = 3
+singleSteps = 3
+
+circN = [3]
+circSteps = [3]
+circMarked = [0]
+
+drawCircFig = drawCirc(singleN,singleSteps,circMarked,style)
+saveGroverSearchFig(circN,circSteps,circMarked,drawCircFig, circFilePath, defaultCircFileName)
+
+drawCircOracleFig = drawOracle(singleN,circMarked,style)
+saveGroverSearchFig(circN,circSteps,circMarked,drawCircOracleFig, circFilePath, defaultCircOracleFileName)
+
+drawCircDiffFig = drawDiffusion(singleN,style)
+saveGroverSearchFig(circN,circSteps,circMarked,drawCircDiffFig, circFilePath, defaultCircDiffFileName)
+#multipleGrover = runMultipleSearchComplete(N,steps,markedList)
+#fig = plotMultipleQiskit(N,multipleGrover,steps,shots,True)
+#saveGroverSearchFig(N,steps,markedList,fig,filePath,defaultFileName)

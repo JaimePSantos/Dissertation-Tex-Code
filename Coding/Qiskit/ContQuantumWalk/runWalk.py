@@ -31,7 +31,8 @@ from qiskit.providers.aer.noise import NoiseModel
 from qiskit.visualization import( plot_histogram,
                         plot_state_city,
                         plot_gate_map, 
-                        plot_circuit_layout)
+                        plot_circuit_layout,
+                        circuit_drawer)
 from qiskit.circuit.library import QFT
 from math import (log,ceil)
 from scipy.fft import fft, ifft
@@ -114,6 +115,20 @@ def contCirc(N,diagUniOp,backend,method,t):
         circ=transpile(circ)
     return circ
 
+def contCirc2(N,diagUniOp,backend,method,t):
+    qreg = QuantumRegister(N)
+    creg = ClassicalRegister(N)
+    circ = QuantumCircuit(qreg,creg)
+    if t == 0: 
+        circ.x(qreg[0])
+        circ.measure(qreg,creg)
+        circ = transpile(circ)
+        return circ 
+    else:
+        circ.append(diagUniOp,range(N))
+        circ=transpile(circ)
+    return circ
+
 def multDiagUniOp(N,NCirc,gamma,adjacency,time,backend,method):
     unitaryCircList = []
     for t in time:
@@ -137,6 +152,19 @@ def multContCirc(N,unitaryList,time,backend,methods):
         circList.append(circ)
     return circList
 
+def multContCirc2(N,unitaryList,time,backend,methods):
+    circList = []
+    circListAux = []
+    qreg = QuantumRegister(N)
+    qsub = QuantumRegister(1)
+    creg = ClassicalRegister(N)
+    for t,diagU0 in zip(time,unitaryList):
+        circ = QuantumCircuit(qreg,creg)
+        circ =  contCirc2(N,diagU0,backend,method,t)
+        circ = transpile(circ,optimization_level=3,backend=backend, layout_method=method)
+        circList.append(circ)
+    return circList
+
 def drawCirc(N,diagU,time,style):
     qreg = QuantumRegister(N)
     creg = ClassicalRegister(N)
@@ -151,12 +179,26 @@ def drawCirc(N,diagU,time,style):
     fig = circ.draw(output='mpl',style=style)
     return fig 
 
+def drawCirc2(N,diagU,time,style):
+    qreg = QuantumRegister(N)
+    creg = ClassicalRegister(N)
+    circ = QuantumCircuit(qreg,creg)
+    circ.x(qreg[0])
+    circ.barrier()
+    circ.append(QFT(N,do_swaps=False,approximation_degree=0,inverse=False,name='    QFT    '),range(N))
+    circ.append(diagU,range(N))
+    circ.append(QFT(N,do_swaps=False,approximation_degree=0,inverse=True,name='    IQFT    '),range(N))
+    circ.barrier()
+    circ.measure(qreg,creg)
+    #fig = circ.draw(output='mpl',style=style)
+    return circ 
+
 def drawQftCirc(N,style):
     qreg = QuantumRegister(N)
     creg = ClassicalRegister(N)
     circ = QuantumCircuit(qreg,creg)
     circ = QFT(N,do_swaps=False,approximation_degree=0,inverse=False,name='    QFT    ')
-    circ = transpile(circ, basis_gates=['cx','u3','cu3'])
+    circ = transpile(circ, basis_gates=['cp','h','cx','rz'])
     fig = circ.draw(output='mpl',style=style)
     return fig 
 
@@ -164,9 +206,10 @@ def drawDiagUni(N,diagU0,backend,method,style):
     qreg = QuantumRegister(N)
     creg = ClassicalRegister(N)
     circ = QuantumCircuit(qreg,name='    UniOp    ')
+    print(diagU0)
     circ.diagonal(diagU0,qreg) 
     #circ = transpile(circ,backend=backend,optimization_level=1)#,backend=backend,layout_method=method)#
-    circ = transpile(circ,basis_gates=['u3','cx'])
+    circ = transpile(circ,basis_gates=['cp','h','cx','rz'])
     #circ.decompose()
     fig = circ.draw(output='mpl',style=style)
     return fig
@@ -194,6 +237,40 @@ def saveContWalkFig2(N,steps,fig, filePath, defaultFileName):
     plt.clf()
     return specificFileName
 
+def countTimeGates(circList):
+    gateCountList = []
+    for circ in circList:
+        gateCount = circ.count_ops()
+        gateCountList.append(gateCount)
+        gateCount = 0
+    gateCountList.pop(0)
+    return gateCountList
+
+def plotCountTimeGates(gateCountList):
+    cxCount = []
+    rzCount = []
+    xCount = []
+    cpCount = []
+    for dictionary in gateCountList:
+        for gate,count in dictionary.items():
+            if gate == 'cx':
+                cxCount.append(count)
+            if gate == 'rz':
+                rzCount.append(count)
+            if gate == 'x':
+                xCount.append(count)
+            if gate == 'cp':
+                cpCount.append(count)
+
+    timeGateCount2 = np.arange(0,98,1).tolist()
+    plt.plot(timeGateCount2,cxCount,label='CNot number',color='r')
+    plt.plot(timeGateCount2,rzCount,label='RZ number',color='b')
+    plt.yticks(np.arange(0,11,1))
+    plt.xlabel("Time")
+    plt.ylabel("Number of gates")
+    plt.legend()
+   
+
 filePath = 'ContQuantumWalk/'
 circFilePath = 'ContQuantumWalk/Circuits/'
 circDiagFilePath = 'ContQuantumWalk/Circuits/'
@@ -202,7 +279,7 @@ defaultFileName = "ContQW_"
 circDefaultFileName = "circContQW_"
 circQftDefaultFileName = "circQft_"
 circDiagDefaultFileName = "circDiag_"
-style = {'figwidth':18,'fontsize':17,'subfontsize':14}
+style = {'figwidth':20,'fontsize':17,'subfontsize':14,'compress':True}
 styleQft = {'figwidth':15,'fontsize':17,'subfontsize':14}#, 'compress':True}
 styleDiag = {'figwidth':15,'fontsize':17,'subfontsize':14 }
 
@@ -270,19 +347,34 @@ counts = [{'000': 180, '001': 2176, '010': 95, '011': 155, '100': 65, '101': 192
 #g = plt.figure(1)
 #g.show()
 
+#distFig = plotMultipleQiskitIbmSim2(NCirc,multipleCircs,counts,time,shots,True,backend2)
+#saveContWalkFig2(NCirc,time,distFig,filePath,defaultFileName)
+
+#gateCountFileName = 'gateCount_N3'
+#timeGateCount = np.arange(0,99,1).tolist()
+#unitaryCircListGateCount = multDiagUniOp(N,NCirc,gamma,A,timeGateCount,backend,method)
+#multipleCircsGateCount = multContCirc(NCirc,unitaryCircListGateCount,timeGateCount,backend,method)
+#gateCountList = countTimeGates(multipleCircsGateCount)
+#plotCountTimeGates(gateCountList)
+#plt.savefig(r'/home/jaime/Programming/Jaime-Santos-Dissertation/Results/Qiskit/'+filePath+gateCountFileName)
+#   
 circFigN = 3
 circFigSteps = [1]
-circFig = drawCirc(NCirc,UCirc,t,style)
+circFig = drawCirc(NCirc,UCirc,1,style)
+#plt.show()
 saveContWalkFig(circFigN,circFigSteps,circFig,circFilePath,circDefaultFileName)
-
+#
 circQftN = 3
 circQftSteps = [1]
 circQftFig = drawQftCirc(circQftN,styleQft)
 saveContWalkFig(circQftN,circQftSteps,circQftFig,circQftFilePath,circQftDefaultFileName)
-
+##
 circDiagN = 3
-circDiagSteps = [1]
-circDiagFig = drawDiagUni(circDiagN,diagU0,backend,method,styleDiag)
+circDiagSteps = [3]
+circDiagGamma= 1/(2*np.sqrt(2))
+circU0 = unitary_ctqw(circDiagGamma, N, A, [],3)
+circDiagU0 = np.diag(circU0).tolist()
+circDiagFig = drawDiagUni(circDiagN,circDiagU0,backend,method,styleDiag)
 saveContWalkFig(circDiagN,circDiagSteps,circDiagFig,circDiagFilePath,circDiagDefaultFileName)
 
 #initCond = '0'
@@ -294,8 +386,7 @@ saveContWalkFig(circDiagN,circDiagSteps,circDiagFig,circDiagFilePath,circDiagDef
 #counts2 = job2.result().get_counts()
 #print(counts2)
 #plotMultipleQiskitIbm(NCirc,counts2,time,shots,True)
-#distFig = plotMultipleQiskitIbmSim2(NCirc,multipleCircs,counts,time,shots,True,backend2)
-#saveContWalkFig2(NCirc,time,distFig,filePath,defaultFileName)
+
 #x = np.arange(0,N,1)
 #plt.plot(x,probvec) #plot the lines
 #plt.title('Caminhada Circulante')

@@ -279,7 +279,7 @@ defaultFileName = "ContQW_"
 circDefaultFileName = "circContQW_"
 circQftDefaultFileName = "circQft_"
 circDiagDefaultFileName = "circDiag_"
-style = {'figwidth':20,'fontsize':17,'subfontsize':14,'compress':True}
+style = {'figwidth':20,'fontsize':17,'subfontsize':14}#,'compress':True}
 styleQft = {'figwidth':15,'fontsize':17,'subfontsize':14}#, 'compress':True}
 styleDiag = {'figwidth':15,'fontsize':17,'subfontsize':14 }
 

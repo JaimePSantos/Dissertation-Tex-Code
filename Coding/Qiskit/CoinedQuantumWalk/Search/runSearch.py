@@ -33,7 +33,7 @@ def bipartiteWalk(N,n,qreg,qcoin):
 def completeGraphWalk(N):
     qreg = QuantumRegister(N)
     qcoin = QuantumRegister(N)
-    qc = QuantumCircuit(qreg,qcoin,name='CompleteGraph')
+    qc = QuantumCircuit(qreg,qcoin,name='    Shift    ')
     qc.swap(qreg[0:N],qcoin)
     return qc
 
@@ -64,7 +64,7 @@ def diffusionComplete(N):
     difCirc = transpile(difCirc,basis_gates=['cx','u3'],optimization_level=3)
     return difCirc
 
-def drawDiffusionComplete(N):
+def drawCircDiffusionComplete(N):
     qreg = QuantumRegister(N)
     qcoin = QuantumRegister(N)
     difCirc = QuantumCircuit(qreg,qcoin,name='     Diff     ')
@@ -87,7 +87,7 @@ def oracleComplete(markedList,N,dif):
     qc = transpile(qc,basis_gates=['cx','u3'],optimization_level=3)
     return qc
 
-def drawOracleComplete(markedList,N,dif):
+def drawCircOracleComplete(markedList,N,dif):
     qreg = QuantumRegister(N)
     qcoin = QuantumRegister(N)
     qc = QuantumCircuit(qreg,qcoin,name='    Oracle     ')
@@ -152,17 +152,44 @@ def drawSearchComplete(N,steps,markedVertex,style):
     creg = ClassicalRegister(N)
     qc = QuantumCircuit(qreg,qcoin,creg)
     markedVertex=markedListComplete(markedVertex,N)
-    qcOracle = drawOracleComplete(markedVertex,N,False)
-    qcDif = drawDiffusionComplete(N)
+    qcOracle = drawCircOracleComplete(markedVertex,N,False)
+    qcDif = drawCircDiffusionComplete(N)
     qcQWalk = completeGraphWalk(N)
     qc.h(qreg)
+    #qc.barrier()
     for i in range(steps):
         qc.append(qcOracle,range(2*N))
         qc.append(qcDif,range(2*N))
         qc.append(qcQWalk,range(2*N))
+        qc.barrier()
     qc.measure(range(N),range(N))
     qc = transpile(qc)
-    fig = qc.draw(output='mpl',style=style)
+    fig = qc.draw(output='mpl',style=style,fold=-1)
+    return fig
+
+def drawOracle(markedList,N,dif):
+    qreg = QuantumRegister(N)
+    qcoin = QuantumRegister(N)
+    qc = QuantumCircuit(qreg,qcoin,name='    Oracle     ')
+    if(dif==True):
+        qc.diagonal(markedListComplete(markedList,N),qcoin)
+    else:
+        qc.diagonal(markedListComplete(markedList,N),qreg)
+    qc = transpile(qc,basis_gates=['cx','rz','ccx','x','h'])
+    fig = qc.draw(output='mpl',style=style,fold=-1)
+    return qc
+
+def drawDiffusion(N):
+    qreg = QuantumRegister(N)
+    qcoin = QuantumRegister(N)
+    difCirc = QuantumCircuit(qreg,qcoin,name='     Diff     ')
+    difCirc.h(qcoin)
+    aux = markedListComplete([0],N)
+    qcAux = drawCircOracleComplete(aux,N,True)
+    difCirc.append(qcAux,range(2*N))
+    difCirc.h(qcoin)
+    difCirc = transpile(difCirc,basis_gates=['cx','rz','ccx','x','h'])#,basis_gates=['cx','u3'],optimization_level=3)
+    fig = difCirc.draw(output='mpl',style=style,fold=-1)
     return fig
 
 filePath = 'CoinedQuantumWalk/Search/'
@@ -173,10 +200,14 @@ defaultCircOracleFileName = "GroverQiskitCircOracle_"
 defaultCircDiffFileName = "GroverQiskitCircDiff_"
 
 
-style = {'figwidth':20,'fontsize':17,'subfontsize':14}#,'compress':True}
+style = {'figwidth':20,'fontsize':16,'subfontsize':14}#,'compress':True}
  
-drawSearchComplete(3,3,[0],style)
-plt.show()
+singleN = 3
+singleSteps = 3
+#fig = drawSearchComplete(singleN,singleSteps,[0],style)
+#fig2 = drawOracle([0],singleN,False)
+fig3 = drawDiffusion(singleN)
+#plt.show()
 ##TODO: markedVertex labels are not correct due to post processing.
 #N=[4]
 #steps=[0,1,2,3,4]

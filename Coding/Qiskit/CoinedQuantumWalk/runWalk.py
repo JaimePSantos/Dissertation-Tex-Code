@@ -8,9 +8,7 @@ from IBMTools import(
         plotMultipleQiskit,
         plotMultipleQiskitIbm,
         plotMultipleQiskitIbmSim,
-        plotMultipleQiskitIbmSim2,
         multResultsSim,
-        multResultsSim2,
         setProvider,
         leastBusy,
         listBackends,
@@ -284,21 +282,21 @@ def drawCirc(circMultWalk,style):
             fig = circ.draw(output='mpl',style=style)
     return fig
 
-#IBMQ.load_account()
-#provider = setProvider('ibm-q-minho','academicprojects','quantalab')
-##leastBusyBackend =leastBusy(10,provider)
-##print("Least busy backend:",leastBusyBackend)
-##8
-#melBackend = provider.get_backend('ibmq_16_melbourne')
-##32QV
-#bogBackend = provider.get_backend('ibmq_bogota')
-#parisBackend = provider.get_backend('ibmq_paris')
-#manhatBackend = provider.get_backend('ibmq_manhattan')
-#torontoBackend = provider.get_backend('ibmq_toronto')
-#casablancaBackend = provider.get_backend('ibmq_casablanca')
-##Chosen
-#backend = parisBackend
-#simulator = provider.get_backend('ibmq_qasm_simulator')
+IBMQ.load_account()
+provider = setProvider('ibm-q-minho','academicprojects','quantalab')
+#leastBusyBackend =leastBusy(10,provider)
+#print("Least busy backend:",leastBusyBackend)
+#8
+melBackend = provider.get_backend('ibmq_16_melbourne')
+#32QV
+bogBackend = provider.get_backend('ibmq_bogota')
+parisBackend = provider.get_backend('ibmq_paris')
+manhatBackend = provider.get_backend('ibmq_manhattan')
+torontoBackend = provider.get_backend('ibmq_toronto')
+casablancaBackend = provider.get_backend('ibmq_casablanca')
+#Chosen
+backend = parisBackend
+simulator = provider.get_backend('ibmq_qasm_simulator')
 
 filePath = 'CoinedQuantumWalk/'
 circFilePath = 'CoinedQuantumWalk/Circuits/'
@@ -326,14 +324,7 @@ steps=[0,1,2,3]
 shots = 3000
 circList = []
 multipleWalks = runMultipleWalksLite(singleN,steps,False)
-counts = [{'000': 180, '001': 2176, '010': 95, '011': 155, '100': 65, '101': 192, '110': 80, '111': 57}, {'000': 139, '001': 1670, '010': 127, '011': 198, '100': 63, '101': 386, '110': 333, '111': 84}, 
-{'000': 100, '001': 740, '010': 257, '011': 240, '100': 131, '101': 783, '110': 595, '111': 154}, {'000': 78, '001': 184, '010': 486, '011': 338, '100': 291, '101': 700, '110': 715, '111': 208}]
- 
 singleWalk = runWalk(singleN,singleSteps,False)
-
-NCirc = 3
-#fig = plotMultipleQiskitIbmSim2(NCirc,multipleWalks,counts,steps,shots,True)
-#plt.show()
 #print(multipleWalks)
 #circsIbm = transpile(multipleWalks,backend=backend,optimization_level=3,layout_method='noise_adaptive')
 #jobMult1 = execute(circsIbm, backend=backend, shots=shots)
@@ -345,17 +336,17 @@ NCirc = 3
 #
 #jobMult2 = execute(circList, backend=backend, shots=shots)
 #job_monitor(jobMult2)
-#singleWalkCirc1 = transpile(singleWalk,backend=backend,optimization_level=3,layout_method='noise_adaptive')
+singleWalkCirc1 = transpile(singleWalk,backend=backend,optimization_level=3,layout_method='noise_adaptive')
 
 #singleWalkCirc2 = transpile(singleWalk,backend=backend,optimization_level=3,layout_method='dense')
 #singleWalkCirc3 = transpile(singleWalk,backend=backend,optimization_level=3)
-#listJob1 = [singleWalkCirc1, singleWalkCirc1, singleWalkCirc1]
+listJob1 = [singleWalkCirc1, singleWalkCirc1, singleWalkCirc1]
 #listJob2 = [singleWalkCirc2, singleWalkCirc2, singleWalkCirc2]
 #listJob3 = [singleWalkCirc3, singleWalkCirc3, singleWalkCirc3]
 
-#job1= execute(listJob1, backend=backend, shots=shots)
-#print("Starting Noise Adpative")
-#job_monitor(job1,1)
+job1= execute(listJob1, backend=backend, shots=shots)
+print("Starting Noise Adpative")
+job_monitor(job1,1)
 #job2 = execute(listJob2, backend=backend, shots=shots)
 #print("Starting Dense")
 #job_monitor(job2,1)

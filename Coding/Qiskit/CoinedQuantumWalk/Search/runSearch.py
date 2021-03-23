@@ -64,15 +64,38 @@ def diffusionComplete(N):
     difCirc = transpile(difCirc,basis_gates=['cx','u3'],optimization_level=3)
     return difCirc
 
+def drawDiffusionComplete(N):
+    qreg = QuantumRegister(N)
+    qcoin = QuantumRegister(N)
+    difCirc = QuantumCircuit(qreg,qcoin,name='     Diff     ')
+    difCirc.h(qcoin)
+    aux = markedListComplete([0],N)
+    qcAux = oracleComplete(aux,N,True)
+    difCirc.append(qcAux,range(2*N))
+    difCirc.h(qcoin)
+    difCirc = transpile(difCirc)#,basis_gates=['cx','u3'],optimization_level=3)
+    return difCirc
+
 def oracleComplete(markedList,N,dif):
     qreg = QuantumRegister(N)
     qcoin = QuantumRegister(N)
-    qc = QuantumCircuit(qreg,qcoin,name='Oracle')
+    qc = QuantumCircuit(qreg,qcoin,name='    Oracle     ')
     if(dif==True):
         qc.diagonal(markedList,qcoin)
     else:
         qc.diagonal(markedList,qreg)
     qc = transpile(qc,basis_gates=['cx','u3'],optimization_level=3)
+    return qc
+
+def drawOracleComplete(markedList,N,dif):
+    qreg = QuantumRegister(N)
+    qcoin = QuantumRegister(N)
+    qc = QuantumCircuit(qreg,qcoin,name='    Oracle     ')
+    if(dif==True):
+        qc.diagonal(markedList,qcoin)
+    else:
+        qc.diagonal(markedList,qreg)
+    qc = transpile(qc)#,basis_gates=['cx','u3'],optimization_level=3)
     return qc
 
 def runSearchComplete(N,steps,markedVertex):
@@ -123,15 +146,42 @@ def runMultipleSearchComplete(N,steps,markedVertex):
         circListAux = []
     return circList
 
+def drawSearchComplete(N,steps,markedVertex,style):
+    qreg = QuantumRegister(N,'qv')
+    qcoin = QuantumRegister(N,'qc')
+    creg = ClassicalRegister(N)
+    qc = QuantumCircuit(qreg,qcoin,creg)
+    markedVertex=markedListComplete(markedVertex,N)
+    qcOracle = drawOracleComplete(markedVertex,N,False)
+    qcDif = drawDiffusionComplete(N)
+    qcQWalk = completeGraphWalk(N)
+    qc.h(qreg)
+    for i in range(steps):
+        qc.append(qcOracle,range(2*N))
+        qc.append(qcDif,range(2*N))
+        qc.append(qcQWalk,range(2*N))
+    qc.measure(range(N),range(N))
+    qc = transpile(qc)
+    fig = qc.draw(output='mpl',style=style)
+    return fig
 
 filePath = 'CoinedQuantumWalk/Search/'
 defaultFileName = "CoinedQiskitSearch_"
+circFilePath = 'CoinedQuantumWalk/Search/Circuits'
+defaultCircFileName = "GroverQiskitCirc_"
+defaultCircOracleFileName = "GroverQiskitCircOracle_"
+defaultCircDiffFileName = "GroverQiskitCircDiff_"
+
+
+style = {'figwidth':20,'fontsize':17,'subfontsize':14}#,'compress':True}
  
-#TODO: markedVertex labels are not correct due to post processing.
-N=[4]
-steps=[0,1,2,3,4]
-markedVertex = [1] 
-shots = 3000
-multipleWalks = runMultipleSearchComplete(N,steps,markedVertex)
-fig = plotMultipleQiskit(N,multipleWalks,steps,shots,True)
-saveCoinedSearchFig(N,steps,markedVertex,fig,filePath,defaultFileName)
+drawSearchComplete(3,3,[0],style)
+plt.show()
+##TODO: markedVertex labels are not correct due to post processing.
+#N=[4]
+#steps=[0,1,2,3,4]
+#markedVertex = [1] 
+#shots = 3000
+#multipleWalks = runMultipleSearchComplete(N,steps,markedVertex)
+#fig = plotMultipleQiskit(N,multipleWalks,steps,shots,True)
+#saveCoinedSearchFig(N,steps,markedVertex,fig,filePath,defaultFileName)

@@ -159,6 +159,7 @@ def drawSearchComplete(N,steps,markedVertex,style):
     #qc.barrier()
     for i in range(steps):
         qc.append(qcOracle,range(2*N))
+        #qc.combine(qcOracle)
         qc.append(qcDif,range(2*N))
         qc.append(qcQWalk,range(2*N))
         qc.barrier()
@@ -192,21 +193,37 @@ def drawDiffusion(N):
     fig = difCirc.draw(output='mpl',style=style,fold=-1)
     return fig
 
+def saveCoinedSearchFig(N,steps,markedVertex,fig, filePath, defaultFileName):
+    specificFileName = ""
+    i=0
+    for n,m in zip(N,markedVertex):
+        specificFileName+= "N%s_M%s_S"%(n,m)
+        for step in steps:
+            specificFileName+="%s"%step
+        i+=1
+        if(len(N)-i==0):
+            break
+        specificFileName+="_"
+    savefig(fig, filePath,defaultFileName+specificFileName)
+    plt.clf()
+    return specificFileName
+
 filePath = 'CoinedQuantumWalk/Search/'
 defaultFileName = "CoinedQiskitSearch_"
-circFilePath = 'CoinedQuantumWalk/Search/Circuits'
-defaultCircFileName = "GroverQiskitCirc_"
-defaultCircOracleFileName = "GroverQiskitCircOracle_"
-defaultCircDiffFileName = "GroverQiskitCircDiff_"
+circFilePath = 'CoinedQuantumWalk/Search/Circuits/'
+defaultCircFileName = "CoinedSearchQiskitCirc_"
+defaultCircOracleFileName = "CoinedSearchQiskitCircOracle_"
+defaultCircDiffFileName = "CoinedSearchQiskitCircDiff_"
 
 
 style = {'figwidth':20,'fontsize':16,'subfontsize':14}#,'compress':True}
  
 singleN = 3
 singleSteps = 3
-#fig = drawSearchComplete(singleN,singleSteps,[0],style)
+fig = drawSearchComplete(singleN,singleSteps,[0],style)
+saveCoinedSearchFig([singleN],[singleSteps],[0],fig,circFilePath,defaultCircFileName)
 #fig2 = drawOracle([0],singleN,False)
-fig3 = drawDiffusion(singleN)
+#fig3 = drawDiffusion(singleN)
 #plt.show()
 ##TODO: markedVertex labels are not correct due to post processing.
 #N=[4]

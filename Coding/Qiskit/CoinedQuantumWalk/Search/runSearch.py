@@ -5,7 +5,8 @@ from IBMTools import(
         savefig,
         saveMultipleHist,
         printDict,
-        plotMultipleQiskit)
+        plotMultipleQiskit,
+        plotMultipleQiskitGrover)
 import numpy as np
 import matplotlib
 matplotlib.use('TkAgg')
@@ -168,9 +169,9 @@ def drawSearchComplete(N,steps,markedVertex,style):
     fig = qc.draw(output='mpl',style=style,fold=-1)
     return fig
 
-def drawOracle(markedList,N,dif):
-    qreg = QuantumRegister(N)
-    qcoin = QuantumRegister(N)
+def drawOracle(markedList,N,dif,style):
+    qreg = QuantumRegister(N,'qv')
+    qcoin = QuantumRegister(N,'qc')
     qc = QuantumCircuit(qreg,qcoin,name='    Oracle     ')
     if(dif==True):
         qc.diagonal(markedListComplete(markedList,N),qcoin)
@@ -180,7 +181,7 @@ def drawOracle(markedList,N,dif):
     fig = qc.draw(output='mpl',style=style,fold=-1)
     return qc
 
-def drawDiffusion(N):
+def drawDiffusion(N,style):
     qreg = QuantumRegister(N)
     qcoin = QuantumRegister(N)
     difCirc = QuantumCircuit(qreg,qcoin,name='     Diff     ')
@@ -208,28 +209,45 @@ def saveCoinedSearchFig(N,steps,markedVertex,fig, filePath, defaultFileName):
     plt.clf()
     return specificFileName
 
+def drawFlipFlopShift(N,style):
+    qreg = QuantumRegister(N,'qv')
+    qcoin = QuantumRegister(N,'qc')
+    qc = QuantumCircuit(qreg,qcoin,name='    Shift    ')
+    qc.swap(qreg[0:N],qcoin)
+    qc = transpile(qc,basis_gates=['rz','x','h','swap'])
+    fig = qc.draw(output='mpl',style=style)
+    return fig 
+
 filePath = 'CoinedQuantumWalk/Search/'
 defaultFileName = "CoinedQiskitSearch_"
 circFilePath = 'CoinedQuantumWalk/Search/Circuits/'
 defaultCircFileName = "CoinedSearchQiskitCirc_"
 defaultCircOracleFileName = "CoinedSearchQiskitCircOracle_"
 defaultCircDiffFileName = "CoinedSearchQiskitCircDiff_"
+defaultCircShiftFileName = "CoinedSearchQiskitCircShift_"
 
-
-style = {'figwidth':20,'fontsize':16,'subfontsize':14}#,'compress':True}
+style = {'figwidth':38,'fontsize':16,'subfontsize':14}#,'compress':True}
+#styleOracle = {'figwidth':20,'fontsize':17,'subfontsize':14}#,'compress':True}
+#styleShift = {'figwidth':5,'fontsize':17,'subfontsize':14}#,'compress':True}
  
 singleN = 3
-singleSteps = 3
-fig = drawSearchComplete(singleN,singleSteps,[0],style)
-saveCoinedSearchFig([singleN],[singleSteps],[0],fig,circFilePath,defaultCircFileName)
-#fig2 = drawOracle([0],singleN,False)
-#fig3 = drawDiffusion(singleN)
+singleSteps = 5
+fig = drawSearchComplete(singleN,singleSteps,[4],style)
+saveCoinedSearchFig([singleN],[singleSteps],[4],fig,circFilePath,defaultCircFileName)
 #plt.show()
+#fig2 = drawOracle([4],singleN,False,styleOracle)
+#saveCoinedSearchFig([singleN],[singleSteps],[4],fig2,circFilePath,defaultCircOracleFileName)
+#fig3 = drawDiffusion(singleN,styleOracle)
+#saveCoinedSearchFig([singleN],[singleSteps],[4],fig3,circFilePath,defaultCircDiffFileName)
+#fig4= drawFlipFlopShift(singleN,styleShift)
+#saveCoinedSearchFig([singleN],[singleSteps],[4],fig4,circFilePath,defaultCircShiftFileName)
 ##TODO: markedVertex labels are not correct due to post processing.
-#N=[4]
+#N=[3]
 #steps=[0,1,2,3,4]
-#markedVertex = [1] 
+#markedVertex = [4] 
 #shots = 3000
 #multipleWalks = runMultipleSearchComplete(N,steps,markedVertex)
-#fig = plotMultipleQiskit(N,multipleWalks,steps,shots,True)
-#saveCoinedSearchFig(N,steps,markedVertex,fig,filePath,defaultFileName)
+##fig = plotMultipleQiskit(N,multipleWalks,steps,shots,True)
+##saveCoinedSearchFig(N,steps,markedVertex,fig,filePath,defaultFileName)
+#plotMultipleQiskitGrover(N,multipleWalks,steps,shots,True)
+#plt.show()

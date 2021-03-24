@@ -165,6 +165,6 @@ circMarked = [4]
 #
 #drawCircDiffFig = drawDiffusion(singleN,style)
 #saveGroverSearchFig(circN,circSteps,circMarked,drawCircDiffFig, circFilePath, defaultCircDiffFileName)
-multipleGrover = runMultipleSearchComplete(N,steps,markedList)
-fig = plotMultipleQiskitGrover(N,multipleGrover,steps,shots,True)
-saveGroverSearchFig(N,steps,markedList,fig,filePath,defaultFileName)
+#multipleGrover = runMultipleSearchComplete(N,steps,markedList)
+#fig = plotMultipleQiskitGrover(N,multipleGrover,steps,shots,True)
+#saveGroverSearchFig(N,steps,markedList,fig,filePath,defaultFileName)

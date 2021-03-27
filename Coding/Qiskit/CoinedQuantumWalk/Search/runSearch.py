@@ -227,27 +227,27 @@ defaultCircDiffFileName = "CoinedSearchQiskitCircDiff_"
 defaultCircShiftFileName = "CoinedSearchQiskitCircShift_"
 
 style = {'figwidth':38,'fontsize':16,'subfontsize':14}#,'compress':True}
-#styleOracle = {'figwidth':20,'fontsize':17,'subfontsize':14}#,'compress':True}
-#styleShift = {'figwidth':5,'fontsize':17,'subfontsize':14}#,'compress':True}
+styleOracle = {'figwidth':13,'fontsize':17,'subfontsize':14}#,'compress':True}
+styleShift = {'figwidth':5,'fontsize':17,'subfontsize':14}#,'compress':True}
  
 singleN = 3
 singleSteps = 5
-fig = drawSearchComplete(singleN,singleSteps,[4],style)
-saveCoinedSearchFig([singleN],[singleSteps],[4],fig,circFilePath,defaultCircFileName)
+#fig = drawSearchComplete(singleN,singleSteps,[4],style)
+#saveCoinedSearchFig([singleN],[singleSteps],[4],fig,circFilePath,defaultCircFileName)
 #plt.show()
 #fig2 = drawOracle([4],singleN,False,styleOracle)
 #saveCoinedSearchFig([singleN],[singleSteps],[4],fig2,circFilePath,defaultCircOracleFileName)
 #fig3 = drawDiffusion(singleN,styleOracle)
 #saveCoinedSearchFig([singleN],[singleSteps],[4],fig3,circFilePath,defaultCircDiffFileName)
-#fig4= drawFlipFlopShift(singleN,styleShift)
-#saveCoinedSearchFig([singleN],[singleSteps],[4],fig4,circFilePath,defaultCircShiftFileName)
+fig4= drawFlipFlopShift(singleN,styleShift)
+saveCoinedSearchFig([singleN],[singleSteps],[4],fig4,circFilePath,defaultCircShiftFileName)
 ##TODO: markedVertex labels are not correct due to post processing.
 #N=[3]
-#steps=[0,1,2,3,4]
+#steps=[0,2,4,5]
 #markedVertex = [4] 
 #shots = 3000
 #multipleWalks = runMultipleSearchComplete(N,steps,markedVertex)
 ##fig = plotMultipleQiskit(N,multipleWalks,steps,shots,True)
 ##saveCoinedSearchFig(N,steps,markedVertex,fig,filePath,defaultFileName)
-#plotMultipleQiskitGrover(N,multipleWalks,steps,shots,True)
-#plt.show()
+#fig5 = plotMultipleQiskitGrover(N,multipleWalks,steps,shots,True)
+#saveCoinedSearchFig(N,steps,markedVertex,fig5,filePath,defaultFileName)

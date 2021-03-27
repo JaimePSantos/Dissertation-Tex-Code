@@ -436,3 +436,14 @@ def plotMultipleQiskitGrover(N,multipleCircs,steps,shots,Decimal):
     normalizedResultDictList = multNormalizedResultDict(baseDictList,qiskitSimResultList)
     fig = multSubPlotSimGrover(normalizedResultDictList,steps)
     return fig
+
+def plotMultipleQiskitGrover2(N,multipleCircs,steps,shots,Decimal):
+    "Brings every dictionar and plot building functions together to either show or save the matplotlib figure."
+    qiskitSimResultList = multResultsSim2(multipleCircs,shots,Decimal)
+    if Decimal:
+        baseDictList = multDecResultDict2(N,steps)
+    else:
+        baseDictList = multBinResultDict(N,steps)
+    normalizedResultDictList = multNormalizedResultDict(baseDictList,qiskitSimResultList)
+    fig = multSubPlotSimGrover(normalizedResultDictList,steps)
+    return fig

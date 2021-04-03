@@ -108,11 +108,15 @@ def contCirc(N,diagUniOp,backend,method,t):
         return circ 
     else:
         circ.x(qreg[0])
+        circ.barrier()
         circ.append(QFT(N,do_swaps=False,approximation_degree=0,inverse=False,name='    QFT    '),range(N))
+        circ.barrier()
         circ.append(diagUniOp,range(N))
+        circ.barrier()
         circ.append(QFT(N,do_swaps=False,approximation_degree=0,inverse=True,name='    IQFT'    ),range(N))
+        circ.barrier()
         circ.measure(qreg,creg)
-        circ=transpile(circ)
+        circ=transpile(circ,basis_gates=['cx','cp','rz','h','x'])
     return circ
 
 def contCirc2(N,diagUniOp,backend,method,t):
@@ -126,7 +130,7 @@ def contCirc2(N,diagUniOp,backend,method,t):
         return circ 
     else:
         circ.append(diagUniOp,range(N))
-        circ=transpile(circ)
+        circ=transpile(circ) 
     return circ
 
 def multDiagUniOp(N,NCirc,gamma,adjacency,time,backend,method):
@@ -315,30 +319,49 @@ backend2 = 'ibmq_casablanca'
 N = 8 
 NCirc = 3
 gamma =  1/(2*np.sqrt(2))
-t = 3
-time = [0,1,2,3]
+t = 1
+time = [1]
 c = [0,1] + [0 for x in range(N-3)] + [1]
 qft = dft(N, scale = 'sqrtn')
+#print(qft)
 iqft = inv(qft)
-
+#print(iqft)
+adj = circulant_adjacency(N,c)
+#print(adj)
 A = iqft@circulant_adjacency(N,c)@qft
 diagA = np.diag(A)
 U0 = unitary_ctqw(gamma, N, A, [],t)
+print(U0.round(2))
 diagU0 = np.diag(U0).tolist()
 U = iqft@U0@qft
 
 shots = 3000
 UCirc = diagUniOp(NCirc,diagU0,backend,method)
-#continuousCirc = contCirc(NCirc,UCirc,backend)
+#UCirc.draw(output='mpl')
+#plt.show()
+continuousCirc = contCirc(NCirc,UCirc,backend,method,time[0])
+continuousCirc.draw(output='mpl')
+plt.show()
+result = simul(continuousCirc,False,shots)
+correctedResult = { int(k[::-1],2) : v/shots for k, v in result.items()}
+#plot_histogram(correctedResult)
+#plt.show()
 
 unitaryCircList = multDiagUniOp(N,NCirc,gamma,A,time,backend,method)
 multipleCircs = multContCirc(NCirc,unitaryCircList,time,backend,method)
+#for circ in multipleCircs:
+#    result = simul(circ,False,shots)
+#    circ.draw(output='mpl')
+#plt.show()
+#correctedResult = { int(k[::-1],2) : v/shots for k, v in result.items()}
+#plot_histogram(correctedResult)
+#plt.show()
 #job = getJob('60509f13b24affd375a45b44',provider,backend) 
 #job=backend.retrieve_job('60513dcc7240bdc91ac83cf4')
 #job = execute(multipleCircs,backend=backend,shots=shots)
 #job_monitor(job)
 #result = job.result()
-counts = [{'000': 180, '001': 2176, '010': 95, '011': 155, '100': 65, '101': 192, '110': 80, '111': 57}, {'000': 139, '001': 1670, '010': 127, '011': 198, '100': 63, '101': 386, '110': 333, '111': 84}, {'000': 100, '001': 740, '010': 257, '011': 240, '100': 131, '101': 783, '110': 595, '111': 154}, {'000': 78, '001': 184, '010': 486, '011': 338, '100': 291, '101': 700, '110': 715, '111': 208}]
+#counts = [{'000': 180, '001': 2176, '010': 95, '011': 155, '100': 65, '101': 192, '110': 80, '111': 57}, {'000': 139, '001': 1670, '010': 127, '011': 198, '100': 63, '101': 386, '110': 333, '111': 84}, {'000': 100, '001': 740, '010': 257, '011': 240, '100': 131, '101': 783, '110': 595, '111': 154}, {'000': 78, '001': 184, '010': 486, '011': 338, '100': 291, '101': 700, '110': 715, '111': 208}]
 #counts = result.get_counts()
 #print(counts)
 #plotMultipleQiskitIbm(NCirc,counts,time,shots,True)
@@ -348,6 +371,7 @@ counts = [{'000': 180, '001': 2176, '010': 95, '011': 155, '100': 65, '101': 192
 #g.show()
 
 #distFig = plotMultipleQiskitIbmSim2(NCirc,multipleCircs,counts,time,shots,True,backend2)
+#plt.show()
 #saveContWalkFig2(NCirc,time,distFig,filePath,defaultFileName)
 
 #gateCountFileName = 'gateCount_N3'
@@ -358,24 +382,24 @@ counts = [{'000': 180, '001': 2176, '010': 95, '011': 155, '100': 65, '101': 192
 #plotCountTimeGates(gateCountList)
 #plt.savefig(r'/home/jaime/Programming/Jaime-Santos-Dissertation/Results/Qiskit/'+filePath+gateCountFileName)
 #   
-circFigN = 3
-circFigSteps = [1]
-circFig = drawCirc(NCirc,UCirc,1,style)
-#plt.show()
-saveContWalkFig(circFigN,circFigSteps,circFig,circFilePath,circDefaultFileName)
-#
-circQftN = 3
-circQftSteps = [1]
-circQftFig = drawQftCirc(circQftN,styleQft)
-saveContWalkFig(circQftN,circQftSteps,circQftFig,circQftFilePath,circQftDefaultFileName)
+#circFigN = 3
+#circFigSteps = [1]
+#circFig = drawCirc(NCirc,UCirc,1,style)
+##plt.show()
+#saveContWalkFig(circFigN,circFigSteps,circFig,circFilePath,circDefaultFileName)
 ##
-circDiagN = 3
-circDiagSteps = [3]
-circDiagGamma= 1/(2*np.sqrt(2))
-circU0 = unitary_ctqw(circDiagGamma, N, A, [],3)
-circDiagU0 = np.diag(circU0).tolist()
-circDiagFig = drawDiagUni(circDiagN,circDiagU0,backend,method,styleDiag)
-saveContWalkFig(circDiagN,circDiagSteps,circDiagFig,circDiagFilePath,circDiagDefaultFileName)
+#circQftN = 3
+#circQftSteps = [1]
+#circQftFig = drawQftCirc(circQftN,styleQft)
+#saveContWalkFig(circQftN,circQftSteps,circQftFig,circQftFilePath,circQftDefaultFileName)
+###
+#circDiagN = 3
+#circDiagSteps = [3]
+#circDiagGamma= 1/(2*np.sqrt(2))
+#circU0 = unitary_ctqw(circDiagGamma, N, A, [],3)
+#circDiagU0 = np.diag(circU0).tolist()
+#circDiagFig = drawDiagUni(circDiagN,circDiagU0,backend,method,styleDiag)
+#saveContWalkFig(circDiagN,circDiagSteps,circDiagFig,circDiagFilePath,circDiagDefaultFileName)
 
 #initCond = '0'
 #initState = init_state(N,initCond)
@@ -396,3 +420,4 @@ saveContWalkFig(circDiagN,circDiagSteps,circDiagFig,circDiagFilePath,circDiagDef
 #f.show()
 
 #input()
+

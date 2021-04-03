@@ -105,11 +105,13 @@ def contCirc(N,diagUniOp,backend,method,t):
     circ = QuantumCircuit(qreg,creg)
     if t == 0: 
         #circ.h(qreg)
+        circ.x(qreg[2])
         circ.measure(qreg,creg)
         circ = transpile(circ)
         return circ 
     else:
         #circ.h(qreg)
+        circ.x(qreg[2])
         circ.append(QFT(N,do_swaps=False,approximation_degree=0,inverse=False,name='    QFT    '),range(N))
         circ.append(diagUniOp,range(N))
         circ.append(QFT(N,do_swaps=False,approximation_degree=0,inverse=True,name='    IQFT'    ),range(N))
@@ -299,47 +301,33 @@ style = {'figwidth':20,'fontsize':17,'subfontsize':14}#,'compress':True}
 styleQft = {'figwidth':15,'fontsize':17,'subfontsize':14}#, 'compress':True}
 styleDiag = {'figwidth':15,'fontsize':17,'subfontsize':14 }
 
-#IBMQ.load_account()
-#provider = setProvider('ibm-q-minho','academicprojects','quantalab')
-##leastBusyBackend =leastBusy(10,provider)
-##print("Least busy backend:",leastBusyBackend)
-#melBackend = provider.get_backend('ibmq_16_melbourne')
-##32QV
-#bogBackend = provider.get_backend('ibmq_bogota')
-#parisBackend = provider.get_backend('ibmq_paris')
-#manhatBackend = provider.get_backend('ibmq_manhattan')
-#torontoBackend = provider.get_backend('ibmq_toronto')
-#casablancaBackend = provider.get_backend('ibmq_casablanca')
-##Chosen
-#backend = casablancaBackend 
-#simulator = provider.get_backend('ibmq_qasm_simulator')
-#method = 'noise_adaptive'
+backend = Aer.get_backend('qasm_simulator')
 method = 'trivial'
-simulator = Aer.get_backend('qasm_simulator')
-backend = simulator
-backend2 = 'ibmq_casablanca' 
-#Cont operator.##
-N = 8 
+shots = 3000
+N = 8
 NCirc = 3
-marked = [4,5]
-gamma =  1/N
-t = 3
-time = [0,1,2,3]
+optimalTime = (np.pi/4)*np.sqrt(N)
+time = optimalTime
+walkTime = 1
+marked = [0]
+gamma = 1 / N
+walkGamma = 1 / 2*(np.sqrt(2))
+cComplete = [0]+[1 for x in range(N-1)]
 cCycle = [0,1] + [0 for x in range(N-3)] + [1]
-cComplete = [0] + [1 for x in range(N-1)]
-qft = dft(N, scale = 'sqrtn')
+qft = dft(N,scale = 'sqrtn')
 iqft = inv(qft)
 
-A = iqft@circulant_adjacency(N,cComplete)@qft
-diagA = np.diag(A)
-U0 = unitary_ctqw(gamma, N, A, [],t)
-diagU0 = np.diag(U0).tolist()
-U = iqft@U0@qft
+A = circulant_adjacency(N,cCycle)
+lambdA =  iqft@A@qft
 
-shots = 3000
-#unitaryCircList = multDiagUniOp(N,NCirc,gamma,A,time,backend,method,marked)
-unitaryCircListTrotter = multDiagUniOpTrotter(N,NCirc,gamma,A,time,backend,method,marked,1)
-#multipleCircs = multContCirc(NCirc,unitaryCircList,time,backend,method)
-multipleCircsTrotter = multContCirc(NCirc,unitaryCircListTrotter,time,backend,method)
-plotMultipleQiskitGrover2(NCirc,multipleCircsTrotter,time,shots,True)
+walkU0 = unitary_ctqw(walkGamma, N, lambdA, [], walkTime)
+walkU = np.diag(walkU0).tolist()
+
+walkUQiskit = diagUniOp(NCirc,walkU,backend,method)
+walkCirc = contCirc(NCirc,walkUQiskit,backend,method,walkTime)
+walkResult = simul(walkCirc,False,shots)
+print(walkResult)
+correctedResult = { int(k[::-1],2) : v for k, v in walkResult.items()}
+print(correctedResult)
+plot_histogram(correctedResult)
 plt.show()

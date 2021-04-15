@@ -11,6 +11,7 @@ from IBMTools import(
         plotMultipleQiskitIbmSim2,
         plotMultipleQiskitGrover,
         plotMultipleQiskitGrover2,
+        plotMultipleQiskitContSearch,
         multResultsSim,
         setProvider,
         leastBusy,
@@ -65,165 +66,118 @@ def unitary_ctqw(gamma, N, A, marked, t): #---
     U = expm(1j*(-gamma*A - Oracle)*t)
     return U
 
-def trotter(gamma, N, A, marked, t, n_trotter):
-    O = np.zeros([N,N])
-    for x in marked:
-        O[x,x] = 1
-    U = matrix_power(expm(1j*(-gamma*A)*t/n_trotter)@expm(1j*(- O)*t/n_trotter), n_trotter)
-    return U
+def exp_diag_qft(A,N):
+    qft = dft(N, scale = 'sqrtn') #-- fourier transform
+    iqft = inv(qft) #--
+    D = np.diag(iqft@A@qft)
+    D = np.exp(-1j*D)
+    return list(D)
 
-def init_state(N,initcond): #generalizar isto ?
-    psi0 = np.zeros((N,1))
-    if initcond == 'sup':
-        psi0[int(N/2)-1] = 1/sqrt(2)
-        psi0[int(N/2)] = 1/sqrt(2)
-    if initcond== '0':
-        psi0[0] = 1
-    return psi0
+def diffusion_qc(expD, nq, qft_d):
+    qreg = QuantumRegister(nq)
+    qc = QuantumCircuit(qreg, name = 'Diagonal')
+    qc.append(QFT(nq,do_swaps=False,approximation_degree = qft_d,inverse=True), range(nq))
+    qc.barrier()
+    qc.diagonal(expD, qreg)
+    qc.barrier()
+    qc.append(QFT(nq,do_swaps=False,approximation_degree = qft_d,inverse=False), range(nq))
+    return qc
 
-def final_state(Op,psi0):
-    psiN = np.dot(Op,psi0)
-    return psiN
+def oracle(N,markedList,t,r):
+    O = np.zeros(N)
+    for marked in markedList:
+        O[marked] = 1
+    O = list(np.exp(1j * O * t / r))
+    return O
 
-def prob_vec(psiN,N):
-    probs = np.zeros((N,1))
-    for x in range(N):
-        probs[x]=psiN[x]*np.conjugate(psiN[x]) 
-    return probs
-
-def diagUniOp(N,diagU0,backend,method):
+def oracleCirc(N,O):
     qreg = QuantumRegister(N)
-    creg = ClassicalRegister(N)
-    circ = QuantumCircuit(qreg,name='    UniOp    ')
-    circ.diagonal(diagU0,qreg) 
-    circ = transpile(circ)#,optimization_level=3)#,backend=backend,layout_method=method) 
-    return circ
+    qc = QuantumCircuit(qreg,name='    Oracle    ')
+    qc.diagonal(O,qreg)
+    return qc
 
-def contCirc(N,diagUniOp,backend,method,t):
-    qreg = QuantumRegister(N)
-    creg = ClassicalRegister(N)
-    circ = QuantumCircuit(qreg,creg)
-    if t == 0: 
-        #circ.h(qreg)
-        circ.x(qreg[2])
-        circ.measure(qreg,creg)
-        circ = transpile(circ)
-        return circ 
-    else:
-        #circ.h(qreg)
-        circ.x(qreg[2])
-        circ.append(QFT(N,do_swaps=False,approximation_degree=0,inverse=False,name='    QFT    '),range(N))
-        circ.append(diagUniOp,range(N))
-        circ.append(QFT(N,do_swaps=False,approximation_degree=0,inverse=True,name='    IQFT'    ),range(N))
-        circ.measure(qreg,creg)
-        circ=transpile(circ)
-    return circ
+def contSearchCirc(N,NCirc,time,nTrotter,approxQFT,oracle,expD):
+    qreg = QuantumRegister(NCirc)
+    creg = ClassicalRegister(NCirc)
+    qc = QuantumCircuit(qreg,creg)
+    qcOracle = oracleCirc(NCirc,oracle)
+    qcDiffusion = diffusion_qc(expD,NCirc,approxQFT)
+    qc.h(qreg)
+    qc.barrier()
+    for n in range(nTrotter):
+        qc.append(qcOracle,range(NCirc))
+        qc.barrier()
+        qc.append(qcDiffusion,range(NCirc))
+        qc.barrier()
+    qc.measure(qreg,creg)
+    qc = transpile(qc,basis_gates=['cx','cp','rz','h','x'])
+    return qc
 
-def contCirc2(N,diagUniOp,backend,method,t):
-    qreg = QuantumRegister(N)
-    creg = ClassicalRegister(N)
-    circ = QuantumCircuit(qreg,creg)
-    if t == 0: 
-        circ.x(qreg[0])
-        circ.measure(qreg,creg)
-        circ = transpile(circ)
-        return circ 
-    else:
-        circ.append(diagUniOp,range(N))
-        circ=transpile(circ)
-    return circ
-
-def multDiagUniOp(N,NCirc,gamma,adjacency,time,backend,method,marked):
-    unitaryCircList = []
+def multExpD(N,A,gamma,time,r):
+    expDList = []
+    qft = dft(N, scale = 'sqrtn') 
+    iqft = inv(qft)
     for t in time:
-        U0 = unitary_ctqw(gamma,N,adjacency,marked,t)
-        diagU0 = np.diag(U0).tolist()
-        diagCirc = diagUniOp(NCirc,diagU0,backend,method)
-        unitaryCircList.append(diagCirc)
-    return unitaryCircList
+        B = -gamma * A * t / r
+        lambdA = iqft@B@qft
+        D = np.diag(lambdA)
+        D = np.exp(-1j*D)
+        expDList.append(list(D))
+    return expDList 
 
-def multDiagUniOpTrotter(N,NCirc,gamma,adjacency,time,backend,method,marked,nTrotter):
-    unitaryCircList = []
-    for t in time:
-        U0 = trotter(gamma, N, adjacency, marked, t, nTrotter)
-        diagU0 = np.diag(U0).tolist()
-        diagCirc = diagUniOp(NCirc,diagU0,backend,method)
-        unitaryCircList.append(diagCirc)
-    return unitaryCircList
-
-def multContCirc(N,unitaryList,time,backend,methods):
+def multContCircSearch(N,NCirc,expDList,time,backend,methods,approxQFT,oracle,nTrotter):
     circList = []
-    circListAux = []
-    qreg = QuantumRegister(N)
-    qsub = QuantumRegister(1)
-    creg = ClassicalRegister(N)
-    for t,diagU0 in zip(time,unitaryList):
+    qreg = QuantumRegister(NCirc)
+    creg = ClassicalRegister(NCirc)
+    for t,expD in zip(time,expDList):
         circ = QuantumCircuit(qreg,creg)
-        circ =  contCirc(N,diagU0,backend,method,t)
+        circ = contSearchCirc(N,NCirc,time,nTrotter,approxQFT,oracle,expD)
         circ = transpile(circ,optimization_level=3,backend=backend, layout_method=method)
         circList.append(circ)
     return circList
 
-def multContCirc2(N,unitaryList,time,backend,methods):
-    circList = []
-    circListAux = []
-    qreg = QuantumRegister(N)
-    qsub = QuantumRegister(1)
-    creg = ClassicalRegister(N)
-    for t,diagU0 in zip(time,unitaryList):
-        circ = QuantumCircuit(qreg,creg)
-        circ =  contCirc2(N,diagU0,backend,method,t)
-        circ = transpile(circ,optimization_level=3,backend=backend, layout_method=method)
-        circList.append(circ)
-    return circList
+def drawDiffusion(expD, nq, qft_d):
+    qreg = QuantumRegister(nq)
+    qc = QuantumCircuit(qreg,name='     Adj     ')
+    qc.append(QFT(nq,do_swaps=False,approximation_degree = qft_d,inverse=True), range(nq))
+    qc.barrier()
+    qc.diagonal(expD, qreg)
+    qc.barrier()
+    qc.append(QFT(nq,do_swaps=False,approximation_degree = qft_d,inverse=False), range(nq))
+    return qc
 
-def drawCirc(N,diagU,time,style):
-    qreg = QuantumRegister(N)
-    creg = ClassicalRegister(N)
-    circ = QuantumCircuit(qreg,creg)
-    circ.x(qreg[0])
-    circ.barrier()
-    circ.append(QFT(N,do_swaps=False,approximation_degree=0,inverse=False,name='    QFT    '),range(N))
-    circ.append(diagU,range(N))
-    circ.append(QFT(N,do_swaps=False,approximation_degree=0,inverse=True,name='    IQFT    '),range(N))
-    circ.barrier()
-    circ.measure(qreg,creg)
-    fig = circ.draw(output='mpl',style=style)
+def drawCirc(N,NCirc,time,style,nTrotter,approxQFT,oracle,expD):
+    qreg = QuantumRegister(NCirc)
+    creg = ClassicalRegister(NCirc)
+    qc = QuantumCircuit(qreg,creg)
+    qcOracle = oracleCirc(NCirc,oracle)
+    qcDiffusion = drawDiffusion(expD,NCirc,approxQFT)
+    qc.h(qreg)
+    qc.barrier()
+    for n in range(nTrotter):
+        qc.append(qcOracle,range(NCirc))
+        qc.append(QFT(nq,do_swaps=False,approximation_degree = approxQFT,inverse=True,name='    QFT    '), range(nq))
+        qc.append(qcDiffusion,range(NCirc))
+        qc.append(QFT(nq,do_swaps=False,approximation_degree = approxQFT,inverse=False,name='    IQFT    '), range(nq))
+        qc.barrier()
+    qc.measure(qreg,creg)
+    fig = qc.draw(output='mpl',style=style,fold=-1)
     return fig 
 
-def drawCirc2(N,diagU,time,style):
+def drawOracleCirc(N,O,style):
     qreg = QuantumRegister(N)
-    creg = ClassicalRegister(N)
-    circ = QuantumCircuit(qreg,creg)
-    circ.x(qreg[0])
-    circ.barrier()
-    circ.append(QFT(N,do_swaps=False,approximation_degree=0,inverse=False,name='    QFT    '),range(N))
-    circ.append(diagU,range(N))
-    circ.append(QFT(N,do_swaps=False,approximation_degree=0,inverse=True,name='    IQFT    '),range(N))
-    circ.barrier()
-    circ.measure(qreg,creg)
-    #fig = circ.draw(output='mpl',style=style)
-    return circ 
+    qc = QuantumCircuit(qreg,name='    Oracle    ')
+    qc.diagonal(O,qreg)
+    qc = transpile(qc,basis_gates=['cp','h','cx','rz'])
+    fig = qc.draw(output='mpl',style=style)
+    return fig
 
-def drawQftCirc(N,style):
-    qreg = QuantumRegister(N)
-    creg = ClassicalRegister(N)
-    circ = QuantumCircuit(qreg,creg)
-    circ = QFT(N,do_swaps=False,approximation_degree=0,inverse=False,name='    QFT    ')
-    circ = transpile(circ, basis_gates=['cp','h','cx','rz'])
-    fig = circ.draw(output='mpl',style=style)
-    return fig 
-
-def drawDiagUni(N,diagU0,backend,method,style):
-    qreg = QuantumRegister(N)
-    creg = ClassicalRegister(N)
-    circ = QuantumCircuit(qreg,name='    UniOp    ')
-    print(diagU0)
-    circ.diagonal(diagU0,qreg) 
-    #circ = transpile(circ,backend=backend,optimization_level=1)#,backend=backend,layout_method=method)#
-    circ = transpile(circ,basis_gates=['cp','h','cx','rz'])
-    #circ.decompose()
-    fig = circ.draw(output='mpl',style=style)
+def drawAdjCirc(expD, nq, style):
+    qreg = QuantumRegister(nq)
+    qc = QuantumCircuit(qreg,name='     Adj     ')
+    qc.diagonal(expD, qreg)
+    qc = transpile(qc,basis_gates=['cp','h','cx','rz'])
+    fig = qc.draw(output='mpl',style=style)
     return fig
 
 def saveContWalkFig(N,steps,fig, filePath, defaultFileName):
@@ -281,53 +235,61 @@ def plotCountTimeGates(gateCountList):
     plt.xlabel("Time")
     plt.ylabel("Number of gates")
     plt.legend()
-   
-def trotter(gamma, N, A, marked, t, n_trotter):
-    O = np.zeros([N,N])
-    for x in marked:
-        O[x,x] = 1
-    U = matrix_power(expm(1j*(-gamma*A)*t/n_trotter)@expm(1j*(- O)*t/n_trotter), n_trotter)
-    return U
 
-filePath = 'ContQuantumWalk/'
-circFilePath = 'ContQuantumWalk/Circuits/'
-circDiagFilePath = 'ContQuantumWalk/Circuits/'
-circQftFilePath = 'ContQuantumWalk/Circuits/'
+def runWalkResults(walkCirc,shots):
+    walkResult = simul(walkCirc,False,shots)
+    correctedResult = { int(k[::-1],2) : v/shots for k, v in walkResult.items()}
+    return correctedResult
+
+filePath = 'ContQuantumWalk/Search/'
+circFilePath = 'ContQuantumWalk/Search/Circuits/'
 defaultFileName = "ContQW_"
-circDefaultFileName = "circContQW_"
+circDefaultFileName = "circContSearch_"
 circQftDefaultFileName = "circQft_"
-circDiagDefaultFileName = "circDiag_"
-style = {'figwidth':20,'fontsize':17,'subfontsize':14}#,'compress':True}
-styleQft = {'figwidth':15,'fontsize':17,'subfontsize':14}#, 'compress':True}
-styleDiag = {'figwidth':15,'fontsize':17,'subfontsize':14 }
+circAdjDefaultFileName = "circAjd_"
+circOracleDefaultFileName = "circOracle_"
+style = {'figwidth':20,'fontsize':17,'subfontsize':14}
+styleQft = {'figwidth':15,'fontsize':17,'subfontsize':14}
+styleAdj = {'figwidth':15,'fontsize':17,'subfontsize':14 }
+styleOracle = {'figwidth':15,'fontsize':17,'subfontsize':14 }
 
 backend = Aer.get_backend('qasm_simulator')
 method = 'trivial'
+nq = 3
+N = 2 ** nq
+r = 2
 shots = 3000
-N = 8
-NCirc = 3
-optimalTime = (np.pi/4)*np.sqrt(N)
-time = optimalTime
-walkTime = 1
-marked = [0]
 gamma = 1 / N
-walkGamma = 1 / 2*(np.sqrt(2))
+t = ((np.pi/2) * np.sqrt(N))
+time = [0,t/2,t,t+t/2]
+time = [round(x,2) for x in time]
+markedList = [1]
+approxQFT = 0
 cComplete = [0]+[1 for x in range(N-1)]
-cCycle = [0,1] + [0 for x in range(N-3)] + [1]
-qft = dft(N,scale = 'sqrtn')
-iqft = inv(qft)
 
-A = circulant_adjacency(N,cCycle)
-lambdA =  iqft@A@qft
+A = circulant_adjacency(N, cComplete)
+O = oracle(N,markedList,t,r)
+expD = exp_diag_qft(-gamma * A * t / r, N)
+#searchCirc = contSearchCirc(N,nq,t,r,approxQFT,O,expD)
+#searchResults = runWalkResults(searchCirc,shots)
+#searchCirc.draw(output='mpl')
+#plt.show()
+#plot_histogram(searchResults)
+#plt.show()
 
-walkU0 = unitary_ctqw(walkGamma, N, lambdA, [], walkTime)
-walkU = np.diag(walkU0).tolist()
+expDList = multExpD(N,A,gamma,time,r)
+#print(expDList)
+searchCircList = multContCircSearch(N,nq,expDList,time,backend,method,approxQFT,O,r)
+#for circ in searchCircList:
+#    circ.draw(output='mpl')
+searchMeasFig = plotMultipleQiskitContSearch(nq,searchCircList,time,shots,True)
+saveContWalkFig(nq,[r],searchMeasFig,filePath,defaultFileName)
 
-walkUQiskit = diagUniOp(NCirc,walkU,backend,method)
-walkCirc = contCirc(NCirc,walkUQiskit,backend,method,walkTime)
-walkResult = simul(walkCirc,False,shots)
-print(walkResult)
-correctedResult = { int(k[::-1],2) : v for k, v in walkResult.items()}
-print(correctedResult)
-plot_histogram(correctedResult)
-plt.show()
+#baseCirc = drawCirc(N,nq,t,style,r,approxQFT,O,expD)
+#saveContWalkFig(nq,[r],baseCirc,circFilePath,circDefaultFileName)
+#
+#oracleCirc =  drawOracleCirc(nq,O,styleOracle)
+#saveContWalkFig(nq,[r],oracleCirc,circFilePath,circOracleDefaultFileName)
+#
+#adjCirc = drawAdjCirc(expD, nq, styleAdj)
+#saveContWalkFig(nq,[r],adjCirc,circFilePath,circAdjDefaultFileName)

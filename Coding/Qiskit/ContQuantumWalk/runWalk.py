@@ -210,11 +210,8 @@ def drawDiagUni(N,diagU0,backend,method,style):
     qreg = QuantumRegister(N)
     creg = ClassicalRegister(N)
     circ = QuantumCircuit(qreg,name='    UniOp    ')
-    print(diagU0)
     circ.diagonal(diagU0,qreg) 
-    #circ = transpile(circ,backend=backend,optimization_level=1)#,backend=backend,layout_method=method)#
     circ = transpile(circ,basis_gates=['cp','h','cx','rz'])
-    #circ.decompose()
     fig = circ.draw(output='mpl',style=style)
     return fig
 

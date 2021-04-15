@@ -378,6 +378,43 @@ def multSubPlotSimGrover(resultListSim,steps):
     plt.ylabel("Probability")
     fig.tight_layout(pad=1.0)
 
+def multSubPlotSimContSearch(resultListSim,steps):
+    Tot = len(steps)
+    Cols = 1 
+    # Compute Rows required
+    Rows = Tot // Cols 
+    Rows += Tot % Cols
+    # Create a Position index
+    Position = range(1,Tot + 1)
+    fig = plt.figure(1)
+    #mpl.rcParams.update(mpl.rcParamsDefault)
+    mpl.rcParams['figure.figsize'] = 11,8
+    mpl.rcParams.update({'font.size' : 15})
+    i = 0
+    for k,resultDictSim,step in zip(range(Tot),resultListSim,steps):
+            countsSim = resultDictSim.values()
+            ax = fig.add_subplot(Rows,Cols,Position[k])
+            if i ==0:
+                ax.set_title("Time=%s"%step)
+                ax.bar(*zip(*enumerate(countsSim)),width=0.4,bottom=0,align='edge',label='qasm_simulator')
+                ax.legend()
+            else:
+                ax.set_title("Time=%s"%step)
+                ax.bar(*zip(*enumerate(countsSim)),width=0.4,bottom=0,align='edge')
+            plt.ylim(0,1.2)
+            plt.yticks([0,0.5,1])
+            plt.xlim(0-1,len(countsSim))
+            w = ax.get_xaxis()
+            if(i==Tot-1):
+                w.set_visible(True)
+                plt.xticks(range(0,len(countsSim)))
+            else:
+                w.set_visible(False)
+            i+=1
+    plt.xlabel("Graph Node")
+    plt.ylabel("Probability")
+    fig.tight_layout(pad=1.0)
+
 def plotMultipleQiskitIbm(N,ibmJobDictList,steps,shots,Decimal):
     "Brings every dictionar and plot building functions together to either show or save the matplotlib figure."
     formatedDictList = formatResultIBM(ibmJobDictList,shots,Decimal)
@@ -446,4 +483,16 @@ def plotMultipleQiskitGrover2(N,multipleCircs,steps,shots,Decimal):
         baseDictList = multBinResultDict(N,steps)
     normalizedResultDictList = multNormalizedResultDict(baseDictList,qiskitSimResultList)
     fig = multSubPlotSimGrover(normalizedResultDictList,steps)
+    return fig
+
+
+def plotMultipleQiskitContSearch(N,multipleCircs,steps,shots,Decimal):
+    "Brings every dictionar and plot building functions together to either show or save the matplotlib figure."
+    qiskitSimResultList = multResultsSim2(multipleCircs,shots,Decimal)
+    if Decimal:
+        baseDictList = multDecResultDict2(N,steps)
+    else:
+        baseDictList = multBinResultDict(N,steps)
+    normalizedResultDictList = multNormalizedResultDict(baseDictList,qiskitSimResultList)
+    fig = multSubPlotSimContSearch(normalizedResultDictList,steps)
     return fig

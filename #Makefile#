@@ -1,0 +1,10 @@
+Ball:
+	@echo "Executing random walk models and then copying them to the Latex project"
+	+$(MAKE) -C Coding/"Python Simulations"
+	+$(MAKE) -C Results
+x-special/nautilus-clipboard
+copy
+file:///home/jaime/DissertationLink/Coding/Python%20Simulations/CoinedQW/Search/Makefile
+
+git:
+	git branch

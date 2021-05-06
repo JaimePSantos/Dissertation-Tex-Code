@@ -5,7 +5,8 @@ from IBMTools import(
         savefig,
         saveMultipleHist,
         printDict,
-        plotMultipleQiskit)
+        plotMultipleQiskit,
+        plotMultipleQiskitGrover)
 import numpy as np
 import matplotlib as mpl
 mpl.use('TkAgg')
@@ -145,8 +146,8 @@ defaultCircDiffFileName = "GroverQiskitCircDiff_"
 style = {'figwidth':20,'fontsize':17,'subfontsize':14}#,'compress':True}
 
 N = [3]
-markedList = [1,2] 
-steps = [0,1,2]
+markedList = [4] 
+steps = [0,1,2,3]
 shots = 3000
 
 singleN = 3
@@ -154,16 +155,16 @@ singleSteps = 3
 
 circN = [3]
 circSteps = [3]
-circMarked = [0]
+circMarked = [4]
 
-drawCircFig = drawCirc(singleN,singleSteps,circMarked,style)
-saveGroverSearchFig(circN,circSteps,circMarked,drawCircFig, circFilePath, defaultCircFileName)
-
-drawCircOracleFig = drawOracle(singleN,circMarked,style)
-saveGroverSearchFig(circN,circSteps,circMarked,drawCircOracleFig, circFilePath, defaultCircOracleFileName)
-
-drawCircDiffFig = drawDiffusion(singleN,style)
-saveGroverSearchFig(circN,circSteps,circMarked,drawCircDiffFig, circFilePath, defaultCircDiffFileName)
+#drawCircFig = drawCirc(singleN,singleSteps,circMarked,style)
+#saveGroverSearchFig(circN,circSteps,circMarked,drawCircFig, circFilePath, defaultCircFileName)
+#
+#drawCircOracleFig = drawOracle(singleN,circMarked,style)
+#saveGroverSearchFig(circN,circSteps,circMarked,drawCircOracleFig, circFilePath, defaultCircOracleFileName)
+#
+#drawCircDiffFig = drawDiffusion(singleN,style)
+#saveGroverSearchFig(circN,circSteps,circMarked,drawCircDiffFig, circFilePath, defaultCircDiffFileName)
 #multipleGrover = runMultipleSearchComplete(N,steps,markedList)
-#fig = plotMultipleQiskit(N,multipleGrover,steps,shots,True)
+#fig = plotMultipleQiskitGrover(N,multipleGrover,steps,shots,True)
 #saveGroverSearchFig(N,steps,markedList,fig,filePath,defaultFileName)

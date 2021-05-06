@@ -83,19 +83,15 @@ def runWalkComplete2(markedVertex,N,times):
     qcoin = QuantumRegister(N,'coin')
     creg = ClassicalRegister(N)
     qc = QuantumCircuit(qreg,qcoin,creg)
-
     markedVertex=markedListComplete(markedVertex,N)
     qcOracle = oracleComplete(markedVertex,N,False)
     qcDif = diffusionComplete(N)
     qcQWalk = completeGraphWalk(N)
-
     qc.h(qreg)
     for i in range(times):
         qc.append(qcOracle,range(2*N))
         qc.append(qcDif,range(2*N))
         qc.append(qcQWalk,range(2*N))
-
-        
     qc = transpile(qc,basis_gates=['cx','u3'],optimization_level=3)
     qc.measure(range(N),range(N))
         

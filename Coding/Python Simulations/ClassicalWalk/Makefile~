@@ -1,2 +1,0 @@
-all: runWalk.py
-	python3 runwalk.py

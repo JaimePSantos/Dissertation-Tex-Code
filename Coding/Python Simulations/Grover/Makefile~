@@ -1,0 +1,3 @@
+all: runWalk.py runSearch.py
+#	python3 runWalk.py
+	python3 runSearch.py

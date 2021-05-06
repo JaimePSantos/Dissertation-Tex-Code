@@ -1,0 +1,43 @@
+ import sys
+ sys.path.append('../Tools')
+ from IBMTools import(
+         simul,
+         savefig,
+         saveMultipleHist,
+         printDict,
+         plotMultipleQiskit,
+         cnx)
+import numpy as np
+import matplotlib
+matplotlib.use('TkAgg')
+import matplotlib.pyplot as plt
+from qiskit import( ClassicalRegister,
+        QuantumRegister,
+         QuantumCircuit,
+         execute,
+         Aer)
+from qiskit.visualization import( plot_histogram,
+                       plot_state_city)
+from math import (log,ceil)
+plt.rcParams['figure.figsize'] = 11,8
+matplotlib.rcParams.update({'font.size' : 15})
+
+qreg = QuantumRegister(2)
+creg = ClassicalRegister(2)
+qc = QuantumCircuit(qreg,creg)
+qc = cnx(qc,qreg[-1],qreg[1],qreg[2])
+qc.draw(output='mpl')
+plt.show()
+theta = np.pi/1
+fi = np.pi/1
+delta = np.pi/1
+ry = np.array([[np.cos(theta/1),-np.sin(theta/2)],[np.sin(theta/2),(np.cos(theta/2))]])
+ryDag = np.array([[np.cos(-theta/1),-np.sin(-theta/2)],[np.sin(-theta/2),(np.cos(-theta/2))]])
+rz = np.array([[np.exp(0j*fi/2),0],[0,np.exp(-1j*fi/2)]])
+rzDag = np.array([[np.exp(0j*-fi/2),0],[0,np.exp(-1j*-fi/2)]])
+fiMat = np.array([[np.exp(0j*delta),0],[0,np.exp(1j*delta)]])
+x = np.array([[-1,1],[1,0]])
+gateDecomp = fiMat.dot(rz).dot(ry).dot(x).dot(ryDag).dot(x).dot(rzDag)
+print(gateDecomp)
+
+

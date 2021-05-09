@@ -1,0 +1,1 @@
+jupyter nbconvert Jupyter Untitled.ipynb --to slides --post serve

@@ -131,8 +131,8 @@ def multDecResultDict2(N,steps):
     "Returns multiple binary dictionaries."
     baseResultDictList = []
     for step in steps:
-            baseDict = decResultDict(N)
-            baseResultDictList.append(baseDict)
+    	 baseDict = decResultDict(N)
+    	 baseResultDictList.append(baseDict)
     return baseResultDictList
 
 def multDecResultDictIbm(N,steps):
@@ -167,7 +167,7 @@ def multNormalizedResultDict(baseDictList,qiskitDictList):
         #new_d1 = {int(key): int(value) for key, value in baseDict.items()}
         #new_d2 = {int(key): int(value) for key, value in qiskitDict.items()}
         new_d1 = baseDict
-        new_d2=qiskitDict
+        new_d2=  qiskitDict
         normalizedResultDict = {**new_d1,**new_d2}
         normalizedResultDictList.append(normalizedResultDict)
     return normalizedResultDictList
@@ -340,7 +340,7 @@ def multSubPlotIbmSim2(resultListIbm,resultListSim,steps,backend):
     plt.ylabel("Probability")
     fig.tight_layout(pad=1.0)
     return fig
-
+    
 def multSubPlotSimGrover(resultListSim,steps):
     Tot = len(steps)
     Cols = 1 
@@ -495,4 +495,60 @@ def plotMultipleQiskitContSearch(N,multipleCircs,steps,shots,Decimal):
         baseDictList = multBinResultDict(N,steps)
     normalizedResultDictList = multNormalizedResultDict(baseDictList,qiskitSimResultList)
     fig = multSubPlotSimContSearch(normalizedResultDictList,steps)
+    return fig
+    
+def multSubPlotConTrot(resultListIbm,resultListSim,steps):
+    Tot = len(steps)
+    Cols = 1 
+    # Compute Rows required
+    Rows = Tot // Cols 
+    Rows += Tot % Cols
+    # Create a Position index
+    Position = range(1,Tot + 1)
+    fig = plt.figure(1)
+    mpl.rcParams.update(mpl.rcParamsDefault)
+    mpl.rcParams['figure.figsize'] = 11,8
+    mpl.rcParams.update({'font.size' : 15})
+    i = 0
+    for k,resultDictIbm,resultDictSim,step in zip(range(Tot),resultListIbm,resultListSim,steps):
+            countsIbm = resultDictIbm.values()
+            countsSim = resultDictSim.values()
+            ax = fig.add_subplot(Rows,Cols,Position[k])
+            if i ==0:
+                ax.set_title("Time=%s"%step)
+                ax.bar(*zip(*enumerate(countsSim)),width=0.4,bottom=0,align='edge',label='Trotter=1')
+                ax.bar(*zip(*enumerate(countsIbm)),width=-0.4,bottom=0,align='edge',label = 'Trotter=2')
+                ax.legend()
+            else:
+                ax.set_title("Time=%s"%step)
+                ax.bar(*zip(*enumerate(countsSim)),width=0.4,bottom=0,align='edge')
+                ax.bar(*zip(*enumerate(countsIbm)),width=-0.4,bottom=0,align='edge' )
+            plt.ylim(0,1.2)
+            plt.yticks([0,0.5,1])
+            plt.xlim(0-1,len(countsSim))
+            w = ax.get_xaxis()
+            if(i==Tot-1):
+                w.set_visible(True)
+                plt.xticks(range(0,len(countsSim)))
+            else:
+                w.set_visible(False)
+            i+=1
+    plt.xlabel("Graph Node")
+    plt.ylabel("Probability")
+    fig.tight_layout(pad=1.0)
+    return fig
+    
+def plotMultipleQiskitContSearchR(N,multipleCircsR1,multipleCircsR2,steps,shots,Decimal):
+    "Brings every dictionar and plot building functions together to either show or save the matplotlib figure."
+    qiskitSimResultList = multResultsSim2(multipleCircsR1,shots,Decimal)
+    print(qiskitSimResultList)
+    qiskitSimResultList2 = multResultsSim2(multipleCircsR2,shots,Decimal)
+    if Decimal:
+        baseDictList = multDecResultDict2(N,steps)
+        print(N)
+    else:
+        baseDictList = multBinResultDict(N,steps)
+    normalizedResultDictList = multNormalizedResultDict(baseDictList,qiskitSimResultList)
+    normalizedResultDictList2 = multNormalizedResultDict(baseDictList,qiskitSimResultList2)
+    fig = multSubPlotConTrot(normalizedResultDictList2,normalizedResultDictList,steps)
     return fig

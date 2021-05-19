@@ -12,6 +12,7 @@ from IBMTools import(
         plotMultipleQiskitGrover,
         plotMultipleQiskitGrover2,
         plotMultipleQiskitContSearch,
+        plotMultipleQiskitContSearchR,
         multResultsSim,
         setProvider,
         leastBusy,
@@ -257,7 +258,8 @@ backend = Aer.get_backend('qasm_simulator')
 method = 'trivial'
 nq = 3
 N = 2 ** nq
-r = 2
+r2 = 2
+r1 = 1
 shots = 3000
 gamma = 1 / N
 t = ((np.pi/2) * np.sqrt(N))
@@ -268,8 +270,8 @@ approxQFT = 0
 cComplete = [0]+[1 for x in range(N-1)]
 
 A = circulant_adjacency(N, cComplete)
-O = oracle(N,markedList,t,r)
-expD = exp_diag_qft(-gamma * A * t / r, N)
+O = oracle(N,markedList,t,r2)
+#expD = exp_diag_qft(-gamma * A * t / r, N)
 #searchCirc = contSearchCirc(N,nq,t,r,approxQFT,O,expD)
 #searchResults = runWalkResults(searchCirc,shots)
 #searchCirc.draw(output='mpl')
@@ -277,13 +279,13 @@ expD = exp_diag_qft(-gamma * A * t / r, N)
 #plot_histogram(searchResults)
 #plt.show()
 
-expDList = multExpD(N,A,gamma,time,r)
+#expDList = multExpD(N,A,gamma,time,r2)
 #print(expDList)
-searchCircList = multContCircSearch(N,nq,expDList,time,backend,method,approxQFT,O,r)
+#searchCircList = multContCircSearch(N,nq,expDList,time,backend,method,approxQFT,O,r2)
 #for circ in searchCircList:
 #    circ.draw(output='mpl')
-searchMeasFig = plotMultipleQiskitContSearch(nq,searchCircList,time,shots,True)
-saveContWalkFig(nq,[r],searchMeasFig,filePath,defaultFileName)
+#searchMeasFig = plotMultipleQiskitContSearch(nq,searchCircList,time,shots,True)
+#saveContWalkFig(nq,[r],searchMeasFig,filePath,defaultFileName)
 
 #baseCirc = drawCirc(N,nq,t,style,r,approxQFT,O,expD)
 #saveContWalkFig(nq,[r],baseCirc,circFilePath,circDefaultFileName)
@@ -293,3 +295,19 @@ saveContWalkFig(nq,[r],searchMeasFig,filePath,defaultFileName)
 #
 #adjCirc = drawAdjCirc(expD, nq, styleAdj)
 #saveContWalkFig(nq,[r],adjCirc,circFilePath,circAdjDefaultFileName)
+
+
+A = circulant_adjacency(N, cComplete)
+O1 = oracle(N,markedList,t,r1)
+O2 = oracle(N,markedList,t,r2)
+
+expDList1 = multExpD(N,A,gamma,time,r1)
+expDList2 = multExpD(N,A,gamma,time,r2)
+
+searchCircList1 = multContCircSearch(N,nq,expDList1,time,backend,method,approxQFT,O1,r1)
+searchCircList2 = multContCircSearch(N,nq,expDList2,time,backend,method,approxQFT,O2,r2)
+
+searchMeasFig = plotMultipleQiskitContSearchR(nq,searchCircList1,searchCircList2,time,shots,True)
+saveContWalkFig(nq,[r1],searchMeasFig,filePath,defaultFileName)
+
+

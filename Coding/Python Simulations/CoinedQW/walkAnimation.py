@@ -67,7 +67,7 @@ def animate(i):
     state0 = np.array([1,0])
     state1 = np.array([0,1])
     shift= walk_op(N,state0,state1)
-    init = '0'
+    init = '1'
     initcond = init_cond(init,state0,state1)
     U = CU_op(Coin,shift,N)
     coinstate = initcond
@@ -82,7 +82,7 @@ def animate(i):
     line.set_data(x, y)
     return line,
 
-anim = animation.FuncAnimation(fig, animate, init_func=init, frames=200, interval=200, blit=True)
-anim.save('QuantumWalkInit0200.mp4', fps=30, extra_args=['-vcodec', 'libx264'])
+anim = animation.FuncAnimation(fig, animate, init_func=init, frames=500, interval=200, blit=True)
+anim.save('QuantumWalkAsym.mp4', fps=30, extra_args=['-vcodec', 'libx264'])
 print("bla")
 #plt.show()

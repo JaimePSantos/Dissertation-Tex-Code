@@ -1,0 +1,190 @@
+Começamos por ver um breve exemplo de uma random walk classica para ganhar alguma intuiçao sobre este tipo de algoritmos, e para perceber o contraste entre o caso classico e quantico.
+De seguida vemos o caso discreto de uma caminhada quantica com moeda e a sua simulaçao em python e implementaçao em qiskit.
+Fazemos o mesmo para o modelo continuo no tempo.
+Por fim fazemos uma revisao do Grover, e uma aplicaçao algoritmica do problema de busca baseado na quantum walk continua.
+
+Uma caminhada classica, primeiramente definida pelo Karl Pearson, é um processo estocastico que descreve o trajeto feito por um caminhante atraves de um certo espaço matematico, cujos passos sao decididos aleatoriamente.
+O termo normalmente refere-se a uma categoria especial de cadeias de Markov, que sao processos estocasticos que descrevem uma sequencia de eventos, cujas transiçoes de estado sao apenas ditadas pelo estado do evento anterior.
+Esta estrutura tem utilidade em diversas areas, como física, quimica, biologia, enconomia etc., visto que podem ser utilizadas para modelar desde o movimente Browniano de particulas até ao preço flutante de açoes, como demonstrado no trabalho de Cootner.
+
+A instancia deste modelo que vamos estudar baseia-se num caminhante em cima de uma linha discretamente numerada por inteiros, e a decisao de dar um passo para a esquerda ou direita resulta do lançamento de uma moeda.
+Começando na posiçao 0, por exemplo, apos atirar a moeda uma vez, o caminhante pode estar na posiçao 1 ou -1 com probabilidade 1/2.
+No lançamento seguinte, avança para a posiçao 2 ou -22 com probabilidade 1/4 cada, ou recua para 0 com probabilidade 1/2.
+Lançando a moeda multiplas vezes, o resultado vai aproximar-se de uma distribuiçao normal
+Podemos ver que a probabilidade nao se dissipa no centro, chamado o fenomeno de localizaçao, e à medida que mais passos sao dados mais posiçoes sao possiveis de alcançar. No entanto, mesmo depois de 500 passos, o walker vai ser encontrado muito perto da origem.
+
+Agora que temos uma ideia de como este algoritmo funciona, vamos considerar o caso em que tanto o caminhante como a moeda sao sistemas quanticos.
+
+Primeiramente desenvolvido pelo Ahronov e colegas, o modelo discreto deriva a sua noçao de tempo pelos sucessivos lançamentos da moeda e mudanças de posiçao, que vao ser posteriormente definidos como operadores distintos.
+Podemos ver aqui as primeiras analises da dinamica em diferentes estruturas. Tambem temos a implementaçao da caminhada quantica como um problema de busca, e mais tarde um resultado que demonstra que este modelo pode ser usado para computaçao universal.
+
+O espaço de hilbert da caminhada vai ser a combinaçao tensorial do espaço da moeda e do caminhante.
+Os principios da caminhada sao parecidos ao da classica, send oos estados agora descritos com notaçao de Dirac. A moeda é lançada e o caminhante avança para a esquerda ou direita.
+No entanto, como o sistema pode estar numa sobreposiçao de estados, vai existir interferencia construtiva e destrutiva, levando a uma distribuiçao de probabilidades complementamente diferente do caso classico.
+
+Como estamos a considerar o caso de uma caminhada num ciclo, cada vertice vai ter só e apenas 2 vizinhos.
+
+O que quer dizer que a moeda necessita apenas de dois resultados. Se os vertices tivessem mais vizinhos, poderiamos usar um dado por exemplo. Vamos entao associar cada resultado da moeda a um estado da base computacional.
+Neste exemplo vamos considerar uma moeda balanceada, visto que queremos que cada face da moeda apareça com a mesma probabilidade (ou amplitude).
+Para este efeito usamos o operador de Hadamard, que terá este aspeto utilizando a package do python numpy.
+
+O operador shift vai incrementar a posiçao do caminhante caso o resultado da moeda seja 0, e decrementar caso seja 1. Esta escolha é arbitraria, mas terá impacto na distribuiçao de prob final.
+Podemos reescrever este operador na sua forma matricial, em que os produtos externos sao controladores que ditam se incrementamos ou decrementamos o estado.
+Vemos que o bloco superior esquerdo da matriz corresponde ao caso da moeda ser 0, em que a coluna dita qual vertice estamos a considerar, e a linha qual vertice será o próximo. Por exemplo vemos que temos um 1 na coluna 5 linha 0, o que quer dizer que o vertice 5 transita para o 0 quando a moeda é 0. O analogo acontece para o bloco inferior direito, correspondente à face 1 da moeda.
+
+O operador de evoluçao pode ser entao descrito como a aplicaçao da moeda seguida do shift. Fazemos o tensorial da moeda com a identidade de modo a garantir que ambos os operadores tenham a mesma dimensao.
+Divindindo a matriz a meio, vemos que do lado esquerdo temos o resultado de quando a moeda dá zero, e do lado direito o resultado de quando a moeda dá 1. O bloco superior esquerdo corresponde ao lançamento anterior ter sido 0 e o atual 0, e o bloco inferior direito quando o tanto o lançamento anterior como o atual sao 1, o que quer dizer que quando aplicamos a operaçao Hadamard, o sinal é invertido.
+
+Consideramos agora o estado inicial em que ambos o caminhante e moeda estao no 0.
+Aplicar o operador uma vez, resulta numa iteraçao do algoritmo, e o estado final será descrito por multiplas iteraçoes deste procedimento.
+Neste caso definimos o nosso 0 na posiçao 3 desta matriz, para ficar no meio do grafo, e vemos que as primeiras linhas correspondem ao caso do lançamento ter sido 0, visto que incrementamos do estado 3 para o 4. O mesmo acontece para as segundas linhas, que decrementam do 3 para o 2 quando o resultado da moeda é 1.
+
+Para obter a distribuiçao de probabilidades, vamos reduzir o espaço da caminhada, visto que ja nao nos interessa saber qual face da moeda contribuiu para cada transiçao. Fazemos entao uso da regra de Borne. Podemos ver que temos 50% de estar tanto no 2 como no 3.
+
+Fazendo isto para um caso maior vemos que, ao contrario da caminhada classica, é mais provavel encontrar o caminhante longe da origem, no lado direito do grafo. Isto acontece porque definimos o estado 0 da moeda para ser responsavel pelo incremento. Apesar da moeda de Hadamard ser balanceada, esta inverte o sinal quando aplicada ao estado 1, levando a mais cancelamentos de estados que decrementam o estado do caminhante.
+
+Seguindo esta logica, mudar o estado inicial da moeda para 1 resulta no aparecimento de mais termos negativos do que positivos, levando a caminhada para a esquerda.
+
+Podemos ver o comportamento da walk nesta animaçao. Reparem que, como estamos a tratar de um grafo ciclico, o pico maior irá desparecer da esquerda e aparecer da direita, cruzando-se com o pico menor, combinando as amplitudes dos dois enquanto se propagam em sentidos opostos no grafo. Deixando a caminhada continuar a sua evoluçao vemos que a probabilidade começa a ficar mais homogenea, chamando-se a isto tempo de mistura.
+
+Vamos entao ver o caso em que esta caminhada resulta numa distribuiçao simétrica. Para este efeito sobrepomos as condiçoes iniciais anteriores, multiplicando o estado 1 por i de modo aos termos nao se cancelarem antes do calculo da distribuiçao de probabilidades.
+
+Novamente, os picos estao a circular o grafo, nao a bater numa barreira e a voltar para trás.
+
+A distribuiçao é simétrica está espalhada entre - t/sqrt(2) e t/sqrt(2), com os picos mais ou menos nas extremidades. Isto quer dizer que após t passos, é mais provavel encontrar o caminhante longe da origem, tanto para a direita como para a esquerda, o que nunca se observa no caso classico com movimento difuso.
+Este comportamento de se encontrar mais longe dea origem é chamado movimento balistico, visto que o desvio padrao varia linearmente no tempo (multiplicado por um fator).
+Em contraste, na caminhada classica, o desvio padrao varia com sqrt(t), o que quer dizer que o caminhante afasta-se quadraticamente mais rapido numa caminhada quantica. Isto tem algumas vantagens como por exemplo
+	Tempos de alcance mais rapidos, melhorando problemas de travessia de grafos.
+	Em Problemas de distinçao de elementos, que é descobrir se todos os elementos de uma list sao distintos.
+	Problemas de busca do genero do Grover.
+	Etc.
+
+Agora o foco será em implementar e analisar a caminhada com moeda no Qiskit, com base no trabalho do Douglas e Wang. Esta abordagem assenta na construçao de um conjunto de operaçoes que incrementam ou decrementa o estado em funçao da moeda. Na verdade, os controlos estao invertidos em relaçao ao artigo, de modo a estarem em conformidade com a simulaçao.
+
+O incremento é composto por uma cascata descendente de portas CNOT multi-controladas, que atuam como um permutador ciclico, mapeando um certo estado de um vertice para um estado adjacente. O decremento é semelhante, mas com os controlos negados.
+Para o caso de um grafo com 8 vertices, necessitamos de 3 qubits para codificar o espaço do caminhante e um qubit extra para o espaço da moeda. Para tres iteraçoes do algoritmo, necessitamos de implementar os operadores do incremento, decremento e moeda 3 vezes.
+
+Para implementar estas cascatas de CNOTS arbitrariamente controladas, usamos a funçao mcx do Qiskit. Esta funçao implementa diversas maneiras de decompor a CNOT, e a que usamos neste caso é baseada que uma operaçao unitaria pode ser implementada como sequencias de CNOTS simples e portas de um qubit, utilizando Gray Codes. Mais detalhes podem ser vistos no paper do Mottonen e na pagina 191 do livro do Nielse e Chuang.
+Esta escolha foi feita pois esta decomposiçao nao necessita de qubits auxiliares, diminuindo dos recursos utilizados.
+Dentro do for, a cada passo, vamos sempre diminuindo o numero de controlos com a funçao pop, e consequentemente o numero de targets, resultando assim na cascata de CNOTS.
+Esta porta X ao fim é uma pequena correçao ao modelo do Douglas e Wang, porque quando temos o estado 00, por exemplo, as CNOTS nao atuam, mas queremos que este estado seja incrementado para 01.
+
+O decremento sera igual, mas com os controlos negados.
+Agora nao temos a porta X ao fim, porque simplificando o circuito elas cancelam-se resultado neste circuito.
+
+Vamos entao considerar alguns passos para a caminhada com a moeda no estado 0 e o walker na posiçao 4, correspondente ao centro do grafo.
+Como podemos ver, devido a notaçao do Qiskit, a porta X fica no 3º qubit, visto que é o mais significativo. Temos entao o circuito para 3 passos.
+
+Vamos ver a distribuiçao de probabilidades passo a passo. Inicialmente, antes de aplicarmos moeda e shift, o caminhante esta na posiçao 4.
+
+Para um passo, podemos ver pela equaçao de onda que ambos estados terao igual amplitude. A amplitude corresponde, dentro do erro experimental do Qiskit.
+
+Para 2 passos, vemos que o estado 4 tem contribuiçao de 2 faces da moeda logo terá, em valor absoluto, o dobro da amplitude dos outros estados. Esta distribuiçao de probabilidades continua a ser igual à do caso clássico.
+
+No entanto vemos que o 3º passo já diverge, apresentado aqui um desvio para a direita de acordo com o que vimos na simulaçao. As amplitudes correspondem a 5/8 de probabilidade para o estado 5, e 1/8 para os restantes. Se fizessemos a moeda começar no estado 1, veriamos que os 5/8 estariam no 3.
+
+Vamos fazer entao o cirucito para o caso simétrico. O estado inicial da moeda pode ser preparado aplicando a porta H seguida da porta S.
+
+Fazendo as mediçoes, vemos que em vez de termos uma tendencia para a direita ou para a esquerda, temos uma igual probabilidade do caminhante estar no 3 ou no 5, novamente  de acordo com a simulaçao.
+
+A Caminhada Aleatoria Continua no Tempo classica, introduzida pelo Waters e Herber, é um modelo da random walk que nao necessita de uma moeda. Como o tempo é continuo, o caminhante tem uma probabilidade de transitar de um estado para o outro a qualquer momento.
+Podemos imaginar a probabilidade neste modelo como um fluido que escoa da posiçao xi para xj. Gradualmente a probabilidade diminui num vertice e aumenta noutro, até que o caminhante transita, quantificado pela taxa de transiçao gamma.
+
+Para descrevermos um sistema continuo no tempo, precisamos de uma equaçao diferencial que nos diga como é que a probabilidade varia no tempo e no grafo. Do lado direito temos uma discretizaçao do grafo e o Laplaciano que é a segunda derivada do grafo, diz nos quais vertices sao vizinhos e qual o seu grau. L = A - D, onde A e a matriz de adjacencia e D a matriz de grau.
+A matriz de adjacencia diz-nos quais vertices tem arestas a conecta-los, e a matriz de grau diz-nos quantas arestas cada vertice tem.
+
+No caso quantico, introduzido pelo Fahri e gutmann, temos a caminhada quantica continua no tempo. Fazendo a conversao da equaçao diferencial anterior, obtemos a seguinte equaçao de Shrodinger. O Hamiltoniano será descrito pela taxa de variaçao multiplicada pelo Laplaceano e terá que ser unitário.
+
+Resolvendo esta equaçao diferencial, resulta no seguinte operador, considerando a constante de planck modificada 1.
+Para um grafo regular, em que todos os vertices tem o mesmo grau, A e D comutam, pelo que podemos reescrever o operador como a multiplicaçao de 2 exponenciais. Como a matriz de grau será apenas a matriz de identidade multiplicada por uma constante, esta será uma fase global, podendo ser seguramente ignorada.
+No caso classico isto nao poderia ser feito, porque usar apenas a matriz de adjacencia nao é reversivel logo nao se adequa a descrever este modelo.
+
+Neste exemplo vamos considerar novamente o ciclo, cuja matriz de adjacencia é descrita por esta equaçao.
+No entanto, podemos considerar isto na perspetiva de grafos circulantes. Esta classe de grafos é descrita pela matriz seguinte, em que a proxima coluna resulta de pegarmos no ultimo elemento da coluna anterior e passar para o inicio da coluna.
+Impomos tambem restriçoes na matriz, a diagonal terá que ser 0 porque nao permitimos autoloops, e Cn-j = Cj para que a matriz seja simétrica e Hermitiana.
+
+Esta matriz pode ser descrita pela sua primeira coluna e uma operaçao deque, que poe o ultimo elemento na primeira posiçao, e desloca todos os outros para a posiçao seguinte.
+A matriz de adjacencia resultante é basicamente a matriz do shift do caso discreto mas sem o espaço da moeda.
+
+O operador em funçao da matriz de adjacencia é o seguinte. Se for 0, o exponencial será simplesmente 1, pelo que temos a matriz identidade. À medida que avançamos o tempo, isto muda.
+
+O nosso estado final será entao descrito pela aplicaçao de um Operador em funçao do tempo, ao estado inicial. No caso anterior o tempo vinha como uma aplicaçao sucessiva de operadores de evoluçao, neste caso a noçao de tempo está imbutida diretamente no operador.
+
+Analisando as probabilidades dentro deste estado final, vemos que em vez de termos uma transiçao abrupta do estado inicial para os estados adjacentes, temos uma transferencia gradual da probabilidade por todo o grafo.
+
+A distribuiçao de probabilidade após um maior intervalo de tempo revela que mesmo para o estado inicial 0, esta caminhada é simétrica. Isto acontece porque agora nao temos uma moeda a introduzir uma tendencia para um dos lados, e nenhum dos operadores presentes na caminhada tem vies.
+
+Alterando a condiçao inicial para uma sobreposiçao de estados vemos um comportamento semelhante. Continuamos a ter dois picos longe da origem, mas menos amplitude nos estados intermédios.
+
+Em ambas as condiçoes inciais, vemos algumas semelhanças ao caso simetrico do modelo discreto, devido a ambos os picos se encontrarem longe da origem.
+No entanto, no caso discreto, a utilizaçao de uma moeda introduzia tendencias na distribuiçao de probabilidades e podiamos alterar os parametros da moeda para modificar o formato geral. No caso continuo alterar o parametro gamma leva a uma alteraçao da dispersao da caminhada, mas nao o formato geral. 
+
+Novamente os picos circulam o grafo, interferindo um com o outro levando à mistura.
+
+Os valores proprios de uma matriz circulante sao conhecidos e podem ser calculados pela seguinte equaçao.
+Os vetores proprios associados serao calculados da seguinte maneira, e sao bases de Fourier.
+
+Isto é relevante, pois podemos usar a transformada de Fourier quantica para diagonalizar A.
+A matriz de adjacencia pode ser entao reescrita desta maneira, onde o lambda e um operador diagonal que codifica os valores proprios.
+Numericamente lambda poderá ser calculado aplicando fourier a A.
+
+Substituindo no operador de evoluçao, podemos reescreve-lo da seguinte maneira. Note-se que podemos retirar F do exponencial, por causa do teorema de decomposiçao espectral.
+
+Como temos agora um operador diagonal, podemos usar a funçao diagonal do Qiskit, baseada na decomposiçao apresentada no artigo de shende, como podemos ver na figura abaixo.
+O circuito do operador de evoluçao será entao o seguinte.
+
+O ultimo componente do circuito sera a QFT, descrita pelo seguinte circuito.
+O Qiskit da-nos a oportunidade de aproximar este circuito, uma vez que quanto maior for k , menos signficativa será a rotaçao, sendo assim possivel poupar recursos a custo de pouca precisao.
+O circuito da transformada de Fourier no Qiskit é entao o seguinte.
+
+Combinando todos os componentes, o circuito geral será o seguinte.
+
+Para 3 qubits, podemos ver que este circuito realmente corresponde à CTQW. Evoluindo o estado a começar no 4 vemos que as probabilidades transitam gradualmente para os vertices vizinhos.
+
+Vamos agora ver alguns problemas de busca no qiskit, e como podemos usar a CTQW para encontrar um elemento em tempo otimo
+
+Começamos por uma revisao de grover.
+O Grover é um algoritmo de busca em estruturas sem ordem. No caso classico, no pior dos casos teriamos que percorrer todos os N elementos para encontrar a soluçao, ou N/2 em media.
+O grover, em contrapartida, promete alcançar o mesmo em O(sqrt(N)) sendo possivelmente um garnho quadratico em relaçao ao caso classico.
+
+O procedimento é entao o seguinte
+1. Começamos num estado inicial de sobreposiçao.
+2. Marcamos os estados da soluçao com o oraculo, onde M é o conjunto dos elementos marcados.
+3. Fazemos a amplificaçao de amplitude, com uso do operador de Difusao.
+4. Aplicamos estes operadores O(sqrt(N)) vezes.
+5. Medimos o estado resultante.
+
+Para o caso de 3 qubits, e 1 elemento marcado, o numero otimo de passos é aproximadamente 2. O circuito geral será entao o seguinte.
+
+O oraculo é uma matriz diagonal, descrita da seguinte maneira, onde f(x) = 1 se x for uma soluçao, ou 0 caso contrario.
+
+Desta maneira, podemos usar a funçao diagonal para gerar o seguinte circuito para o oraculo.
+
+O operador de difusao pode ser descrito como o oraculo para o elemento 0, rodeado de portas Hadamard, sendo implementado de forma equivalente no qiskit.
+
+Correndo entao o circuito para o estado marcado 4, temos a seguinte distribuiçao de probabilidades para 2 passos.
+Este é realmente o numero otimo de passos, uma vez que se fizermos mais ou menos 1, nao teremos tanta probabilidade em cima do elemento marcado.
+
+Na verdade, o numero otimo de passos depende do numero de soluçoes. Por exemplo, para 1 soluçao e 16 elementos, seriam necessarios 3 passos. Se fizermos o calculo para 2 soluçoes, vemos que o numero otimo de passos será 2.
+
+Uma consequencia interessante disto, é quando o numero de elementos marcados corresponde a 1/4 do numero total de elementos, visto quer será apenas necessario 1 passo. Isto é chamado de single-shot grover.
+
+Vamos agora ver uma breve descriçao deste problema aplicado a uma caminhada continua no tempo. De momento estamos a escrever um artigo sobre a dinamica das caminhadas sem busca, pelo que com busca será o proximo passo.
+Começamos por modificar o operador de evoliçao para acomodar o oraculo. Basta apenas inserir este operador no  Hamiltoniano.
+
+Neste caso consideramos um grafo completo, em que todos os vertices estao ligados por arestas.
+Como todos os vertices tem o mesmo grau, este grafo é regular, pelo que A e D comutam.
+
+No entanto, A e O nao comutam, pelo que temos de usar a formula de Suzuki-Trotter para decompor o operador de evoluçao. Isto é uma aproximaçao ditada pelo numero de Trotter.
+
+Recordando que A pode ser diagonalizado pela QFT, podemos reescrever U desta forma.
+Esta representaçao é bastante util visto que nos permite escrever o circuito diretamente.
+
+Como tanto o operador de evoluçao como o oraculo sao matrizes diagonais, podemos implementar facilmente em Qiskit.
+
+Como nao podemos usar um numero de Trotter infinito, este circuito é uma aproximaçao. Para um circuito com 3 qubits, por exemplo, 2 iteraçoes de Trotter sao suficientes para obter uma amplitude do elemento marcado em tempo otimo. 
+Tecnicamente, este grafico deveria incluir o valor teorico da distribuiçao, mas foi algo que me passou ao lado.
+O numero teorico de passos é ligeiramente diferente do grover, como demonstrado pelo Janmark, mas continua na mesma ordem de grandeza, o que indica que estes algoritmos sao equivalentes e ótimos.
+No entanto, esta necessidade de iteraçoes de Trotter aumenta os recursos consumidos, visto que quanto maior for o numero de elementos mais iteraçoes sao necessárias.
+Uma análise que iremos fazer baseia-se no facto da QFT poder ser aproximada, e até completamente substituida por hadamards no caso do grafo completo. 
+

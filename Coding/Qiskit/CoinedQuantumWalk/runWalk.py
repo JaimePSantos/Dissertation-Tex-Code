@@ -1,18 +1,19 @@
 import sys
-sys.path.append('../Tools')
-from IBMTools import( 
-        simul,
-        savefig,
-        saveMultipleHist,
-        printDict,
-        plotMultipleQiskit,
-        plotMultipleQiskitIbm,
-        plotMultipleQiskitIbmSim,
-        multResultsSim,
-        setProvider,
-        leastBusy,
-        listBackends,
-        getJob)
+#sys.path.append('../Tools')
+#from IBMTools import( 
+#        simul,
+#        savefig,
+#        saveMultipleHist,
+#        printDict,
+#        plotMultipleQiskit,
+#        plotMultipleQiskitIbm,
+#        plotMultipleQiskitIbmSim,
+#        multResultsSim,
+#        setProvider,
+#        leastBusy,
+#        listBackends,
+#        getJob)
+import tools as pyt
 import numpy as np
 import matplotlib
 matplotlib.use('TkAgg')
@@ -136,6 +137,8 @@ def runWalk(N,steps,stateVec):
         qwc.barrier()
     if not stateVec:
         qwc.measure(qreg,creg)
+    #qwc.draw(output='mpl')
+    #plt.show()
     return qwc
 
 
@@ -253,7 +256,7 @@ def saveCoinedWalkFig(N,steps,fig, filePath, defaultFileName):
         if(len(N)-i==0):
             break
         specificFileName+="_"
-    savefig(fig, filePath,defaultFileName+specificFileName)
+    pyt.savefig(fig, filePath,defaultFileName+specificFileName)
     return specificFileName
 
 def printIncr(N,steps,style):
@@ -282,21 +285,21 @@ def drawCirc(circMultWalk,style):
             fig = circ.draw(output='mpl',style=style)
     return fig
 
-IBMQ.load_account()
-provider = setProvider('ibm-q-minho','academicprojects','quantalab')
-#leastBusyBackend =leastBusy(10,provider)
-#print("Least busy backend:",leastBusyBackend)
-#8
-melBackend = provider.get_backend('ibmq_16_melbourne')
-#32QV
-bogBackend = provider.get_backend('ibmq_bogota')
-parisBackend = provider.get_backend('ibmq_paris')
-manhatBackend = provider.get_backend('ibmq_manhattan')
-torontoBackend = provider.get_backend('ibmq_toronto')
-casablancaBackend = provider.get_backend('ibmq_casablanca')
-#Chosen
-backend = parisBackend
-simulator = provider.get_backend('ibmq_qasm_simulator')
+#IBMQ.load_account()
+#provider = setProvider('ibm-q-minho','academicprojects','quantalab')
+##leastBusyBackend =leastBusy(10,provider)
+##print("Least busy backend:",leastBusyBackend)
+##8
+#melBackend = provider.get_backend('ibmq_16_melbourne')
+##32QV
+#bogBackend = provider.get_backend('ibmq_bogota')
+#parisBackend = provider.get_backend('ibmq_paris')
+#manhatBackend = provider.get_backend('ibmq_manhattan')
+#torontoBackend = provider.get_backend('ibmq_toronto')
+#casablancaBackend = provider.get_backend('ibmq_casablanca')
+##Chosen
+#backend = parisBackend
+#simulator = provider.get_backend('ibmq_qasm_simulator')
 
 filePath = 'CoinedQuantumWalk/'
 circFilePath = 'CoinedQuantumWalk/Circuits/'
@@ -323,8 +326,9 @@ N=[3]
 steps=[0,1,2,3]
 shots = 3000
 circList = []
-multipleWalks = runMultipleWalksLite(singleN,steps,False)
-singleWalk = runWalk(singleN,singleSteps,False)
+multipleWalks = runMultipleWalks(N,steps,False)
+fig=pyt.plotMultipleQiskit(N,multipleWalks,steps,shots,True)
+saveCoinedWalkFig(N,steps,fig,filePath,defaultFileName)
 #print(multipleWalks)
 #circsIbm = transpile(multipleWalks,backend=backend,optimization_level=3,layout_method='noise_adaptive')
 #jobMult1 = execute(circsIbm, backend=backend, shots=shots)
@@ -336,17 +340,17 @@ singleWalk = runWalk(singleN,singleSteps,False)
 #
 #jobMult2 = execute(circList, backend=backend, shots=shots)
 #job_monitor(jobMult2)
-singleWalkCirc1 = transpile(singleWalk,backend=backend,optimization_level=3,layout_method='noise_adaptive')
+#singleWalkCirc1 = transpile(singleWalk,backend=backend,optimization_level=3,layout_method='noise_adaptive')
 
 #singleWalkCirc2 = transpile(singleWalk,backend=backend,optimization_level=3,layout_method='dense')
 #singleWalkCirc3 = transpile(singleWalk,backend=backend,optimization_level=3)
-listJob1 = [singleWalkCirc1, singleWalkCirc1, singleWalkCirc1]
+#listJob1 = [singleWalkCirc1, singleWalkCirc1, singleWalkCirc1]
 #listJob2 = [singleWalkCirc2, singleWalkCirc2, singleWalkCirc2]
 #listJob3 = [singleWalkCirc3, singleWalkCirc3, singleWalkCirc3]
 
-job1= execute(listJob1, backend=backend, shots=shots)
-print("Starting Noise Adpative")
-job_monitor(job1,1)
+#job1= execute(listJob1, backend=backend, shots=shots)
+#print("Starting Noise Adpative")
+#job_monitor(job1,1)
 #job2 = execute(listJob2, backend=backend, shots=shots)
 #print("Starting Dense")
 #job_monitor(job2,1)

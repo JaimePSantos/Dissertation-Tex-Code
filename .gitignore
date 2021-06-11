@@ -321,4 +321,5 @@ tags
 
 .ipynb_checkpoints/
 Untitled.ipynb
-
+venv
+.idea

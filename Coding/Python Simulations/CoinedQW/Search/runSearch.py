@@ -17,7 +17,7 @@ def ket2pos(pos,dim):
     return int(position)
 
 def init(N):
-    psi0 = ones((N**2,1))/ N
+    psi0 = ones((N**2+1,1))/ N
     return psi0
 
 def flipFlop(N):
@@ -118,8 +118,9 @@ def plotSearch(N,probT,steps,configVec):
         xlabel("Number of steps")
         ylabel("Probability of the marked element")
     for n in N:
-        plotName+=str(n)
+        plotName+=str(n) + "2"
     savefig(r'/home/jaime/Programming/Jaime-Santos-Dissertation/Results/Simulations/CoinedQuantumWalk/Search/CoinedSearch'+plotName)
+    #show()
     clf()
 
 def coinedSearchList(N,tSpace,marked,shiftList,oracleList,coinList,configVec):
@@ -166,7 +167,7 @@ def fin(N,marked,steps):
     return psiN,probs
 
 
-N = [16,32,64]
+N = [77] 
 marked = 0
 
 shiftList = flipFlopList(N)

@@ -1,0 +1,64 @@
+\documentclass[../../dissertation.tex]{subfiles}
+
+\begin{document}
+
+Chapter \ref{chap:introduction} began with a brief historical overview of the
+origins of quantum computation, from the early days of Computer
+Science all the way to quantum walks. An overview of the state of the art
+encompassing both theoretical and circuit implementations of quantum walks and
+searching problems based on them was presented later, including the relevant
+literature for this thesis. This introduction is closed with an overview of the following chapters and main contributions.\par
+
+The goal of the chapter \ref{chap:QuantumWalks} was to define the theoretical
+framework associated with the three quantum walk models studied in this thesis.
+This was done in the context of the quantum walk on the line, starting with a
+brief definition of the classical random walk, followed by the discrete models
+of the quantum walk, namely the coined model and the staggered model, and
+finishing with the continuous-time quantum walk. All the models were
+simulated in Python, and various plots were created in order to analyze how
+the different parameters influence the dynamics of each walk.\par
+
+Chapter \ref{chap:searchingProblems} was devoted to the study of the
+previously defined quantum walks when applied to the searching problem. It
+starts with the definition of the Grover algorithm and its complexity analysis, followed by the quantum walk analogue. The theoretical
+explanations for the various quantum walks on complete graphs were discussed,
+combined with the introduction of the oracle. As in the previous
+chapter, Python was used to simulate the algorithms and study how the different
+aspects of each model affect how the way the search algorithm evolves.\par
+
+The main original contributions of this thesis are presented in chapter
+\ref{chap:qiskitImplementation}. The first contribution is a systematic way of creating Qiskit circuits implementing continuous-time quantum walks
+for a myriad of circulant graphs, resorting to the quantum Fourier transform and
+Qiskit's \textit{diagonal} function, presented in the work by \cite{chagassantos21} accepted in SBRC 2021 - WQuantum / Comunicação e Computação Quântica. Previous work by \cite{qiang2016} uses
+the concept of circulant graphs for the implementation of the CTQW model on a
+complete graph for a small number of qubits. However this work provides
+a systematic way of generating circuits for a much greater number of circulant
+graphs, for an arbitrary number of qubits, as well as an analysis of how the
+approximate quantum Fourier transform can be used to reduce circuit depth for
+better results in NISQ computers. 
+%TODO: Grover
+Another original contribution, was the use of this method to implement search on circulant graphs
+resorting to the continuous-time quantum walk. The results were not as satisfactory
+as in the previous dynamics example, because of the increase in the circuit size due
+to the introduction of the oracle and Suzuki-Trotter iterations. This is still
+a work in progress, which will be further expanded upon in future publications.
+This chapter also contains a compilation of methods for creating circuits for
+the dynamics and search of the discrete-time quantum walk models, based mainly
+on the work of \cite{douglaswang07} and \cite{acasiete2020}. These are not
+original contributions but hopefully provide a useful overview on how to
+implement these algorithms on current quantum hardware.\par
+
+Based on what was achieved in this dissertation, future work for the study and
+implementation of quantum walks includes the following:
+\begin{enumerate}
+	\item The circuit implementation of the continuous-time quantum walk search problem using circulant graphs, and the investigation on how the AQFT affects circuit depth and implementability on NISQ computers. This is the goal of a planned next publication.
+	\item Simulation, implementation and analysis of the searching problem for multiple marked elements using the staggered quantum walk model. The search problem with the SQW is not very well documented in the literature, with fundamental issues still lacking.
+	%TODO: Problemas de transporte??	
+	\item Analysis, through simulation of the continuous-time quantum walk, from the perspective of transport problems, such as localization, perfect state transfer and mixing time, and further analysis of the search problem for multiple marked elements.
+	%TODO: Perspetiva do locke?
+	\item Development of a method for constructing staggered quantum walk circuits for a larger variety of graphs.
+	\item Expansion of the circulant graph method for the CTQW in order to perform the walk over a larger class of graphs.
+\end{enumerate}
+
+
+\end{document}

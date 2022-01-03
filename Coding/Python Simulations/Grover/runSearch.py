@@ -27,19 +27,19 @@ def unitary(N,marked):
     diff = diffusion(N)
     return np.dot(diff,orac)
 
-def spaceGen(N,ran):
+def spaceGen(N):
     stepVec = []
     tVec = []
     for n in N:
-        idealSteps =2*np.floor((np.pi/4)*np.sqrt(n))
+        idealSteps =np.floor((np.pi/4)*np.sqrt(n))
         stepVec.append(int(idealSteps))
     return stepVec
 
-def spaceGenMultiple(N,numberOfMarked,ran):
+def spaceGenMultiple(N,numberOfMarked):
     stepVec = []
     tVec = []
     for n in N:
-        idealSteps =np.floor(ran*(np.pi/4)*np.sqrt(n/numberOfMarked))
+        idealSteps =np.floor((np.pi/4)*np.sqrt(n/numberOfMarked))
         stepVec.append(int(idealSteps))
     return stepVec
 
@@ -69,13 +69,12 @@ def plotSearch(N,probT,steps,configVec):
         stepAux = []
     for n,steps,config,walk in zip(N,stepList,configVec,probT):
         plot(walk,color=config[0],linestyle=config[1],label="N=%s"%(n))
-        vlines(int(max(steps)/2),0,max(walk),color=config[0],linestyle=config[2])
+        vlines(max(steps),0,walk[-1],color=config[0],linestyle=config[2])
         legend()
         xlabel("Number of steps")
         ylabel("Probability of the marked element")
     for n in N:
         plotName+=str(n)
-    plotName+="_corrected"
     savefig(r'/home/jaime/Programming/Jaime-Santos-Dissertation/Results/Simulations/Grover/GroverOneMarked'+plotName)
     clf()
 
@@ -115,12 +114,12 @@ def plotSearchMultiple(N,probT,steps,configVec):
         stepAux = []
     for n,steps,config,walk in zip(N,stepList,configVec,probT):
         plot(walk,color=config[0],linestyle=config[1],label="N=%s"%(n))
-        vlines(int(max(steps)/2),0,max(walk),color=config[0],linestyle=config[2])
+        vlines(max(steps),0,walk[-1],color=config[0],linestyle=config[2])
         legend()
         xlabel("Number of steps")
         ylabel("Total probability of the marked elements")
     for n in N:
-        plotName+=str(n)+"_Corrected"
+        plotName+=str(n)
     savefig(r'/home/jaime/Programming/Jaime-Santos-Dissertation/Results/Simulations/Grover/GroverMultipleMarked'+plotName)
     clf()
 
@@ -182,24 +181,22 @@ lines = ['-','-','-' ,'-']
 lines2 = ['--','--','--','--']
 configVec = zip(colors,lines,lines2)
 
-#NSingShot =[32,64,128,256]
-#markedSingShot = markedList(NSingShot)
-#groverSingle = singleShotGrover(NSingShot,markedSingShot)
-#plotSingShot(NSingShot,groverSingle,configVec)
-#
+NSingShot =[32,64,128,256]
+markedSingShot = markedList(NSingShot)
+groverSingle = singleShotGrover(NSingShot,markedSingShot)
+plotSingShot(NSingShot,groverSingle,configVec)
+
 configVec2 = zip(colors,lines,lines2)
-N=[32,64,128]
+N=[32,64,128,256]
 marked=[0]
-ran=2
-steps=spaceGen(N,ran)
+steps=spaceGen(N)
 grover = groverSearch(N,steps,marked)
 plotSearch(N,grover,steps,configVec2)
 
-#NMMarked = [32,64,128]
-#mMarked = [0,1]
-#ran=2
-#configVec3 = zip(colors,lines,lines2)
-#stepsMMarked = spaceGenMultiple(NMMarked,len(mMarked),ran)
-#groverMMarked = groverSearchMultiple(NMMarked,stepsMMarked,mMarked)
-#plotSearchMultiple(NMMarked,groverMMarked,stepsMMarked,configVec3)
+NMMarked = [32,64,128,256]
+mMarked = [0,1]
+configVec3 = zip(colors,lines,lines2)
+stepsMMarked = spaceGenMultiple(NMMarked,len(mMarked))
+groverMMarked = groverSearchMultiple(NMMarked,stepsMMarked,mMarked)
+plotSearchMultiple(NMMarked,groverMMarked,stepsMMarked,configVec3)
 

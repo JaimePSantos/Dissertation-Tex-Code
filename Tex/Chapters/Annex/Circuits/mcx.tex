@@ -1,0 +1,103 @@
+\documentclass[../../../dissertation.tex]{subfiles}
+\begin{document}
+
+In order to run this circuit on a real quantum computer using Qiskit, one must first find a way of creating generalized CNOT gates, since it is not available in the base package. One approach to this problem is to decompose an arbitrarily controlled CNOT gate into elementary gates, as was done by \cite{barenco95}. In this context, the main idea is that for any unitary operator $U$, there exists operators such that 
+\begin{equation}
+	U = \phi AXBXC,
+\end{equation}
+where $ABC=I$, $X$ is the Pauli-X and $\phi$ is a phase operator described by $\phi=e^{i\delta} \times I$.\par
+\begin{figure}[!h]
+	\[ \Qcircuit @C=1em @R=1em { & \ctrl{2} & \qw & \\
+			&\ctrl{1} &\qw & = &  \\
+			&\targ & \qw &
+		}
+		 \Qcircuit @C=1em @R=1em { &\ctrl{2} & \qw  & \qw  & \ctrl{2} & \qw & \ctrl{2} & \qw & \qw\\
+				     &\ctrl{1} & \ctrl{1} & \ctrl{1} & \qw & \ctrl{1} & \qw & \ctrl{1} & \qw\\ 
+				     &\gate{\phi(\frac{\pi}{2})} & \gate{R_z(\frac{\pi}{2})}  & \gate{R_y(\frac{\pi}{2})} & \targ & \gate{R_y(-\frac{\pi}{2})} & \targ &\gate{R_z(-\frac{\pi}{2})} & \qw 
+		          } \]
+	\centering
+	\caption{Toffoli decomposition}
+	\label{fig:toffoliDecompCircuit}
+\end{figure}
+In order to understand this method, a good first example is the Toffoli gate, as is shown in figure \ref{fig:toffoliDecompCircuit}. 
+%TODO: Explicar a decomposicao da cnot? Ver a dissertacao.
+%TODO: Target nao fica alinhado com as unitarias.
+%TODO: Reescrever isto. A primeira rotacao nao e Rz.
+The first rotation in the circuit is defined by the $R_z$ matrix 
+\begin{equation}
+	R_z(\theta) = \begin{pmatrix}
+		e^{i\frac{\phi}{2}} & 0 \\
+		0 & e^{i\frac{\phi}{2}}
+	\end{pmatrix},
+\end{equation}
+where $\theta = \frac{\pi}{2}$. Secondly, the $R_y$ rotation is
+\begin{equation}
+	R_y(\phi) = \begin{pmatrix}
+			cos(\frac{\theta}{2}) & -sin(\frac{\theta}{2}) \\
+			sin(\frac{\theta}{2}) & cos(\frac{\theta}{2})
+		 \end{pmatrix},
+\end{equation}
+and $\phi = \frac{\pi}{2}$. The following rotations are simply $R_z^\dagger$ and $R_y^\dagger$. Lastly, the phase operator $\phi$ is 
+\begin{equation}
+	\phi(\delta) = \begin{pmatrix}
+		e^{i\delta} & 0 \\
+		0 & e^{i\delta}
+		 \end{pmatrix}
+\end{equation}
+where $\delta = -\frac{\pi}{2}$. This phase correction is considered because otherwise
+\begin{equation}
+	R_z(\frac{\pi}{2})R_y(\frac{\pi}{2})XR_y(-\frac{\pi}{2})XR_z(-\frac{\pi}{2}) = 
+	\begin{pmatrix}
+		0 & -i \\
+		-i & 0
+		 \end{pmatrix} \neq X.
+\end{equation}
+Introducing the phase correction results in
+\begin{equation}
+	\phi(\frac{\pi}{2}) 
+	\begin{pmatrix}
+		0 & -i \\
+		-i & 0
+		 \end{pmatrix} =  
+	\begin{pmatrix}
+		i & 0 \\
+		0 & i
+		 \end{pmatrix}   
+	\begin{pmatrix}
+		0 & -i \\
+		-i & 0
+		 \end{pmatrix} =   
+	\begin{pmatrix}
+		0 & 1 \\
+		1 & 0
+		 \end{pmatrix} = X  
+\end{equation}
+%TODO: Rever esta frase e tentar expandir um bocado.
+However, since this is a global phase, it won't be included since it has no effect on the result of the measurement.\par
+%TODO: Rever parte do "generalised inverter gates"
+A more generalized version of this method can be seen in figure \ref{fig:generalDecompCircuit}. Each individual generalized CNOT gate in this circuit can be expanded as was done for the Toffoli gate example, stopping once the generalised inverter gates are simply Toffoli gates.
+
+\begin{figure}[!h]
+	\[ \Qcircuit @C=1em @R=1em { & \ctrl{5} & \qw & \\
+			&\ctrl{4} &\qw & = &  \\
+			&         & .  &   &  \\
+			&         & .  &   &  \\
+			&         & .  &   &  \\
+			&\ctrl{1} &\qw & = &  \\
+			&\gate{U} & \qw &  &
+		}
+			\Qcircuit @C=1em @R=1em { 
+				     &\ctrl{5} & \qw  & \ctrl{6} & \qw & \ctrl{6} & \qw &  \qw\\
+				     &\ctrl{4} & \qw & \ctrl{5} & \qw & \ctrl{5} & \qw &  \qw\\ 			
+				     &         & .  &   & . &  & . \\
+				     &         & .  &   & . &  & . \\
+				     &         & .  &   & . &  & . \\
+				     &\ctrl{1} & \ctrl{1}  & \qw & \ctrl{1} & \qw &\ctrl{1} & \qw \\				     &\gate{\phi} & \gate{A}  & \targ & \gate{B} & \targ &\gate{C} & \qw 
+		          } \]
+	\centering
+	\caption{General decomposition}
+	\label{fig:generalDecompCircuit}
+\end{figure}
+This was the chosen method because it provides a way of implementing arbitrarily controlled CNOT gates without the use of ancillary qubits, which are a scarce resource.\par
+
+\end{document}

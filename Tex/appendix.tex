@@ -1,0 +1,56 @@
+	%\begin{comment}
+	   % \section{Graphs}
+    %     \section{Classical Discrete-Time Markov chains} \label{discmarkov}
+
+    % 	    A \textit{classical Markov Chain} is a stochastic process that assumes discrete values and whose next state depends only on the current state, which is ruled by a deterministic or random rule based only on the current state. This can be viewed as a directed graph where the states are represented by \textit{nodes} and the transitions between states by \textit{edges}.
+    % 	    In the case of the \texit{classical discrete-time Markov chain}, each transition has an associated probability distribution and, after choosing an order for the states, this distribution is described by a vector: \par
+    % 	    \[
+    %          \Vec{p}(t) = \begin{bmatrix}
+    %                      p_{1}(t) \\
+    %                     p_{2}(t) \\
+    %                     \vdots \\
+    %                     p_{n}(t) \\
+    %                 \end{bmatrix}         
+    % 	    \]
+    % 	    where \textit{$p_{i}(t)$} is the probability of the walker being on vertex
+    % 	    \textit{$x_{i}$} at time \textit{t}. Due to the probabilistic nature of the transitions, one cannot tell the exact node the walker will be at a future time. One can instead determine the probability distribution, which will require the \textit{transition matrix M}. \textbf{[POR ACABAR]}
+    	    
+    %     \section{Classical Continuous-Time Markov Chains} \label{contmarkov}
+        
+    %          Previously in \ref{discmarkov}, the \textit{classical discrete-times Markov chains} were defined in order to make the transition from the \textit{classical random walk} to the \textit{coined quantum walk} (\ref{coinedwalk}). This appendix comes as an additional tool to better understand \ref{contwalk}.\par
+    %          Continuous time can be considered a stochastic process where time can be any non-negative real number, and the walker can now transition from vertex $x_i$ to $x_j$ at any time. Eventually, the probability of the walker being found in adjacent vertices will increase and the probability of staying on $x_i$ decrease. This is called the \textit{transition rate}, $\gamma$, and it is homogeneous and uniform\footnote{It is the same for all vertices and times, respectively.}. The probability of this transition is $\gamma$ over time.\par
+    %          In order to deal with continuous variables, one must consider an \textit{infinitesimal} time interval, $\tau$, and solve the problem's differential equation. The probability of a transition during this time interval is thus $\gamma_\tau$. The degree of vertex $x_j$ is defined as $d_j$, will also be a component of the probability since it relates to how many other vertices it is connected to. After $\tau$ time, it is expected to see a transition with probability $d_j\gamma_\tau$ and a standstill with $1-d_j\gamma_\tau$ probability. It is now possible to define a transition matrix as  \par
+    %          \begin{equation}
+    %                 M_{ij} = \begin{cases} 
+    %                 1-d_j\gamma_\tau + O(\tau^2), & \mbox{if } i= j; \\ 
+    %                 \gamma_\tauO+O(\tau^2), & \mbox{if } i\neq j;\\
+    %                 \end{cases}\label{eq:12}
+    %          \end{equation}
+    %          \textbf{[Perceber o O]}
+    %          And an auxiliary generating matrix as
+    %          \begin{equation}
+    %             H_{ij} = \begin{cases} 
+    %                         d_j\gamma, & \mbox{if } i= j; \\ 
+    %                         -\gamma, & \mbox{if } i\neq j\mbox{ and adjacent};\\
+    %                         0, & \mbox{if } i\neq j\mbox{ and not adjacent}.
+    %                     \end{cases} {\label{eq:13}}
+    %          \end{equation}
+    %          Since the next state of a Markov state only depends on the current state, the probability of two independent events is given by their multiplication. The transition matrix at different times will then be
+    %          \begin{equation}
+    %              M_{ij}(t+\tau) = \sum_k M_{ik}(t)M_{kj}(\tau) \label{eq:13}
+    %          \end{equation}
+    %          By noticing that one needs only to calculate the transitions for vertices adjacent to $x_j$ and after some manipulation of \ref{eq:13}, as was done in \cite{REN1}, one arrives at the following differential equation
+    %          \begin{equation}
+    %              \frac{dM_{ij}(t)}{dt} = -\sum_k H_{kj}M_{ik}(t) \label{eq:13}
+    %          \end{equation}
+    %          Setting the initial condition $M_{ij}(0) = \delta_{ij}$\textbf{[Perceber a cond inicial - e simplesmente a identidade]}, the solution for the differential equation is
+    %          \begin{equation}
+    %              M(t) = e^{-Ht}
+    %          \end{equation}
+    %         With the transition matrix defined, the corresponding probability distribution will be
+    %         \begin{equation}
+    %             \Vec{p}(t) = M(t)\Vec{p}(0)
+    %         \end{equation}
+    %         \textbf{[Tentar completar mais isto e alterar um bocado o texto.]}
+    %   % \end{comment}
+             

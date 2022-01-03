@@ -1,0 +1,15 @@
+@article{Pollard93,
+   title={The Number Field Sieve},
+   author={J. Pollard, Lenstra Arjen, H. Lenstra, Mark Manasse},
+   year={1993},
+   month={Aug}
+}
+
+@article{Pollard93,
+  title={The Number Field Sieve},
+  author={D. Coppersmith},
+  year={1994},
+  journal={}
+}
+
+

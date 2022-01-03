@@ -1,0 +1,124 @@
+\documentclass[../../dissertation.tex]{subfiles}
+\begin{document}
+
+The modern understanding of computer science was firstly put forward by
+\cite{turing1936} where he developed the abstract concept of what is now called
+a \textit{Turing machine}. These machines are the mathematical foundation of
+programmable computers, and Turing showed that there is a \textit{Universal
+Turing Machine} that can be used to simulate any other Turing Machine. This
+means that if an algorithm can be executed in any piece of hardware, then there
+is a Universal Turing Machine that can accomplish the same task. This is known as
+the \textit{Church-Turing thesis}, which connects the concept of what classes
+of algorithms can be run in some physical device with the mathematical
+framework of a Universal Turing Machine.\par The paper published by Turing set
+in motion a series of events which led to the rapid advancement of electronic
+computers and computer science. One of the earliest theoretical models
+developed by John von Neumann (later published in \cite{Neumann93}),
+showed how to assemble all the necessary parts to create a computer with all
+the capabilities of a Universal Turing Machine. The true explosion of
+innovation in this field came after the invention of the transistor in 1947 by
+John Bardeen and Walter Brattain. The creation of the transistor led to an
+unprecedented growth quantified by \cite{moore1965}, known as \textit{Moore's law}, stating that computer power will double with constant
+cost approximately every two years. Moore's law has roughly held true
+throughout the decades, by the ever increasing miniaturization of the
+transistor technology. However, conventional fabrication methods run into a
+problem of scale, as quantum effects begin to interfere more and more as the size of the
+devices becomes smaller.\par
+
+\cite{feynman1959} recognized such a miniaturization was the way forward as computational resources, and
+even predicted the problems quantum effects presented to a classical computer.
+With an amazing stroke of insight, Feynman imagined that these effects could
+be exploited given the right computational paradigm. Quantum computing begins
+to take form in later work developed by \cite{benioff1980}, where the earliest
+quantum mechanical model of a computer was described. In this paper, Benioff
+showed that a computer working under the laws of quantum mechanics could be
+used to express a Schrödinger equation description of a Turing machine. Shortly
+after, \cite{feynman1982} pointed out that simulating quantum systems on
+classical computers is inefficient, and suggested using quantum computers for
+this purpose. Additional work in the following decade further explored this
+idea and showed that there are systems that quantum computers can simulate,
+which have no known efficient simulation on a classical computer. Even
+today this continues to be one of the most promising fields in quantum
+computing.\par Driven by the work of Turing, \cite{deutsch1985} questioned if a
+stronger version of the Church-Turing thesis could be derived from the laws of
+physics. The strong Church-Turing thesis states that any algorithmic process
+can be simulated efficiently using a probabilistic Turing machine, and Deutsch
+was set to define some device that could efficiently simulate an arbitrary
+physical system. Whether Deutsch's formulation of a Universal Quantum Computer
+is sufficient for this purpose is still an open question. What he
+accomplished, however, was a challenge to the strong Church-Turing thesis by suggesting
+that there are tasks a quantum computer can accomplish efficiently that a
+probabilistic Turing machine cannot. \cite{deutsch1992} present an example of a
+quantum algorithm that is exponentially faster than a classical counterpart,
+the \textit{Deutsch-Jozsa algorithm} that determines if a function is constant
+or balanced. Even though of little practical use, this is one of the first
+examples of possible advantages a quantum computer may have over a classical
+one.\par
+
+Even though the Deutsch-Jozsa algorithm might not have real world applications,
+it led to further research on finding other such types of algorithms.
+\cite{shor1994} showed that the problem of finding prime factors of an integer
+and the \textit{discrete logarithm} problem can be efficiently solved by a
+quantum computer. This brought a lot of interest to
+quantum computing, since both of these problems have real world applications
+and no efficient classical solution was/is known. Furthermore, most modern
+popular algorithms used for cryptography rely on the fact that the integer
+factorization or discrete logarithm problems are not solvable in time that grows polynomially with the size of the problem. Since
+this is no longer the case, a new field has emerged called \textit{post-quantum
+cryptography}, whose purpose is to find suitable classical protocols for
+cryptography that cannot be efficiently broken by quantum computing.\par
+
+A more modest, but very relevant advantage was presented by \cite{grover1996} in the form of a quantum algorithm able to speed up unstructured
+database searches quadratically. Even though it's not an exponential
+improvement like Shor's algorithm, search-based algorithms are useful in many
+contexts, so even a "small" quadratic gain generated a lot of interest.\par
+
+Contemporary to computer science, information theory is another field very
+relevant to this topic. \cite{shannon48} revolutionized how communication and
+information are understood. In his paper, Shannon was interested in defining
+what resources are required to send information over a communication channel
+and how to reliably send that information mitigating the effects of noise. This
+led to the discovery of the two fundamental theorems of information theory.
+Firstly, Shannon's \textit{noiseless channel coding theorem} specifies what
+resources are needed to store information sent from a source. Secondly, the
+\textit{noisy channel coding theorem}, specifies how much information can be
+sent through a channel subject to noise. Even though Shannon's second theorem
+does not define any specific methodology to reduce noise, it sets an upper
+limit on how much noise can be mitigated through said methodology. These are
+known as \textit{error-correcting codes} and research has developed better and
+better codes that get closer and closer to Shannon's limit. They are used
+wherever there is a need to store or transmit information.\par 
+
+Similar progress was made in quantum information theory. \cite{schumacher95}
+developed a quantum version of Shannon's noiseless coding theorem, where he
+defined a \textit{quantum bit} as a physical resource. There is no analogue for
+the second Shannon theorem, but that didn't stop the development of quantum
+error-correcting theory. For example, \cite{shorcalder96} and \cite{steane96}
+proposed an important class of quantum error-correcting codes known as CSS.\par
+
+%TODO: Sera relevante?
+Error-correcting was designed to protect quantum states, but another discovery
+by \cite{wisnerbennet92} showed another interesting aspect of quantum
+information when transmitting classical information through a quantum channel.
+They explained how to send two classical bits of information using only one
+qubit, in a phenomenon known as \textit{superdense coding}.\par Another
+interesting application of quantum information is in the field of cryptography.
+\cite{wisner60} showed how quantum mechanics could be used to make sure that a
+information sent could not be interfered with without destroying it. Building
+on this work, \cite{bennetbassard84} proposed a quantum key distribution
+protocol between sender and receiver that could not spied upon without notice.
+Many other protocols have since been proposed and experimental prototypes
+developed.\par
+
+Finally, another interesting field within quantum computation is based on the
+concept of \textit{distributed quantum computation}. Quantum clusters show
+promise since they require exponentially less communication to solve certain
+problems, such as modeling quantum systems, but are stil in their infancy due
+to technical restrictions. There has been an increasing international interest in
+taking advantage of these systems to build a \textit{quantum internet} which
+promises better and safer transmission of information, but there are still many
+technological improvements to be made before this becomes a mainstream reality. 
+
+%TODO: Arranjar uma referencia para internet quantica.
+
+\end{document}

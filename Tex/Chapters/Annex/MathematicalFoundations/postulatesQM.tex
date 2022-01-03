@@ -1,0 +1,221 @@
+\documentclass[../../../dissertation.tex]{subfiles}
+\newtheorem{post}{Postulate}
+\begin{document}
+
+%TODO:Referencia sem ser do sakurai? 
+Quantum mechanics, firstly discovered in the decade of 1920, is a mathematical
+framework for developing physical theories. This section revisits the basic postulates of quantum mechanics, which are formalized resorting to the
+Dirac notation. Further reading on this notation includes the work of
+\cite{sakurai1994} and, for an extensive review of quantum computation, the
+book by \cite{nielsen2011}.\par  
+The first postulate defines where the processes of quantum mechanics take
+place. The \textit{state} of a system describes its physical characteristics,
+so some rules are required for these mathematical objects to have a connection
+to the real world.
+\begin{post}[State Space] 
+	Any isolated physical system has an associated Hilbert Space,
+	$\mathcal{H}$, known as the state space. The state of the system is
+	wholly described by its state vector $\ket{\psi} \in \mathcal{H}$. The
+	physical system's degrees of freedom dictate the dimension of
+	$\mathcal{H}$\par
+\end{post}
+Note that this postulate does not tell us the Hilbert space of any given
+physical system, nor does it tell us its state vector. It is generally hard to
+define the Hilbert space of an arbitrary system, which makes the work physicists
+have done in developing certain theories, like quantum electrodynamics, even more
+remarkable.\par 
+Considering the computational basis $\{\ket{0},\ket{1}\}$, the simplest quantum
+system, the \textit{qubit}, can be defined as 
+\begin{equation}
+	\ket{\psi} = \alpha \ket{0} + \beta \ket{1},
+\end{equation}
+where $\alpha,\beta$ are complex numbers and
+\begin{equation}
+	\ket{0} = \begin{pmatrix} 1 \\0 \end{pmatrix}  \; \; \text{and}  \;  \;  \ket{1} = \begin{pmatrix} 0 \\1 \end{pmatrix}.
+\end{equation}
+Because Hilbert spaces are also vector spaces, linear combinations of these
+states are also allowed 
+\begin{equation}
+	\ket{\psi} = \sum_i \alpha_i \ket{\varphi_i}.
+\end{equation}
+Since $\ket{\psi}$ is required to be a unit vector, $\ket{\psi}\bra{\psi}=1$ or, equivalently,
+\begin{equation}
+	\sum_j | \alpha_j |^2 = 1 .
+\end{equation}
+These combinations, known as \textit{superpositions}, are the main difference between a classical bit and a qubit, where the states are not in a definite
+value before measurement. This is a well studied quantum phenomenon that leads
+to constructive and destructive interference between states, which is an aspect many algorithms indeed exploit.\par
+
+The second postulate aims to describe how a quantum system evolves with time,
+and it can be formulated in the following way. 
+\begin{post}[Evolution]
+	\label{post:evolution}
+	The time evolution of a closed quantum system is described by a unitary
+	operator. Considering an initial condition $\ket{\psi_0}$, then for any
+	time evolution of a closed quantum system, a unitary operator $U$ exists
+	such that $\ket{\psi_f}=U\ket{\psi_0}$.\par
+\end{post}
+Just as the first postulate does not specify a Hilbert space, the evolution
+postulate does not state which unitary operators $U$ describe an arbitrary
+physical system. What it does state is that the evolution of a closed quantum
+system follows those rules. More specifically, the second postulate describes
+the dynamics of such systems. In the case of a qubit, any U can be performed in
+a realistic system as long as $U U^\dag = U^\dag U = I$, which is another way
+of saying that $U$ is unitary.\par  
+
+%TODO: Esta prox frase esta fraca.
+There are a number of unitary operators very relevant to quantum computation, known
+as \textit{Pauli matrices}, that are usually composed to create more general
+matrices. These are defined as
+\begin{equation}
+	I = \begin{pmatrix} 
+		1 && 0\\
+		0 && 1
+	    \end{pmatrix}, \; \;
+	X = \begin{pmatrix} 
+		0 && 1\\
+		1 && 0
+	    \end{pmatrix}, \; \;
+	Y = \begin{pmatrix} 
+		0 && -i\\
+		i && 0
+	    \end{pmatrix} \;\; and \; \;
+	Z = \begin{pmatrix} 
+		1 && 0\\
+		0 && -1
+	    \end{pmatrix}.
+\end{equation}\par
+Postulate \ref{post:evolution} tells us the relationship between the states of
+the system at two different times. An improved version of this postulate takes
+time as a continuous variable, stating that the temporal evolution of a closed
+quantum system can be described by the Schrodinger equation 
+\begin{equation}
+	i \hbar \frac{d\ket{\psi}}{dt} = H \ket{\psi},
+\end{equation}
+%TODO: Decidir se devo falar sobre os valores proprios de energia e assim.
+where $\hbar$ is the \textit{Planck's constant} and $H$ is a Hermitian operator
+known as the \textit{Hamiltonian} of the system. In principle, the Hamiltonian
+can be used to describe a system in its entirety. However figuring out the
+Hamiltonian is generally a hard task.\par
+
+So far only single quantum systems have been considered. The next postulate
+describes how one can create composite quantum systems made of smaller distinct
+systems.
+\begin{post}[Composite Systems]
+	The state space of a system composed of smaller sub-systems can be
+	described by the tensor product of the individual state spaces
+	$\mathcal{H}_1\otimes\mathcal{H}_2$. Moreover, if the first system's
+	state is $\ket{\psi_1}$ and the second is $\ket{\psi_2}$ then the state
+	of the composite system is $\ket{\psi_1} \otimes \ket{\psi_2}$.  
+\end{post}\par
+
+%TODO: O prox paragrafo nao esta muito bom.
+The tensor product is used because of the nature of superposition in quantum
+mechanics. A system composed of subsystems $\{\ket{\psi},\ket{\varphi}\}$ is denoted as $\ket{\psi}\otimes\ket{\varphi}$. Recalling the superposition principle,
+that tells us that any complex linear combination of states belonging to the
+system is also allowed, the tensor product naturally follows.\par
+The tensor notation can be written in a more compact way. A system
+described by $n$ component states \begin{equation}
+	\ket{\psi} = \ket{\psi_0} \otimes \ket{\psi_1} \otimes \cdots \otimes \ket{\psi_{n-1}},
+\end{equation}
+can be rewritten as 
+\begin{equation}
+	\ket{\psi} = \ket{\psi_0}\ket{\psi_1} \cdots \ket{\psi_{n-1}},
+\end{equation}
+and even further compacted to
+\begin{equation}
+	\ket{\psi} = \ket{\psi_0 \psi_1 \cdots \psi_{n-1}}.
+\end{equation}\par
+
+However, not all composite systems can be described as the tensor product of
+the component states. For example, state 
+\begin{equation}
+	\label{eq:post3BellState}
+	\ket{\psi} = \frac{\ket{00} +\ket{11}}{\sqrt{2}}, 
+\end{equation}
+cannot be broken down further. These subsystems are known to be
+\textit{entangled}, and the state in equation \eqref{eq:post3BellState} is called
+a \textit{Bell} state. Bell states describe the set of $2$ qubit states that
+present maximum entanglement. They are used in many quantum applications like
+\textit{quantum teleportation} and \textit{superdense coding}.\par
+
+As was mentioned above, closed quantum systems evolve unitarily in time.
+However, in order to do something useful with such a system, one must extract
+the underlying classical information. This is achieved
+by the process of measurement, which requires some form of interaction with the
+system, thus making it no longer closed nor described by a unitary evolution.
+
+\begin{post}[Measurement]
+Quantum measurements are described by a set, $\{M_m\}$, of measurement operators
+that act on the state space of the system, satisfying the completeness relation
+$\sum_m M_m^\dag M_m = I$, where $m$ refers to the measurement outcomes. Considering a system with state $\ket{\psi}$, immediately before
+measurement, then the probability of an outcome $m$ is \begin{equation}
+	p(m) = \bra{\psi} M_m^\dag M_m \ket{\psi}.
+\end{equation}
+The state of the system after the measurement will be
+\begin{equation}
+\ket{\psi'} = \frac{1}{\sqrt{p(m)}} M_m \ket{\psi}.
+\end{equation}
+\end{post}\par
+%TODO: MElhorar frase.
+Measurement can be done and interpreted in several different ways, however this
+appendix focuses on what is called \textit{projective} measurement. A projective
+measurement is described by an Hermitian operator, $M$, known as an
+\textit{observable}, with spectral decomposition
+\begin{equation}
+	M = \sum_m m P_m
+\end{equation}
+where $P_m$ is an Hermitian projection operator with eigenvalue $m$. For
+example, $P_1$ and $P_2$ are projection operators that are orthogonal to each
+other and whose product is a zero matrix. A set of operators with these
+characteristics obey the completeness equation 
+\begin{equation}
+	\sum_i P_i = I.
+\end{equation}\par
+The probability of outcome $m$ associated with the measurement of state
+$\ket{\psi}$ can be written as 
+\begin{equation}
+	p(m) = \bra{\psi} P_m \ket{\psi}.
+\end{equation}
+Knowing that $m$ was the result of the measurement, the resulting state for the
+quantum system is then
+\begin{equation}
+	\frac{P_m}{\sqrt{p(m)}} \ket{\psi}.
+\end{equation}\par
+An important case of projective measurement arises when it is performed in the
+\textit{computational basis} of a qubit. Given operators 
+\begin{equation}
+	M_0 = \ket{0}\bra{0} = \begin{pmatrix}
+				1 && 0\\
+				0 && 0
+				\end{pmatrix}
+	\;
+	\text{and}
+	\;
+	M_1 = \ket{0}\bra{0} = \begin{pmatrix}
+				0 && 0\\
+				0 && 1
+				\end{pmatrix},
+\end{equation}
+it is obvious that they are Hermitian and that they obey the completeness
+relation. Consider again the state $\ket{\psi}=\alpha\ket{0} + \beta\ket{1}$.
+The probability of outcome $0$ will be 
+\begin{equation}
+	p(0) = \bra{\psi}M_0^\dag M_0{\ket{\psi}} = \bra{\psi}M_0{\ket{\psi}} = |\alpha|^2
+\end{equation}
+and outcome $1$
+\begin{equation}
+	p(0) = \bra{\psi}M_0^\dag M_0{\ket{\psi}} = \bra{\psi}M_0{\ket{\psi}} = |\beta|^2.
+\end{equation}
+For each of the outcomes, the state after measurement will be
+\begin{equation} 
+	\frac{M_0}{|\alpha|} \ket{\psi} = \frac{\alpha}{|\alpha|} \ket{0},
+\end{equation}
+\begin{equation} 
+	\frac{M_1}{|\beta|} \ket{\psi} = \frac{\beta}{|\beta|} \ket{1}.
+\end{equation}\par
+%TODO: Decidir como finalizar a seccao.
+Projective measurement destroys the superposition of possible
+states. This is known as the \textit{collapse of the wave function}. 
+
+\end{document}

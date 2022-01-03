@@ -1,0 +1,47 @@
+\documentclass[../../dissertation.tex]{subfiles}
+\begin{document}
+
+This chapter is dedicated to the construction of quantum walk circuits using
+IBM's Software Development Kit, \textit{Qiskit}, whose code is made publicly available in the
+Github repository\footnote{https://github.com/JaimePSantos/QWQiskit}. It is
+composed of two parts. The first one includes sections \ref{sec:CoinedQiskit}
+through \ref{sec:ContQiskit} and presents the circuits for the dynamics of each
+previously studied quantum walk model. The second part corresponds to section
+\ref{sec:SearchProblemsQiskit}, where the search algorithm is studied for each
+model.\par 
+
+The first part of this chapter begins with section \ref{sec:CoinedQiskit},
+where the coined quantum walk implementation based on the work of
+\cite{douglaswang07} can be found. Here, the line graph is considered again,
+whose shift operation is composed of increment and decrement gates constructed
+with generalized CNOT gates. As seen in previous chapters, this model
+requires an extra qubit for the space of the coin that, when combined with all
+the operations required to implement the generalized CNOT gates, results in a
+circuit far too deep to be implemented in current NISQ computers, as was
+concluded at the end of this section. The staggered quantum walk circuit is
+presented in the following section, based on the work of \cite{acasiete2020}.
+This implementation still uses the notion of increment and decrement
+operations. However, since a coin was not required, the resulting circuit
+became much more NISQ-friendly. The first part is then concluded with section
+\ref{sec:ContQiskit}, where the continuous-time quantum walk circuit is
+implemented. The best results for the dynamics of the quantum walk were
+obtained for this case, due to the circulant graph approach that, unlike the
+previous discrete models, does not require extra iterations of the algorithm to
+represent time. Work by \cite{qiang2016} firstly presented the circulant graph
+definition of this model, limited to the complete graph case, and the final part
+of this section greatly expands on this work by means of statistical analysis
+of the impact of the approximate quantum Fourier transform on a large
+collection of circulant graphs.\par
+
+Finally, section \ref{sec:SearchProblemsQiskit} closes this chapter with the
+implementation of circuits for the search problem using quantum walks. It
+starts with the introduction of quantum searching by means of the circuit
+associated with Grover's algorithm, followed by the coined quantum walk, which
+produces the worst results due to the requirement of $2n$ qubits and swap gates
+for the representation of the complete graph. Surprisingly, the best results
+were achieved for the staggered quantum walk search problem, since it produced
+the circuit with the least operations. The continuous-time quantum walk search
+was expected to produce the best results in this section also, but the
+introduction of the oracle together with the requirement of the Suzuki-Trotter
+expansion resulted in a circuit somewhat impacted by noise.
+\end{document}

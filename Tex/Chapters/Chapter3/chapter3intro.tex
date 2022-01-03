@@ -1,0 +1,36 @@
+\documentclass[../../dissertation.tex]{subfiles}
+\begin{document}
+
+This chapter studies the search problem using quantum walks.
+Section \ref{sec:GrovSearchSimul} introduces the basics of a search problem by
+presenting the theoretical framework of Grover's algorithm, followed by a
+complexity analysis, together with Python plots for a better illustration.
+Different numbers of marked elements will be shown and, by the end of the
+section, it should be clear that Grover's algorithm is optimal for searching,
+as shown by \cite{zalka1999}.\par
+
+Subsequent sections are dedicated for the quantum walk instance of this
+problem. In section \ref{sec:CoinedSearchSimul}, the coined quantum walk is
+defined for the search problem, which implies the introduction of an oracle.
+Here, instead of a line, a complete graph is used, which will increase the
+space of the search to $2N$, due to the connected nature of this graph and the
+need of a coin. Section \ref{sec:StagSearchSimul} presents the staggered
+quantum walk version of the search problem. Again, the notion of cliques and
+tessellations is used instead of a coin, and the complete graph is again
+considered. The oracle is again defined for this walk, which makes it quite
+similar to Grover's algorithm. However, since it is possible to alter the
+parameter $\theta$ and the structure over which the search is performed, this
+algorithm is known to be more general then Grover's. Like the coined quantum
+walk, the staggered model is discrete in time but, since a coin is not used,
+the space associated with it scales only with the size of the graph, meaning
+its implementation on a NISQ computer will be more feasible. Finally, section
+\ref{sec:ContSearchSimul} closes this chapter with the search instance of the
+continuous-time quantum walk. Similarly to the staggered quantum walk, both the
+structure where the search is performed and parameter $\gamma$ can be
+controlled. However, because time is not discrete in this instance, the
+probability distribution associated with this walk will be slightly different,
+and it will later be seen that this results in a circuit that does not scale up
+with time.  
+
+
+\end{document}

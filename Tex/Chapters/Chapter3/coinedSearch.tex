@@ -1,0 +1,106 @@
+\documentclass[../../dissertation.tex]{subfiles}
+\begin{document}
+In classical computation, a \textit{spatial search problem} focuses on finding
+marked points in a finite region of space. Defining this region with graphs is
+fairly straightforward, the vertices of the graph are the search space, and the
+edges define what transitions are possible through the search space. As was
+previously mentioned in section \ref{sec:GrovSearchSimul}, exhaustively
+searching through an unstructured space, by means of a classical random walk
+for example, would mean that in the worst case, one would have to take as many
+steps to find the marked points as there are vertices in the graph. Quantum
+computing provides a more efficient alternative through Grover's
+algorithm. Applying some of the underlying ideas to the coined quantum walk not only
+allows a quantum counterpart to the random walk search, but also further
+insight into the algorithm itself.\par
+
+%TODO:\textcolor{red}{acho que você precisa delimitar o que fará ao longo desta seção, dizer que tratará os três modelos e a busca}
+Following \cite{REN1}'s definition, a good first step is to borrow the
+diffusion from Grover's algorithm and invert the sign of the state
+corresponding to the marked vertex while leaving unmarked vertices unchanged.
+This is done through the following operator 
+%TODO:\textcolor{red}{eu trocaria a notação de $\mOathcal{F}$ por $\mathcal{O}$ e dizer que é um oráculo}
+\begin{equation}
+	\mathcal{O} = I - 2 \sum_{x\in M} \ket{x}\bra{x},
+\end{equation}
+where M is the set of marked vertices and $\mathcal{O}$ is an analogue to
+Grover's oracle. For one marked vertex, this oracle can be written as 
+%TODO:\textcolor{red}{você pode até dizer que $M=\{0\}$}
+\begin{equation}
+	\mathcal{O} = I - 2 \ket{0}\bra{0}.
+\end{equation}
+Notice that there is no loss of generality by choosing the marked vertex as
+$0$, since the labeling of the vertices is arbitrary.\par 
+
+The next step is to combine the evolution operator from the coined quantum walk
+model with the oracle
+\begin{equation}
+	U'= U\mathcal{O}.
+	\label{eq:modUCoinedSimul}
+\end{equation}
+Similarly to the simple coined case, the walker starts at $\ket{\psi(0)}$ and
+evolves according to the rules of an unitary operator $U$, followed by the sign
+inversion of marked vertices. The walker's state after an arbitrary number of
+steps will be
+\begin{equation}
+	\psi(t) = (U')^t\ket{\psi(0)}.
+	\label{eq:sysStateSearch}
+\end{equation}\par
+
+For a better understanding of the search problem in the coined quantum walk
+model, consider a graph where all the vertices are connected and each vertex
+has a loop that allows transitions to itself.  The next step is to label the
+edges using notation $\{(v,v'), v \geqslant 0 \land v' \leqslant N-1\}$ where
+$N$ is the total number of vertices and $(v,v')$ are the position and coin
+value, respectively.  The shift operator, now called the \textit{flip-flop} shift
+operator, is
+\begin{equation}
+	S\ket{v1}\ket{v2} = \ket{v2}\ket{v1}.
+	\label{eq:chap3FlipFlop}
+\end{equation}\par
+The coin operator is defined as
+\begin{equation}
+	C = I_N \otimes G,
+\end{equation}
+where 
+%TODO:\textcolor{red}{prefiro s a D}
+\begin{equation}
+	G = 2\ket{s}\bra{s} - I
+\end{equation}
+is the Grover coin, with $\ket{s}$ being the uniform superposition of the coin states.\par
+
+Marking an element in a complete graph is done through the following oracle
+\begin{equation}
+	\mathcal{O'} =\mathcal{O}\otimes I = (I_N - 2\ket{0}\bra{0})\otimes I_N = I_{N^2} - 2 \sum_v \ket{0}\ket{v}\bra{0}\bra{v} ,
+\end{equation}
+that is seen as an operator that marks all edges leaving $0$. Recalling equation
+\eqref{eq:modUCoinedSimul}, now that all the operators are defined, the modified evolution
+operator can then be written as
+\begin{equation}
+	U' = S(I \otimes G)\mathcal{O'} = S(I \otimes G)\mathcal{O} \otimes I = S (\mathcal{O} \otimes G),
+	\label{eq:modifiedEvoCoined}
+\end{equation}
+and the state of the system will evolve according to equation \eqref{eq:sysStateSearch}.
+\begin{figure}[!h]
+	\centering
+	\includegraphics[scale=0.40]{img/CoinedQuantumWalk/Search/CoinedSearch163264.png}
+	\caption{Probability of one marked element in the coined quantum walk search, as a function of the number of steps, for complete graphs of size $N=16$, $32$ and $64$.}\label{fig:coinedSearch}
+\end{figure}\par
+
+As shown in \cite{REN1}, maximum probability of the marked vertex is
+achieved after $\floor{\frac{\pi}{2}\sqrt{N}}$ steps. Figure \ref{fig:coinedSearch} is
+the result of coding and plotting the evolution of this probability
+distribution, for graphs of varying sizes. It shows that the probability is close to one at \textit{approximately} the ideal steps, because of the discrete nature of the walk. The probability distributions have a
+stair-like shape, because transitions in this model only occur on even numbered
+time steps, because of the way the unmodified evolution
+operator was constructed.\par
+
+The next section is devoted to the study of the search problem using the
+staggered quantum walk model. The algorithm is still discrete. However, since it
+does not use a coin, its Hilbert space will be much smaller. In the coined
+case, due to how the coin and shift operators were defined, for every qubit
+that represents the space of the walker, another qubit will be needed for the
+coin since, in the complete graph, each vertex is connected to all vertices. This means that for a $N$ qubit walk, $2N$ qubits are required.
+Therefore, the staggered quantum walk will be better suited for running in a
+NISQ computer.
+
+\end{document}

@@ -1,0 +1,29 @@
+\documentclass[../../dissertation.tex]{subfiles}
+\begin{document}
+
+The structure of this chapter is as follows. The first section presents a brief
+introduction to random walks by reviewing the classical case. The following
+sections are dedicated to the study of several quantum random walk models and
+their advantages. This analysis is done by firstly describing the theoretical
+framework for these walks, and then simulating them in Python, with code that
+can be found on \textit{Github}
+\footnote{https://github.com/JaimePSantos/QWSimulations}.\par 
+
+Section \ref{sec:chap3Coinedwalk} introduces the quantum case of random walks
+by analyzing the dynamics of the coined model, making use of Python's plot
+capabilities in order to visualize the probability distributions associated
+with this algorithm. The quantum walk is generally said to be
+\textit{quadratically} faster than the classical one, which is reflected on the
+behavior of the standard deviation associated with the probability
+distribution, and in this section a brief comparison of this metric is also
+presented.  Section \ref{sec:chap3StagWalk} is dedicated to the study of
+another instance of a discrete quantum walk, but where a coin is not needed.
+Instead, \textit{tessellations} are used to construct the Hamiltonians of this
+algorithm, hence the name \textit{staggered}, effectively reducing the
+associated Hilbert space. Here, plots are used to study the propagation of the
+walk, and the effects of altering available the parameters will also be
+analyzed.  Lastly, section \ref{sec:chap3Contwalk} presents the continuous-time
+model of the quantum walk. Following the previous sections, the probability
+distributions will be plotted for the different parameters that can be altered.
+Finally, this chapter is closed with some final thoughts and remarks.
+\end{document}

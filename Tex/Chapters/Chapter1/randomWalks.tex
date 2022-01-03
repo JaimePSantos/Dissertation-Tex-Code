@@ -1,0 +1,120 @@
+\documentclass[../../dissertation.tex]{subfiles}
+\begin{document}
+
+The Church-Turing thesis, that states that any algorithmic process can
+be simulated efficiently using a Turing Machine, was challenged by
+\cite{solvaystrassen77} where they presented what is known as the
+\textit{Solovay-Strassen primality test}. They showed that it is possible to
+test whether a integer is prime or composite using a randomized algorithm. The
+implication is that, because of the randomness, the Solvay-Strassen primality
+test does not determine with certainty whether a integer is prime or composite,
+rather it computes that a number is \textit{probably} prime or else
+\textit{certainly} composite. This is of significance since no deterministic
+test for primality was known at the time\footnote{Work by \cite{agrawal02} has since found a general, polynomial, deterministic, and unconditional primality proving algorithm.}, meaning that this was
+an example of a class of problems that could not be efficiently solved by a
+conventional deterministic Turing Machine.\par
+
+%TODO: Talvez exemplos diferentes?  
+%TODO: Quicksort faz sentido quando tamos a falar do monte carlo? Se calhar falar mais um bocado do algoritmo.
+This led to a modification of the Church-Turing thesis, now stating that any
+algorithm can be simulated efficiently using a \textit{probabilistic} Turing
+machine. The discovery of more instances of such algorithms followed,
+\cite{motwani1995} and \cite{papadimitrious1994} show several problems that can
+be solved based on randomized algorithms. For example, the \textit{Quicksort}
+algorithm, developed by \cite{hoare61}, has a high probability of finishing in
+$O(n \log{n})$. In contrast to many deterministic algorithms that require
+$O(n^2)$ time. They also show algorithms that take advantage of \textit{Markov
+chains} and the \textit{Monte Carlo method}. The volume of a convex body,
+proposed by \cite{dyer1991}, can be estimated by a randomized algorithm in
+polynomial time; the permanent of a nonnegative entry matrix can also be
+approximately calculated in probabilistic polynomial time as was shown by
+\cite{jerrum2001} and the \textit{k-SAT} and satisfiability with restrictions
+problem by \cite{schoning1999}. \par
+
+%TODO: Definicao da wikipedia um bocado fraca
+%TODO: Ref brownian motion : D ben avraham, s havlin , diffusion and reactions in fractals and disordered systems.
+Random walks, as the name suggests, belong to this class of algorithms.
+\cite{kpearson1905} coined the term random walk, and they can be described as
+path consisting of a succession of steps determined by a stochastic process,
+over a mathematical space. They are a special case of \textit{Markov chains},
+which are stochastic processes that assume discrete values and whose next state
+is dictated by a deterministic or random rule based only on the current state.
+This is a useful framework, since it can be used to explain the behaviour of
+systems across many fields, from the Brownian movement of particles moving
+through a gas, to the price of a fluctuating stock as shown by
+\cite{cootner67}.\par
+
+The quantum analogue of the random walk was firstly developed by
+\cite{aharonov1993}, where they defined the \textit{coined quantum random
+walk}.  This model consists of a walker and a coin that determines the movement
+of the walker, which are both quantum systems where time is a discrete variable
+dictated by the successive quantum coin flips and shifts in position.
+\cite{nayak2000} and \cite{aharonov2002}  present the first analyses of the
+quantum walk on a graph described by a line. Further work by \cite{inui2003}
+studies the behaviour of the walk on grids and \cite{aharonov2002} on general
+regular graphs. The first algorithmic applications appear in the work of
+\cite{shenvi2002} where they constructed a search problem based on the quantum
+random walk, and \cite{ambainis2003} applied it to the element distinction
+problem. On a more theoretical note, \cite{konno2002} demonstrated how the
+classical and quantum models of the random walk on the line differ, and
+\cite{grimmett2003} generalized this to higher dimensions. \cite{lovett2010} demonstrated
+that any quantum algorithm can be reformulated as a discrete time quantum walk
+algorithm, effectively showing that this model can be used for universal quantum
+computation.\par
+
+%TODO: Sera importante mencionar Dam, Mosca e Vazirani? >> Ler este artigo
+%TODO: Melhorar o inicio.
+%TODO: chakraborty? 
+A different model for quantum random walks emerged from the work of
+\cite{farhi1996}, where a different way of computing a search problem was
+presented. They showed that evolving a system in time between an initial and
+final Hamiltonian is analogous to the Grover algorithm, but continuous in time.
+\cite{farhi2000} revised their work, now known as an adiabatic evolution, to
+solve Boolean \textit{sat} problems. \cite{childs2004} formulated a model of a
+quantum walk in terms of adiabatic evolution, known as \textit{continuous time
+quantum walk} or \textit{adiabatic quantum walk}. \cite{aharonov2005} showed
+that any quantum algorithm can be efficiently simulated using adiabatic
+evolution, meaning that it is polynomially equivalent to the conventional
+quantum computation model. Further work by \cite{childs2009} showed that this
+model is indeed universal. The main difference between these two quantum walk
+models lies on the fact that in the discrete case, the system evolves with
+the flipping of a coin and subsequent movement of the walker, whilst in the
+adiabatic case the system evolves smoothly in time.\par 
+
+Yet another way of thinking about quantum walks was announced by
+\cite{szegedy2004}, where he describes a discrete model based on Markov chain
+random walks. At the foundation of this model is the duplication of a graph, a
+process by which a bipartite graph is created. \cite{magniez2005} show how to
+use this walk for triangle detection in an undirected graph. \cite{magniez2006}
+proposed a search problem, which takes advantage of ergodicity and simmetry
+properties of Markov chains, with quadratic gain compared to classical
+algorithms. Problems like element distinctness, matrix product verification and
+others were formulated within this framework by \cite{santha2008}. Further work
+by \cite{portugal2015} established a connection between the coined and Szegedy's quantum
+walk, by defining a model that encompasses and expands the latter.\par 
+
+%TODO: Perceber a ligacao entre patel e staggered.
+%TODO: Uma forma alternativa de construir uma quantum walk sem moeda de forma sistematica e atraves do staggered.
+\cite{patel2004} pointed that, at the time, there was confusion surrounding the
+scaling behaviour of discrete and adiabatic quantum walk algorithms. They
+argued that this was because the former model used a coin, which is an extra
+resource, and the latter didn't. So, in an attempt to resolve this confusion,
+they showed that a discrete time quantum walk could be constructed without the
+use of a coin. 
+A new way of thinking about quantum walks came with the
+development of the methods behind the construction of evolution operators, by
+\cite{falk2013}, introducing the concept of \textit{tessellations}, based on
+local diffusion operators. \cite{portugal2014} studied this model applied to a
+line graph.
+Further work by \cite{portugal2015b} formalized this approach naming it
+\textit{staggered quantum walk}, and showed instances where the Szegedy quantum
+walk is equivalent. This suggests that this is a more general model, being able
+to describe other discrete-time quantum walks. \cite{portugal2017b} delved
+deeper into this topic, adding Hamiltonians to the model, and
+\cite{portugal2017a} shows how this can be instanced as a search problem in a
+grid. Finally, \cite{coutinho2017} analyze how a continuous-time quantum walk
+can be cast into this discrete model and \cite{moqadam2016} show a
+possible physical implementation of this walk.
+
+
+\end{document}

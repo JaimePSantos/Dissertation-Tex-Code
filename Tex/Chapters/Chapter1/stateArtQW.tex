@@ -1,0 +1,125 @@
+\documentclass[../../dissertation.tex]{subfiles}
+\begin{document}
+
+One of the earliest works on a more computational approach to quantum random
+walks was by \cite{marquezino2008}, where they created a general simulator for
+discrete-time quantum walks on one- and two-dimensional lattices. They argued
+that this framework allowed researchers to focus more on the mathematical
+aspect of quantum walks, instead of the specific numerical implementations.
+Further work on these lattices was later presented by \cite{sawerwain2010},
+where they studied the simulation of quantum walks by taking advantage of the
+GPU and CUDA technology. Another interesting program for simulating discrete-time
+quantum walks came with the work of \cite{berry2011}. This package allows for
+direct simulation of these walks, and visualization of the time-evolution on
+arbitrary undirected graphs. It also allowed for plotting of continuous-time
+quantum walks, provided the data was provided externally. 
+%TODO: Simulator Continuous : Sera que faco um paragrafo aqui?
+There are, however, direct simulators of continuous-time quantum walks, the
+earliest being by \cite{izaac2015}. Their distributed memory software claims to
+be able to perform efficient simulation of multi-particle continuous-time
+quantum walk based systems, on \textit{High Performance Computing} platforms.
+\cite{falloon2017a} provide a \textit{Mathematica} package that implements a
+simulator of \textit{Quantum Stochastic Walks}, which are a generalization of
+the continuous-time model. These walks incorporate both coherent and incoherent
+dynamics, which means that quantum stochastic walks can be instantiated as both
+quantum walks and classical random walks. What this paper then provides is a
+way of implementing quantum walks on directed graphs, opening the door to
+applications ranging from the capture of energy by photosyntethic protein
+complexes, to page ranking algorithms used by search engines. This package was
+ported to and expanded in the \textit{Julia} programming language by
+\cite{glos2018}.\par
+
+%Circuit Discrete TODO: Decidir se meto loke2012 aqui.
+In order to truly harness the power of quantum computing, however, one must be
+able to perform these algorithms on quantum hardware. For this purpose, various
+implementations of quantum walks on quantum circuits have been purposed.
+\cite{douglaswang07} pioneered this approach by developing
+efficient quantum circuits for discrete-time quantum walks on highly symmetric
+graphs, whose resources scale logarithmically with the size of the state space.
+\cite{shakeel2020} presented a new approach for building circuits for the
+discrete model, reducing resource requirement by using the quantum Fourier
+transform. 
+%TODO: Circuit continuous: paragrafo?
+For the continuous-time quantum walk, work by \cite{qiang2016} presents
+efficient quantum circuits for the circulant graph class, and also an
+experimental implementation on a photonic quantum processor. In the same year,
+\cite{loke2017b} showed how to build continuous-time quantum walk circuits for
+composite graphs, namely commuting graphs and Cartesian product of graphs.
+%TODO: Circuit szegedy: paragrafo?
+Considering the Szegedy quantum walk, \cite{chiang2009} proposed an efficient
+method of creating quantum circuits for this model.  In their work, they showed
+how to derive a quantum version of the arbitrary sparse classical random walk
+by approximating a \textit{quantum update rule} with circuit complexity scaling
+linearly with the degree of sparseness of the structure. \cite{loke2017a}
+developed this method by showing that an efficient circuit for the Szegedy
+quantum walk can be constructed even if the structures are not sparse, given
+they posses translational symmetry in the columns of the transitional matrix.
+More specifically, they identified that the class of cyclic and bipartite
+graphs are compatible with this approach.  Another interesting result in this
+paper was the creation of circuits that implement a quantum analogue of
+Google's \textit{Page Rank} algorithm, in terms of Szegedy walks. \par
+
+%Implementation.TODO: Decidir se so ponho IBM aqui.
+On the experimental side, there have been various implementations of
+quantum walks on quantum computers. On IBM's hardware, work by \cite{balu2017}
+presents an efficient implementation of topological quantum walks where they
+ran the circuit on a five qubit computer over a $4$ vertex lattice.
+\cite{Georgopoulos2019} implements two instances of the discrete-time quantum
+walk. The first is based on the work of \cite{douglaswang07} using generalized
+CNOT gates, and the second uses a rotational approach to the CNOT
+decomposition, which saves using an extra ancilla qubit register. They noted
+that IBM's simulator backend corresponded to the theoretical predictions,
+however the circuit for over three qubits was too much for the quantum hardware
+at that time. The paper presented by \cite{shakeel2020} also uses IBM's
+hardware to perform their formulation of the discrete-time quantum walk. For
+the staggered quantum walk model, work by \cite{acasiete2020} obtains
+meaningful results when using the quantum computers to study the dynamics of
+this model on various graphs with $16$ elements, requiring $4$ qubits. They
+also modify these circuits to accommodate an oracle, showing that a spatial
+search algorithm could be performed on IBM's quantum computers for a search
+space of size $8$, and with a bit of noise but still satisfactory for size
+$16$.
+%Search problems have also been implemented, \cite{figgat2017} showed how to
+%perform the Grover's algorithm for three qubits using Qiskit and IBM's quantum
+%computers. A quantum walk analogue of Grover's was defined by \cite{acasiete2020}, where they use thestaggered model modified with an oracle to obtain 
+
+% Simuladores de caminhadas quanticas 
+%QUANTUM WALKS AND THEIR ALGORITHMIC APPLICATIONS (TODO: maybe?)
+%% > Discretas
+%% >> The QWalk Simulator of Quantum Walks (marquezino2008)
+%% >> GPGPU Based Simulations for One and Two Dimensional Quantum Walks (sawerwain2010)
+%% >> qwViz: Visualisation of quantum walks on graphs (berry2011) 
+%% > Continuas
+%% >> pyCTQW : A continuous-time quantum walk simulator on distributed memory computers (izaac2014) 
+%% >> QSWalk: A Mathematica package for quantum stochastic walks on arbitrary graphs (falloon2017)
+%% >> QSWalk.jl: Julia package for quantum stochastic walks analysis (falloon2017) 
+%%
+% Circuitos quantum walks
+%% Muitas destas refs vem do loke2016a.
+%% > Discrete
+%% >> DouglasWang2009
+%% >> S. P. Jordan, P. Wocjan, Efficient quantum circuits for arbitrary sparse unitaries 2009 (DUVIDOSO) (jordan2009) %% >> T. Loke, J. B. Wang, Efficient circuit implementation of quantum walks on non-degree-regular graphs 2012 (loke2012) %% >> Asif  Shakeel.Efficient  and  scalable  quantum  walk  algorithms  via the  quantum  Fourier  transform. (shakeel2020) (TODO: isto tambem tem implementacao!!)
+%% > Continuous
+%% >> G. Ahokas, R. Cleve, B. C. Sanders, Efficient Quantum Algorithms for Simulating Sparse Hamiltonians (berry2006) (TODO: DUVIDOSO)
+%% >> A. M. Childs, R. Kothari, Limitations on the simulation of non-sparse Hamiltonians (childs2010) (TODO: DUVIDOSO)
+%% >> X. Qiang, T. Loke, A. Montanaro, K. Aungskunsiri, X. Zhou, J. L. OBrien, J. B. Wang, J. C. F. Matthews, Efficient quantum walk on a quantum processor (qiang2016)
+%% >> loke2016b
+%% > Szegedy
+%% >> C.-F. Chiang, D. Nagaj, P. Wocjan, Efficient Circuits for Quantum Walks (chiang2009)
+%% >> loke2016a
+%%
+%% >> Physical Implementation of Quantum Walks. (todo: Ver onde isto se enquadra melhor)
+%%
+% Implementacao (mencionar searching)
+%% >> balu2017
+%% >> georg2019
+%% >> acasiette2020
+%% >> figgatt2017 (TODO: Perceber como introduzir o grover aqui)
+
+%% > TODO: Decidir se ponho experiencias em laboratorio
+%% > R. Matjeschk, Ch. Schneider, M. Enderlein, T. Huber, H. Schmitz, J. Glueckert, and
+%% > T. Schaetz. Experimental simulation and limitations of quantum walks with trapped ions.
+%% > E. Flurin, V. V. Ramasesh, S. Hacohen-Gourgy, L. S. Martin, N. Y. Yao, and I. Siddiqi. Observing topological invariants using quantum walks in superconducting circuits.
+%% > S. Dadras, A. Gresch, C. Groiseau, S. Wimberger, and G. S. Summy. Experimental realization of a momentum-space quantum walk.
+
+\end{document}

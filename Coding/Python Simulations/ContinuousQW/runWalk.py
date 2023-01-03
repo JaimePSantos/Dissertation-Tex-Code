@@ -91,28 +91,28 @@ initState = init_state(N,initCond)
 qw = ctqwalk(lg,N,t,gamma,initState)
 plotqw(N,qw,'Psi0')
 
-qwGamma = ctqwalk(lg,N,t,gamma3,initState)
-plotqw(N,qwGamma,"Psi0LowerGamma")
-
-initCondSup = 'sup'
-initStateSup = init_state(N,initCondSup)
-qwSup = ctqwalk(lg,N,t,gamma,initStateSup)
-plotqw(N,qwSup,'Sup')
-
-# # Multiple Plots
-qwg1 = ctqwalk(lg,N,t,gamma1,initState)
-qwg2 = ctqwalk(lg,N,t,gamma2,initState)
-qwg3 = ctqwalk(lg,N,t,gamma3,initState)
-plotmultqw(N,qwg1,qwg2,qwg3,denom1,denom2,denom3,'Gamma','Gamma')
-
-qwt1=ctqwalk(lg,N,t1,gamma,initState)
-qwt2=ctqwalk(lg,N,t2,gamma,initState)
-qwt3=ctqwalk(lg,N,t3,gamma,initState)
-plotmultqw(N,qwt1,qwt2,qwt3,t1,t2,t3,'Time','Time')
-
-qwt1Sup=ctqwalk(lg,N,t1,gamma,initStateSup)
-qwt2Sup=ctqwalk(lg,N,t2,gamma,initStateSup)
-qwt3Sup=ctqwalk(lg,N,t3,gamma,initStateSup)
-plotmultqw(N,qwt1Sup,qwt2Sup,qwt3Sup,t1,t2,t3,'Time','TimeSuperposition')
+# qwGamma = ctqwalk(lg,N,t,gamma3,initState)
+# plotqw(N,qwGamma,"Psi0LowerGamma")
+#
+# initCondSup = 'sup'
+# initStateSup = init_state(N,initCondSup)
+# qwSup = ctqwalk(lg,N,t,gamma,initStateSup)
+# plotqw(N,qwSup,'Sup')
+#
+# # # Multiple Plots
+# qwg1 = ctqwalk(lg,N,t,gamma1,initState)
+# qwg2 = ctqwalk(lg,N,t,gamma2,initState)
+# qwg3 = ctqwalk(lg,N,t,gamma3,initState)
+# plotmultqw(N,qwg1,qwg2,qwg3,denom1,denom2,denom3,'Gamma','Gamma')
+#
+# qwt1=ctqwalk(lg,N,t1,gamma,initState)
+# qwt2=ctqwalk(lg,N,t2,gamma,initState)
+# qwt3=ctqwalk(lg,N,t3,gamma,initState)
+# plotmultqw(N,qwt1,qwt2,qwt3,t1,t2,t3,'Time','Time')
+#
+# qwt1Sup=ctqwalk(lg,N,t1,gamma,initStateSup)
+# qwt2Sup=ctqwalk(lg,N,t2,gamma,initStateSup)
+# qwt3Sup=ctqwalk(lg,N,t3,gamma,initStateSup)
+# plotmultqw(N,qwt1Sup,qwt2Sup,qwt3Sup,t1,t2,t3,'Time','TimeSuperposition')
 
 
